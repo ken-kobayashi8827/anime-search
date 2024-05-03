@@ -63,6 +63,23 @@ export default function LoginForm() {
             新規登録
           </Button>
         </Link>
+        <Link
+          href='/reset-password'
+          _hover={{
+            textDecoration: 'none',
+            opacity: '0.8',
+          }}
+        >
+          <Text
+            w='100%'
+            mt='4'
+            textAlign='center'
+            color='blue.400'
+            fontSize='sm'
+          >
+            パスワードを忘れた方
+          </Text>
+        </Link>
       </Box>
     </Flex>
   );
