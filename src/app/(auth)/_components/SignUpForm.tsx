@@ -22,11 +22,12 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = methods;
 
   const onSubmit = async (params: SignUpFormType) => {
-    console.log(params);
-    await signup(params);
+    const { error } = await signup(params);
+    setError('email', { type: 'signUpError', message: error });
   };
 
   return (

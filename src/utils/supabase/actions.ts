@@ -5,13 +5,10 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { LoginFormType, SignUpFormType } from '@/types/types';
 
-const EMAIL_REDIRECT_URL = 'http://localhost:3000/signup/complete';
-
 export async function login(formData: LoginFormType) {
   try {
     const supabase = createClient();
 
-    //TODO: Sever Action側でバリデーション追加？
     const data = {
       email: formData.email,
       password: formData.password,
@@ -22,7 +19,7 @@ export async function login(formData: LoginFormType) {
     if (signInError) {
       throw new Error();
     }
-  } catch (error) {
+  } catch (e) {
     redirect('/error');
   }
   revalidatePath('/', 'layout');
@@ -33,25 +30,26 @@ export async function signup(formData: SignUpFormType) {
   try {
     const supabase = createClient();
 
-    //TODO: Sever Action側でバリデーション追加？
     const data = {
       email: formData.email,
       password: formData.password,
-      options: {
-        emailRedirectTo: EMAIL_REDIRECT_URL,
-      },
     };
 
     const { error: signUpError } = await supabase.auth.signUp(data);
 
+    if (signUpError?.code === 'user_already_exists') {
+      return {
+        error: '既に登録されているメールアドレスです',
+      };
+    }
+
     if (signUpError) {
-      console.log(signUpError);
       throw new Error();
     }
-  } catch (error) {
+  } catch (e) {
     redirect('/error');
   }
 
   revalidatePath('/', 'layout');
-  redirect('/confirm');
+  redirect('/signup/complete');
 }
