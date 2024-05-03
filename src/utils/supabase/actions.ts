@@ -3,7 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import { LoginFormType } from '@/types/types';
+import { LoginFormType, SignUpFormType } from '@/types/types';
+
+const EMAIL_REDIRECT_URL = 'http://localhost:3000/signup/complete';
 
 export async function login(formData: LoginFormType) {
   try {
@@ -15,9 +17,9 @@ export async function login(formData: LoginFormType) {
       password: formData.password,
     };
 
-    const { error } = await supabase.auth.signInWithPassword(data);
+    const { error: signInError } = await supabase.auth.signInWithPassword(data);
 
-    if (error) {
+    if (signInError) {
       throw new Error();
     }
   } catch (error) {
@@ -27,20 +29,29 @@ export async function login(formData: LoginFormType) {
   redirect('/');
 }
 
-export async function signup(formData: FormData) {
-  const supabase = createClient();
+export async function signup(formData: SignUpFormType) {
+  try {
+    const supabase = createClient();
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
+    //TODO: Sever Action側でバリデーション追加？
+    const data = {
+      email: formData.email,
+      password: formData.password,
+      options: {
+        emailRedirectTo: EMAIL_REDIRECT_URL,
+      },
+    };
 
-  const { error } = await supabase.auth.signUp(data);
+    const { error: signUpError } = await supabase.auth.signUp(data);
 
-  if (error) {
+    if (signUpError) {
+      console.log(signUpError);
+      throw new Error();
+    }
+  } catch (error) {
     redirect('/error');
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
+  redirect('/confirm');
 }
