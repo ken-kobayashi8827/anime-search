@@ -24,7 +24,11 @@ export async function login(formData: LoginFormType) {
     };
 
     const { error: signInError } = await supabase.auth.signInWithPassword(data);
-
+    if (signInError?.message === 'Invalid login credentials') {
+      return {
+        error: 'メールアドレスまたはパスワードが間違っています',
+      };
+    }
     if (signInError) {
       throw new Error();
     }

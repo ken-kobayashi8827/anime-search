@@ -22,10 +22,12 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = methods;
 
   const onSubmit = async (params: LoginFormType) => {
-    await login(params);
+    const { error } = await login(params);
+    setError('password', { type: 'loginError', message: error });
   };
 
   return (
