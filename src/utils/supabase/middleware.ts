@@ -2,6 +2,10 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
+  const url = new URL(request.url);
+  const origin = url.origin;
+  request.headers.set('x-origin', origin);
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,

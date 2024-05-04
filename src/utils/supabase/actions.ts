@@ -9,6 +9,7 @@ import {
   SignUpFormType,
   UpdatePasswordFormType,
 } from '@/types/types';
+import { headers } from 'next/headers';
 
 /**
  * ログイン
@@ -77,11 +78,13 @@ export async function signup(formData: SignUpFormType) {
  * @param formData
  */
 export async function resetPasswordForEmail(formData: ResetPasswordFormType) {
+  const headersList = headers();
+  const origin = headersList.get('x-origin');
   try {
     const supabase = createClient();
     const { error: resetPasswordError } =
       await supabase.auth.resetPasswordForEmail(formData.email, {
-        redirectTo: 'http://localhost:3000/update-password',
+        redirectTo: `${origin}/update-password`,
       });
 
     if (resetPasswordError) {
