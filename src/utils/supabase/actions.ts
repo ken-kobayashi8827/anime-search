@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import {
   LoginFormType,
+  MyPageUpdateType,
   ResetPasswordFormType,
   SignUpFormType,
   UpdatePasswordFormType,
@@ -110,4 +111,55 @@ export async function updateUser(formData: UpdatePasswordFormType) {
     redirect('/error');
   }
   redirect('/update-password/success');
+}
+
+/**
+ * プロフィール取得
+ * @returns
+ */
+export async function fetchProfile() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('username, profile_image')
+      .limit(1)
+      .single();
+    if (error) {
+      throw new Error();
+    }
+    return data;
+  } catch (e) {
+    redirect('/error');
+  }
+}
+
+/**
+ * プロフィール更新
+ * @param formData
+ */
+export async function updateProfile(formData: MyPageUpdateType) {
+  try {
+    const supabase = createClient();
+    const { data: userData } = await supabase.auth.getUser();
+    const updateData: MyPageUpdateType = {
+      username: formData.username,
+    };
+
+    if (formData.profile_image) {
+      updateData.profile_image = formData.profile_image;
+    }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update(updateData)
+      .eq('user_id', userData.user?.id);
+    if (error) {
+      throw new Error();
+    }
+  } catch (e) {
+    redirect('/error');
+  }
+  revalidatePath('/mypage');
+  redirect('/mypage');
 }

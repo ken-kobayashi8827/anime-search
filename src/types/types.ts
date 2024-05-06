@@ -95,3 +95,30 @@ export const UpdatePasswordFormSchema = z
   });
 
 export type UpdatePasswordFormType = z.infer<typeof UpdatePasswordFormSchema>;
+
+/**
+ * マイページフォーム
+ */
+const IMAGE_TYPES = ['image/jpg', 'image/jpeg', 'image/png'];
+const IMAGE_SIZE_LIMIT = 2_000_000;
+export const MyPageEditFormSchema = z.object({
+  username: z
+    .string()
+    .min(1, { message: '1文字以上で入力してください' })
+    .max(20, { message: '20文字以下で入力してください' }),
+  profileImage: z
+    .custom<FileList>()
+    .transform((files) => files[0])
+    .refine((file) => IMAGE_TYPES.includes(file.type), {
+      message: '.jpg/.jpeg/.pngのいずれかの画像を選択してください',
+    })
+    .refine((file) => file.size < IMAGE_SIZE_LIMIT, {
+      message: '添付できる画像ファイルは20MBまでです',
+    }),
+});
+
+export type MyPageEditFormType = z.infer<typeof MyPageEditFormSchema>;
+export type MyPageUpdateType = {
+  username: string;
+  profile_image?: string | undefined;
+};
