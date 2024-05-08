@@ -19,7 +19,7 @@ export default function LinkButton({
   text,
 }: LinkButtonType) {
   return (
-    <Link href={link}>
+    <Link href={link} display='block'>
       <Button w={width} colorScheme={colorScheme} mt={mt}>
         {text}
       </Button>

@@ -108,13 +108,20 @@ export const MyPageEditFormSchema = z.object({
     .max(20, { message: '20文字以下で入力してください' }),
   profileImage: z
     .custom<FileList>()
-    .transform((files) => files[0])
-    .refine((file) => IMAGE_TYPES.includes(file.type), {
-      message: '.jpg/.jpeg/.pngのいずれかの画像を選択してください',
-    })
-    .refine((file) => file.size < IMAGE_SIZE_LIMIT, {
-      message: '添付できる画像ファイルは20MBまでです',
-    }),
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => IMAGE_TYPES.includes(file.type)),
+      {
+        message: '.jpg/.jpeg/.pngのいずれかの画像を選択してください',
+      }
+    )
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => file.size < IMAGE_SIZE_LIMIT),
+      {
+        message: '添付できる画像ファイルは20MBまでです',
+      }
+    ),
 });
 
 export type MyPageEditFormType = z.infer<typeof MyPageEditFormSchema>;

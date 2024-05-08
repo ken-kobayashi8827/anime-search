@@ -1,6 +1,6 @@
 import LinkButton from '@/app/components/LinkButton';
 import { fetchProfile } from '@/utils/supabase/actions';
-import { Box, Image, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, Text, HStack } from '@chakra-ui/react';
 
 export default async function MyPage() {
   const profile = await fetchProfile();
@@ -13,17 +13,10 @@ export default async function MyPage() {
       <Text fontSize='3xl' fontWeight='bold' mb='3' textAlign='center'>
         マイページ
       </Text>
-      <Text>ユーザー名:{profile?.username}</Text>
-      <VStack alignItems='flex-start'>
-        <Text>プロフィール画像</Text>
-        <Image
-          src={PROFILE_IMAGE}
-          alt='プロフィール画像'
-          w='40px'
-          h='40px'
-          borderRadius='50%'
-        />
-      </VStack>
+      <HStack alignItems='center'>
+        <Avatar size='lg' alt='プロフィール画像' src={PROFILE_IMAGE} />
+        <Text>{profile?.username}</Text>
+      </HStack>
       <LinkButton
         link='/mypage/edit'
         colorScheme='blue'
@@ -31,6 +24,9 @@ export default async function MyPage() {
         mt='3'
         text='編集'
       />
+      <Button w='100%' colorScheme='red' mt='3'>
+        アカウント削除
+      </Button>
     </Box>
   );
 }

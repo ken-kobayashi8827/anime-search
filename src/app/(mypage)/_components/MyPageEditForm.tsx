@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Flex, Image, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { MyPageEditFormSchema, MyPageEditFormType } from '@/types/types';
 import { FormImage } from '@/app/components/FormImage';
@@ -52,11 +52,19 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = methods;
 
+  // アップロード画像プレビュー
+  const previewImg = watch('profileImage');
+  let previewImgPath = profileImage;
+  if (previewImg && previewImg.length > 0) {
+    previewImgPath = window.URL.createObjectURL(previewImg[0]);
+  }
+
   const onSubmit = async (params: MyPageEditFormType) => {
-    const uploadImgUrl = await uploadImg(params.profileImage);
+    const uploadImgUrl = await uploadImg(params.profileImage[0]);
     const updateData = {
       username: params.username,
       profile_image: uploadImgUrl,
@@ -71,7 +79,7 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
       justifyContent='center'
       flexDirection='column'
     >
-      <Box w='100%' border='2px' rounded='md' p='10' maxWidth='md'>
+      <Box w='100%' p='10' maxWidth='md'>
         <Text fontSize='2xl' fontWeight='bold' mb='3' textAlign='center'>
           マイページ
         </Text>
@@ -86,13 +94,7 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
             />
             <VStack alignItems='flex-start'>
               <Text>プロフィール画像</Text>
-              <Image
-                src={profileImage}
-                alt='プロフィール画像'
-                width='40px'
-                h='40px'
-                borderRadius='50%'
-              />
+              <Avatar size='lg' name='プロフィール画像' src={previewImgPath} />
             </VStack>
             <FormImage
               label=''
@@ -105,9 +107,6 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
             </Button>
           </form>
         </FormProvider>
-        <Button w='100%' colorScheme='red' mt='3'>
-          アカウント削除
-        </Button>
       </Box>
     </Flex>
   );
