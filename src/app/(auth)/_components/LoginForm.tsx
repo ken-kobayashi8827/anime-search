@@ -26,8 +26,10 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (params: LoginFormType) => {
-    const { error } = await login(params);
-    setError('password', { type: 'loginError', message: error });
+    const result = await login(params);
+    if (result && result.error) {
+      setError('password', { type: 'loginError', message: result.error });
+    }
   };
 
   return (

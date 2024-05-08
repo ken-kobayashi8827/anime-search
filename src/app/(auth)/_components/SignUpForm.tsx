@@ -26,8 +26,10 @@ export default function SignUpForm() {
   } = methods;
 
   const onSubmit = async (params: SignUpFormType) => {
-    const { error } = await signup(params);
-    setError('email', { type: 'signUpError', message: error });
+    const result = await signup(params);
+    if (result && result.error) {
+      setError('email', { type: 'signUpError', message: result.error });
+    }
   };
 
   return (

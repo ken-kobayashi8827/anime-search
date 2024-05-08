@@ -1,4 +1,5 @@
 import LinkButton from '@/app/components/LinkButton';
+import LogoutButton from '@/app/components/LogoutButton';
 import { fetchProfile } from '@/utils/supabase/actions';
 import { Avatar, Box, Button, Text, HStack } from '@chakra-ui/react';
 
@@ -24,9 +25,7 @@ export default async function MyPage() {
         mt='3'
         text='編集'
       />
-      <Button w='100%' colorScheme='red' mt='3'>
-        アカウント削除
-      </Button>
+      <LogoutButton />
     </Box>
   );
 }

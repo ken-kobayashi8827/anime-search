@@ -32,7 +32,7 @@ export async function login(formData: LoginFormType) {
       };
     }
     if (signInError) {
-      throw new Error();
+      throw new Error(signInError.message);
     }
   } catch (e) {
     redirect('/error');
@@ -111,6 +111,22 @@ export async function updateUser(formData: UpdatePasswordFormType) {
     redirect('/error');
   }
   redirect('/update-password/success');
+}
+
+/**
+ * ログアウト
+ */
+export async function logout() {
+  try {
+    const supabase = createClient();
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) {
+      throw new Error(signOutError.message);
+    }
+  } catch (e) {
+    redirect('/error');
+  }
+  redirect('/login');
 }
 
 /**
