@@ -5,10 +5,10 @@ import { Button } from '@chakra-ui/react';
 
 type LinkButtonType = {
   link: string;
-  colorScheme: string;
-  mt: string;
-  width: string;
-  text: string;
+  colorScheme?: string;
+  mt?: string;
+  width?: string;
+  text?: string;
 };
 
 export default function LinkButton({

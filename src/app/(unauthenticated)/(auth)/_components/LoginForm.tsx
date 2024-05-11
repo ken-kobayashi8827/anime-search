@@ -2,13 +2,15 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { login } from '@/utils/supabase/actions';
 import { FormInput } from '@/app/components/FormInput';
 import { LoginFormSchema, LoginFormType } from '@/types/types';
 
 export default function LoginForm() {
+  const toast = useToast();
+
   const methods = useForm<LoginFormType>({
     mode: 'onChange',
     resolver: zodResolver(LoginFormSchema),
@@ -29,6 +31,13 @@ export default function LoginForm() {
     const result = await login(params);
     if (result && result.error) {
       setError('password', { type: 'loginError', message: result.error });
+    }
+    if (!result) {
+      toast({
+        title: 'ログインしました。',
+        status: 'success',
+        isClosable: true,
+      });
     }
   };
 

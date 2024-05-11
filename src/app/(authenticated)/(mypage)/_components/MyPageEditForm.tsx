@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Avatar, Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { MyPageEditFormSchema, MyPageEditFormType } from '@/types/types';
 import { FormImage } from '@/app/components/FormImage';
@@ -73,41 +73,34 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
   };
 
   return (
-    <Flex
-      minH='100vh'
-      alignItems='center'
-      justifyContent='center'
-      flexDirection='column'
-    >
-      <Box w='100%' p='10' maxWidth='md'>
-        <Text fontSize='2xl' fontWeight='bold' mb='3' textAlign='center'>
-          マイページ
-        </Text>
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormInput
-              label='ユーザー名'
-              type='text'
-              register={register('username')}
-              placeholder=''
-              errMessage={errors.username?.message}
-            />
-            <VStack alignItems='flex-start'>
-              <Text>プロフィール画像</Text>
-              <Avatar size='lg' name='プロフィール画像' src={previewImgPath} />
-            </VStack>
+    <Box mx='auto' maxW='2xl'>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Heading size='md' mb='3'>
+            ユーザー名
+          </Heading>
+          <FormInput
+            label=''
+            type='text'
+            register={register('username')}
+            placeholder=''
+            errMessage={errors.username?.message}
+          />
+          <VStack alignItems='flex-start'>
+            <Heading size='md'>プロフィール画像</Heading>
             <FormImage
               label=''
               type='file'
               register={register('profileImage')}
               errMessage={errors.profileImage?.message}
+              previewImgPath={previewImgPath}
             />
-            <Button type='submit' w='100%' colorScheme='teal' mt='4'>
-              編集完了
-            </Button>
-          </form>
-        </FormProvider>
-      </Box>
-    </Flex>
+          </VStack>
+          <Button type='submit' w='100%' colorScheme='teal' mt='4'>
+            編集完了
+          </Button>
+        </form>
+      </FormProvider>
+    </Box>
   );
 }

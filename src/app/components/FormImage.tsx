@@ -1,5 +1,12 @@
-import { Box, FormControl, FormErrorMessage, Input } from '@chakra-ui/react';
-import { HTMLInputTypeAttribute } from 'react';
+import {
+  Avatar,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  HStack,
+  Input,
+} from '@chakra-ui/react';
+import { HTMLInputTypeAttribute, useRef } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface FormImageProps {
@@ -7,22 +14,45 @@ interface FormImageProps {
   type?: HTMLInputTypeAttribute;
   register?: UseFormRegisterReturn;
   errMessage?: string;
+  previewImgPath?: string;
 }
 
 export const FormImage = (props: FormImageProps) => {
-  const { label = '', type = 'file', register, errMessage } = props;
+  const {
+    label = '',
+    type = 'file',
+    register,
+    errMessage,
+    previewImgPath,
+  } = props;
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const { ref, ...rest } = register ?? {};
+  const handleChangeImg = () => {
+    inputRef.current?.click();
+  };
+
   return (
-    <Box mb='4'>
-      <FormControl isInvalid={!!errMessage}>
+    <HStack alignItems='center'>
+      <Avatar size='lg' name='プロフィール画像' src={previewImgPath} />
+      <FormControl isInvalid={!!errMessage} w='0'>
         {label}
         <Input
           type={type}
           accept='.jpg, .jpeg, .png'
-          {...register}
-          border='none'
+          hidden
+          ref={(e) => {
+            if (ref) {
+              ref(e);
+            }
+            inputRef.current = e;
+          }}
+          {...rest}
         />
         {!!errMessage && <FormErrorMessage>{errMessage}</FormErrorMessage>}
       </FormControl>
-    </Box>
+      <Button size='sm' colorScheme='blue' onClick={handleChangeImg}>
+        画像を選択
+      </Button>
+    </HStack>
   );
 };
