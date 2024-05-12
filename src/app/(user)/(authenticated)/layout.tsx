@@ -1,8 +1,8 @@
 import { Box, HStack } from '@chakra-ui/react';
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
 import { getUser } from '@/utils/supabase/auth';
 import { fetchProfile } from '@/utils/supabase/actions';
+import Header from '@/app/components/Header';
+import Sidebar from '@/app/components/Sidebar';
 
 export default async function Layout({
   children,

@@ -157,7 +157,11 @@ export async function fetchProfile() {
 export async function updateProfile(formData: MyPageUpdateType) {
   try {
     const supabase = createClient();
-    const { data: userData } = await supabase.auth.getUser();
+    const { data: userData, error: getUserError } = await supabase.auth.getUser();
+    if (getUserError) {
+      throw new Error();
+    }
+
     const updateData: MyPageUpdateType = {
       username: formData.username,
     };
@@ -169,7 +173,7 @@ export async function updateProfile(formData: MyPageUpdateType) {
     const { error } = await supabase
       .from('profiles')
       .update(updateData)
-      .eq('user_id', userData.user?.id);
+      .eq('user_id', userData.user.id);
     if (error) {
       throw new Error();
     }
