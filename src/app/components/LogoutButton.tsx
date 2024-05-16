@@ -3,10 +3,14 @@
 import { logout } from '@/utils/supabase/actions';
 import { Button, useToast } from '@chakra-ui/react';
 
-export default function LogoutButton() {
+type Props = {
+  redirectUrl: string;
+};
+
+export default function LogoutButton({ redirectUrl }: Props) {
   const toast = useToast();
   const handleLogout = async () => {
-    await logout();
+    await logout(redirectUrl);
     toast({
       title: 'ログアウトしました',
       status: 'success',

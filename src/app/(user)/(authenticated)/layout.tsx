@@ -13,7 +13,9 @@ export default async function Layout({
   let profileImgPath = '';
   if (user) {
     const profile = await fetchProfile();
-    profileImgPath = profile.profile_image;
+    if (profile.profile_image) {
+      profileImgPath = profile.profile_image;
+    }
   }
 
   return (

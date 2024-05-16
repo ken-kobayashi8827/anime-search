@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export type AppMetaDataType = {
+  app_metadata: {
+    admin?: boolean;
+    provider: string;
+    providers: string[];
+  };
+};
+
 /**
  * ログインフォーム
  */
@@ -129,3 +137,21 @@ export type MyPageUpdateType = {
   username: string;
   profile_image?: string | undefined;
 };
+
+/**
+ * 管理者ログインフォーム
+ */
+export const AdminLoginFormSchema = z.object({
+  email: z
+    .string()
+    .email({ message: '正しいメールアドレスの形式で入力してください' }),
+  password: z
+    .string()
+    .min(8, { message: '8文字以上で入力してください' })
+    .regex(
+      /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/,
+      '大文字・数字を1文字以上使用してください'
+    ),
+});
+
+export type AdminLoginFormType = z.infer<typeof AdminLoginFormSchema>;

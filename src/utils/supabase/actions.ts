@@ -116,7 +116,7 @@ export async function updateUser(formData: UpdatePasswordFormType) {
 /**
  * ログアウト
  */
-export async function logout() {
+export async function logout(redirectUrl: string) {
   try {
     const supabase = createClient();
     const { error: signOutError } = await supabase.auth.signOut();
@@ -126,7 +126,7 @@ export async function logout() {
   } catch (e) {
     redirect('/error');
   }
-  redirect('/login');
+  redirect(redirectUrl);
 }
 
 /**
@@ -154,10 +154,14 @@ export async function fetchProfile() {
  * プロフィール更新
  * @param formData
  */
-export async function updateProfile(formData: MyPageUpdateType) {
+export async function updateProfile(
+  formData: MyPageUpdateType,
+  redirectPath: string
+) {
   try {
     const supabase = createClient();
-    const { data: userData, error: getUserError } = await supabase.auth.getUser();
+    const { data: userData, error: getUserError } =
+      await supabase.auth.getUser();
     if (getUserError) {
       throw new Error();
     }
@@ -180,6 +184,6 @@ export async function updateProfile(formData: MyPageUpdateType) {
   } catch (e) {
     redirect('/error');
   }
-  revalidatePath('/mypage');
-  redirect('/mypage');
+  revalidatePath(redirectPath);
+  redirect(redirectPath);
 }

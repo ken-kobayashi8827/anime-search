@@ -1,6 +1,8 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { Database } from '../../../schema';
+import { AppMetaDataType } from '@/types/types';
+import jwt from 'jsonwebtoken';
 
 export async function updateSession(request: NextRequest) {
   const url = new URL(request.url);
@@ -58,6 +60,22 @@ export async function updateSession(request: NextRequest) {
       },
     }
   );
+
+  // 管理画面 管理ユーザーでない場合
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      const accessToken = jwt.decode(
+        data.session.access_token
+      ) as AppMetaDataType;
+      const appMetaData = accessToken.app_metadata;
+      if (!appMetaData.admin) {
+        return NextResponse.redirect(new URL('/admin/login', request.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+  }
 
   await supabase.auth.getUser();
 

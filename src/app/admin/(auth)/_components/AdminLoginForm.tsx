@@ -3,16 +3,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
-import { login } from '@/utils/supabase/actions';
 import { FormInput } from '@/app/components/FormInput';
-import { LoginFormSchema, LoginFormType } from '@/types/types';
+import { AdminLoginFormSchema, AdminLoginFormType } from '@/types/types';
+import { login } from '@/utils/supabase/admin/actions';
+import LinkButton from '@/app/components/LinkButton';
 
-export default function LoginForm() {
+export default function AdminLoginForm() {
   const toast = useToast();
 
-  const methods = useForm<LoginFormType>({
+  const methods = useForm<AdminLoginFormType>({
     mode: 'onChange',
-    resolver: zodResolver(LoginFormSchema),
+    resolver: zodResolver(AdminLoginFormSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -26,7 +27,7 @@ export default function LoginForm() {
     setError,
   } = methods;
 
-  const onSubmit = async (params: LoginFormType) => {
+  const onSubmit = async (params: AdminLoginFormType) => {
     const result = await login(params);
     if (result && result.error) {
       setError('password', { type: 'loginError', message: result.error });
@@ -49,7 +50,7 @@ export default function LoginForm() {
     >
       <Box w='100%' border='2px' rounded='md' p='10' maxWidth='md'>
         <Text fontSize='2xl' fontWeight='bold' mb='3' textAlign='center'>
-          ログイン
+          管理者ページログイン
         </Text>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,6 +71,13 @@ export default function LoginForm() {
             </Button>
           </form>
         </FormProvider>
+        <LinkButton
+          link='/'
+          colorScheme='blue'
+          mt='3'
+          width='100%'
+          text='ユーザーページへ'
+        />
       </Box>
     </Flex>
   );

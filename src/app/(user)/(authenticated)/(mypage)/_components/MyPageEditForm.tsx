@@ -14,6 +14,7 @@ import { redirect } from 'next/navigation';
 type PropsType = {
   username?: string;
   profileImage?: string;
+  redirectPath?: string;
 };
 
 /**
@@ -40,7 +41,11 @@ async function uploadImg(formImg: File) {
   }
 }
 
-export default function MyPageEditForm({ username, profileImage }: PropsType) {
+export default function MyPageEditForm({
+  username,
+  profileImage,
+  redirectPath,
+}: PropsType) {
   const methods = useForm<MyPageEditFormType>({
     mode: 'onChange',
     resolver: zodResolver(MyPageEditFormSchema),
@@ -69,7 +74,7 @@ export default function MyPageEditForm({ username, profileImage }: PropsType) {
       username: params.username,
       profile_image: uploadImgUrl,
     };
-    await updateProfile(updateData);
+    await updateProfile(updateData, redirectPath);
   };
 
   return (

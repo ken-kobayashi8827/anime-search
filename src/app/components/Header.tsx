@@ -37,7 +37,7 @@ export default async function Header({ user, profileImgPath }: Props) {
                 showBorder
               />
             </Link>
-            <LogoutButton />
+            <LogoutButton redirectUrl='/login' />
           </>
         ) : (
           <LinkButton

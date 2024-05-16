@@ -8,6 +8,10 @@ export default async function MyPageEdit() {
     : '/img/default.png';
 
   return (
-    <MyPageEditForm username={profile?.username} profileImage={PROFILE_IMAGE} />
+    <MyPageEditForm
+      username={profile?.username}
+      profileImage={PROFILE_IMAGE}
+      redirectPath='/mypage'
+    />
   );
 }
