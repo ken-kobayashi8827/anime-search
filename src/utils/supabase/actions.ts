@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import {
+  AppMetaDataType,
   LoginFormType,
   MyPageUpdateType,
   ResetPasswordFormType,
@@ -11,6 +12,7 @@ import {
   UpdatePasswordFormType,
 } from '@/types/types';
 import { headers } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 /**
  * ログイン
@@ -25,7 +27,20 @@ export async function login(formData: LoginFormType) {
       password: formData.password,
     };
 
-    const { error: signInError } = await supabase.auth.signInWithPassword(data);
+    const { data: signInData, error: signInError } =
+      await supabase.auth.signInWithPassword(data);
+
+    if (signInData.session) {
+      const accessToken = jwt.decode(
+        signInData.session.access_token
+      ) as AppMetaDataType;
+      if (accessToken.app_metadata.admin) {
+        return {
+          error: 'メールアドレスまたはパスワードが間違っています',
+        };
+      }
+    }
+
     if (signInError?.message === 'Invalid login credentials') {
       return {
         error: 'メールアドレスまたはパスワードが間違っています',

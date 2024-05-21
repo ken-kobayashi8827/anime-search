@@ -35,30 +35,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      animes: {
+        Row: {
+          created_at: string
+          episodes_count: number | null
+          id: number
+          images: string | null
+          no_episodes: boolean | null
+          season_name: string | null
+          status: number
+          title: string
+          twitter_hashtag: string | null
+          twitter_username: string | null
+          updated_at: string
+          vod: number | null
+        }
+        Insert: {
+          created_at?: string
+          episodes_count?: number | null
+          id?: number
+          images?: string | null
+          no_episodes?: boolean | null
+          season_name?: string | null
+          status?: number
+          title: string
+          twitter_hashtag?: string | null
+          twitter_username?: string | null
+          updated_at?: string
+          vod?: number | null
+        }
+        Update: {
+          created_at?: string
+          episodes_count?: number | null
+          id?: number
+          images?: string | null
+          no_episodes?: boolean | null
+          season_name?: string | null
+          status?: number
+          title?: string
+          twitter_hashtag?: string | null
+          twitter_username?: string | null
+          updated_at?: string
+          vod?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_animes_vod_fkey"
+            columns: ["vod"]
+            isOneToOne: false
+            referencedRelation: "vod_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
           id: number
+          is_admin: boolean
           profile_image: string | null
           updated_at: string | null
           user_id: string | null
-          username: string | null
+          username: string
         }
         Insert: {
           created_at?: string
           id?: number
+          is_admin?: boolean
           profile_image?: string | null
           updated_at?: string | null
           user_id?: string | null
-          username?: string | null
+          username?: string
         }
         Update: {
           created_at?: string
           id?: number
+          is_admin?: boolean
           profile_image?: string | null
           updated_at?: string | null
           user_id?: string | null
-          username?: string | null
+          username?: string
         }
         Relationships: [
           {
@@ -70,12 +126,38 @@ export type Database = {
           },
         ]
       }
+      vod_services: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      custom_access_token_hook: {
+        Args: {
+          event: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
