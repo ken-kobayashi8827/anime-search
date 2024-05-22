@@ -10,9 +10,9 @@ export default function Layout({
   return (
     <>
       <Header />
-      <HStack alignItems='flex-start'>
+      <HStack alignItems='stretch'>
         <Sidebar />
-        <Box flex='1' as='main' p='4'>
+        <Box flex='1' as='main' p='8'>
           {children}
         </Box>
       </HStack>

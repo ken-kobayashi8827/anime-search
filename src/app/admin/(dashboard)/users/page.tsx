@@ -3,7 +3,6 @@ import { fetchUsersList } from '@/utils/supabase/admin/actions';
 import {
   Avatar,
   Box,
-  HStack,
   Table,
   TableContainer,
   Tbody,
@@ -55,8 +54,6 @@ export default async function Users() {
           </Tbody>
         </Table>
       </TableContainer>
-
-      <HStack alignItems='center'></HStack>
     </Box>
   );
 }

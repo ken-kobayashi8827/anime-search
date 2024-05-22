@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { AdminLoginFormType, AppMetaDataType } from '@/types/types';
 import jwt from 'jsonwebtoken';
+import { getFilterSeason } from '@/utils/utils';
+import { unstable_noStore as noStore } from 'next/cache';
 
 /**
  * ログイン
@@ -110,6 +112,7 @@ export async function insertAnimeData(animeData: any) {
 
     // animesテーブルへinsert
     // titleカラムのデータが重複していたらupdate / それ以外はinsert
+    // TODO: idが飛んでいる時がある
     const { error } = await supabase
       .from('animes')
       .upsert(insertData, { onConflict: 'title' });
@@ -120,5 +123,68 @@ export async function insertAnimeData(animeData: any) {
   } catch (e) {
     console.log('Error: insert animes failed');
     redirect('./error');
+  }
+}
+
+// 1ページで取得する件数
+const ITEMS_PER_PAGE = 20;
+
+/**
+ * アニメ一覧のページ数を取得
+ * @param query
+ * @returns
+ */
+export async function fetchAnimeListPage(query: string) {
+  noStore();
+  const filterSeason = getFilterSeason();
+
+  try {
+    const supabase = createClient();
+    const { count, error } = await supabase
+      .from('animes')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
+      .eq('season_name', filterSeason);
+    if (error) {
+      throw new Error(error.message);
+    }
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (e) {
+    console.error('Failed to fetch anime list from supabase:', e);
+  }
+}
+
+/**
+ * アニメ一覧取得
+ * @param query
+ * @param currentPage
+ * @returns
+ */
+export async function fetchFilteredAnimeList(
+  query: string,
+  currentPage: number
+) {
+  noStore();
+  const filterSeason = getFilterSeason();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endOffset = offset + ITEMS_PER_PAGE - 1;
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('animes')
+      .select()
+      .eq('season_name', filterSeason)
+      .order('id', { ascending: true })
+      .range(offset, endOffset);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  } catch (e) {
+    console.error('Failed to fetch anime list from supabase:', e);
   }
 }
