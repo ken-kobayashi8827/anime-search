@@ -53,6 +53,34 @@ export function getAnimeStatusName(status: number) {
 }
 
 /**
+ * クールをわかりやすい文字列に変換
+ * @param season
+ * @returns
+ */
+export function convertSeasonName(season: string | null) {
+  if (!season) {
+    return season;
+  }
+
+  // 年を取得
+  const seasonYear = season.substr(0, season.indexOf('-'));
+  const seasonName = season.substr(season.indexOf('-') + 1);
+
+  switch (seasonName) {
+    case 'winter':
+      return `${seasonYear}年 冬アニメ`;
+    case 'spring':
+      return `${seasonYear}年 春アニメ`;
+    case 'summer':
+      return `${seasonYear}年 夏アニメ`;
+    case 'autumn':
+      return `${seasonYear}年 秋アニメ`;
+    default:
+      return seasonName;
+  }
+}
+
+/**
  * ページネーション作成
  * @param currentPage
  * @param totalPages

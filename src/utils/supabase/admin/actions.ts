@@ -146,7 +146,8 @@ export async function fetchAnimeListPage(query: string) {
         count: 'exact',
         head: true,
       })
-      .eq('season_name', filterSeason);
+      .eq('season_name', filterSeason)
+      .like('title', `%${query}%`);
     if (error) {
       throw new Error(error.message);
     }
@@ -178,6 +179,7 @@ export async function fetchFilteredAnimeList(
       .from('animes')
       .select()
       .eq('season_name', filterSeason)
+      .like('title', `%${query}%`)
       .order('id', { ascending: true })
       .range(offset, endOffset);
     if (error) {

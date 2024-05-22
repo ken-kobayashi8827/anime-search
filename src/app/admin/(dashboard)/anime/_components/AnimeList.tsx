@@ -1,4 +1,4 @@
-import { getAnimeStatusName } from '@/utils/utils';
+import { getAnimeStatusName, convertSeasonName } from '@/utils/utils';
 import LinkButton from '@/app/components/LinkButton';
 import {
   Table,
@@ -48,7 +48,7 @@ export default async function AnimeList({ query, currentPage }: Props) {
               </Td>
               <Td>{anime.title}</Td>
               <Td>{getAnimeStatusName(anime.status)}</Td>
-              <Td>{anime.season_name}</Td>
+              <Td>{convertSeasonName(anime.season_name)}</Td>
               <Td>{anime.vod}</Td>
               <Td>{new Date(anime.created_at).toLocaleString()}</Td>
               <Td>

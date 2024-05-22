@@ -33,7 +33,6 @@ export default function Pagination({ totalPages }: Props) {
         <ChevronLeftIcon />
       </ExternalLinkButton>
       {allPages.map((page, index) => {
-        console.log(page);
         return (
           <PageButton
             href={createPageUrl(page)}
