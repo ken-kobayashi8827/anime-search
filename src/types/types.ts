@@ -155,3 +155,18 @@ export const AdminLoginFormSchema = z.object({
 });
 
 export type AdminLoginFormType = z.infer<typeof AdminLoginFormSchema>;
+
+export type AnimeType = {
+  created_at: string;
+  episodes_count: number | null;
+  id: number;
+  images: string | null;
+  no_episodes: boolean | null;
+  season_name: string | null;
+  status: number;
+  title: string;
+  twitter_hashtag: string | null;
+  twitter_username: string | null;
+  updated_at: string;
+  vod: number | null;
+};

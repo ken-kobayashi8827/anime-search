@@ -7,12 +7,16 @@ import Search from '@/app/components/Search';
 type SearchParamsType = {
   searchParams?: {
     query?: string;
+    sortBy?: string;
+    order?: string;
     page?: string;
   };
 };
 
 export default async function Page({ searchParams }: SearchParamsType) {
   const query = searchParams?.query || '';
+  const sortBy = searchParams?.sortBy || 'id';
+  const order = searchParams?.order || 'asc';
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = await fetchAnimeListPage(query);
 
@@ -22,7 +26,12 @@ export default async function Page({ searchParams }: SearchParamsType) {
         アニメ一覧
       </Text>
       <Search />
-      <AnimeList query={query} currentPage={currentPage} />
+      <AnimeList
+        query={query}
+        sortBy={sortBy}
+        order={order}
+        currentPage={currentPage}
+      />
       <Pagination totalPages={totalPages} />
     </Box>
   );

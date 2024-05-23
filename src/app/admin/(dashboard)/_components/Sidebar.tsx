@@ -31,7 +31,7 @@ const navigations: Navigation[] = [
     icon: <SearchOutlinedIcon />,
   },
   {
-    pageName: 'アニメ取得',
+    pageName: 'インポート',
     path: '/admin/anime/import',
     icon: <ImportExportOutlinedIcon />,
   },

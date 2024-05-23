@@ -68,13 +68,13 @@ export function convertSeasonName(season: string | null) {
 
   switch (seasonName) {
     case 'winter':
-      return `${seasonYear}年 冬アニメ`;
+      return `${seasonYear}年 冬`;
     case 'spring':
-      return `${seasonYear}年 春アニメ`;
+      return `${seasonYear}年 春`;
     case 'summer':
-      return `${seasonYear}年 夏アニメ`;
+      return `${seasonYear}年 夏`;
     case 'autumn':
-      return `${seasonYear}年 秋アニメ`;
+      return `${seasonYear}年 秋`;
     default:
       return seasonName;
   }

@@ -166,6 +166,8 @@ export async function fetchAnimeListPage(query: string) {
  */
 export async function fetchFilteredAnimeList(
   query: string,
+  sortBy: string,
+  order: string,
   currentPage: number
 ) {
   noStore();
@@ -175,13 +177,19 @@ export async function fetchFilteredAnimeList(
 
   try {
     const supabase = createClient();
-    const { data, error } = await supabase
+    let fetchQuery = supabase
       .from('animes')
       .select()
       .eq('season_name', filterSeason)
       .like('title', `%${query}%`)
-      .order('id', { ascending: true })
+      .order(sortBy, { ascending: order === 'asc' })
       .range(offset, endOffset);
+
+    if (sortBy !== 'id') {
+      fetchQuery = fetchQuery.order('id', { ascending: true });
+    }
+
+    const { data, error } = await fetchQuery;
     if (error) {
       throw new Error(error.message);
     }
