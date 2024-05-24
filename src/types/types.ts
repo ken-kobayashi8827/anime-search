@@ -8,6 +8,18 @@ export type AppMetaDataType = {
   };
 };
 
+export type StatusOptionsType = {
+  label: string;
+  value: number;
+};
+
+export type VodListType = {
+  id: number;
+  name: string | null;
+  created_at: string;
+  updated_at: string | null;
+};
+
 /**
  * ログインフォーム
  */
@@ -168,5 +180,42 @@ export type AnimeType = {
   twitter_hashtag: string | null;
   twitter_username: string | null;
   updated_at: string;
-  vod: number | null;
+  vod: number[] | null;
 };
+
+/**
+ * アニメデータ編集フォーム
+ */
+export const AnimeEditFormSchema = z.object({
+  id: z.number(),
+  title: z
+    .string()
+    .min(1, { message: '1文字以上で入力してください' })
+    .max(100, { message: '100文字以下で入力してください' }),
+  thumbnail: z
+    .custom<FileList>()
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => IMAGE_TYPES.includes(file.type)),
+      {
+        message: '.jpg/.jpeg/.pngのいずれかの画像を選択してください',
+      }
+    )
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => file.size < IMAGE_SIZE_LIMIT),
+      {
+        message: '添付できる画像ファイルは20MBまでです',
+      }
+    ),
+  status: z.string().transform((val) => Number(val)),
+  seasonName: z
+    .string()
+    .min(1, { message: '1文字以上で入力してください' })
+    .max(100, { message: '100文字以下で入力してください' })
+    .nullable(),
+  vod: z.array(z.string().transform((val) => Number(val))),
+  createdAt: z.string(),
+});
+
+export type AnimeEditFormType = z.infer<typeof AnimeEditFormSchema>;

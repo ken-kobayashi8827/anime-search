@@ -1,10 +1,38 @@
+import { StatusOptionsType } from '@/types/types';
+
 const SEASON_WINTER_START_MONTH = 1;
 const SEASON_SPRING_START_MONTH = 4;
 const SEASON_SUMMER_START_MONTH = 7;
 const SEASON_AUTUMN_START_MONTH = 10;
-const STATUS_PRIVATE = 0;
-const STATUS_PUBLIC = 1;
-const STATUS_DELETED = 2;
+const VOD_NETFLIX = 1;
+const VOD_DANIME = 2;
+const VOD_BANDAI_CHANNEL = 3;
+const VOD_UNEXT = 4;
+const VOD_AMAZON_PRIME_VIDEO = 5;
+const VOD_ABEMA = 6;
+export const STATUS_PUBLIC = 0;
+export const STATUS_PRIVATE = 1;
+export const STATUS_DELETED = 2;
+export const NO_IMG_PATH = '/img/no-image01.png';
+
+/**
+ * ステータスオブジェクト
+ */
+export const animeStatusOptions: StatusOptionsType[] = [
+  {
+    label: '公開',
+    value: STATUS_PUBLIC,
+  },
+  {
+    label: '非公開',
+    value: STATUS_PRIVATE,
+  },
+
+  {
+    label: '削除済み',
+    value: STATUS_DELETED,
+  },
+];
 
 /**
  * 取得するクール文字列の作成
@@ -43,10 +71,10 @@ export function getFilterSeason() {
  * @returns
  */
 export function getAnimeStatusName(status: number) {
-  if (status === STATUS_PRIVATE) {
-    return '非公開';
-  } else if (status === STATUS_PUBLIC) {
+  if (status === STATUS_PUBLIC) {
     return '公開';
+  } else if (status === STATUS_PRIVATE) {
+    return '非公開';
   } else if (status === STATUS_DELETED) {
     return '削除済み';
   }
@@ -109,4 +137,23 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     '...',
     totalPages,
   ];
+};
+
+export const getVodDetails = (vod: number) => {
+  switch (vod) {
+    case VOD_NETFLIX:
+      return { name: 'Netflix', color: 'red' };
+    case VOD_DANIME:
+      return { name: 'Dアニメ', color: 'pink' };
+    case VOD_BANDAI_CHANNEL:
+      return { name: 'バンダイチャンネル', color: 'yellow' };
+    case VOD_UNEXT:
+      return { name: 'U-NEXT', color: 'teal' };
+    case VOD_AMAZON_PRIME_VIDEO:
+      return { name: 'アマゾンプライム', color: 'blue' };
+    case VOD_ABEMA:
+      return { name: 'Abema', color: 'green' };
+    default:
+      return { name: 'Unknown', color: 'gray' };
+  }
 };

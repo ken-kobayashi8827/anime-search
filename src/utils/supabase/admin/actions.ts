@@ -3,7 +3,12 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import { AdminLoginFormType, AppMetaDataType } from '@/types/types';
+import {
+  AdminLoginFormType,
+  AnimeEditFormType,
+  AnimeUpdateType,
+  AppMetaDataType,
+} from '@/types/types';
 import jwt from 'jsonwebtoken';
 import { getFilterSeason } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -122,7 +127,7 @@ export async function insertAnimeData(animeData: any) {
     }
   } catch (e) {
     console.log('Error: insert animes failed');
-    redirect('./error');
+    redirect('/error');
   }
 }
 
@@ -196,5 +201,65 @@ export async function fetchFilteredAnimeList(
     return data;
   } catch (e) {
     console.error('Failed to fetch anime list from supabase:', e);
+  }
+}
+
+/**
+ * IDからアニメデータ取得
+ * @param animeId
+ * @returns
+ */
+export async function fetchAnimeByAnimeId(animeId: string) {
+  noStore();
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('animes')
+      .select()
+      .eq('id', animeId);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data[0];
+  } catch (e) {
+    console.error(`Failed to fetch anime ${animeId} from supabase:`, e);
+  }
+}
+
+export async function updateAnimeData(animeId: number, formData: any) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from('animes')
+      .update(formData)
+      .eq('id', animeId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  } catch (e) {
+    console.error(`Failed to update anime ${animeId}: `, e);
+  }
+
+  revalidatePath('/admin/anime');
+  redirect('/admin/anime');
+}
+
+export async function fetchVodLists() {
+  noStore();
+
+  try {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.from('vod_services').select();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  } catch (e) {
+    console.error(`Failed to fetch vod services: `, e);
   }
 }

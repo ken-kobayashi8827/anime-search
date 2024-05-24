@@ -17,6 +17,7 @@ import AnimeImage from './AnimeImage';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { AnimeType } from '@/types/types';
+import VodTagList from './VodTagList';
 
 type Props = {
   animes: AnimeType[] | undefined;
@@ -64,7 +65,11 @@ export default function AnimeListTable({ animes }: Props) {
             </Th>
             <Th>画像</Th>
             <Th>アニメタイトル</Th>
-            <Th cursor='pointer' onClick={() => handleSort('status')}>
+            <Th
+              cursor='pointer'
+              onClick={() => handleSort('status')}
+              whiteSpace='nowrap'
+            >
               <HStack>
                 <Text>ステータス</Text>
                 {params.get('order') === 'desc' &&
@@ -99,13 +104,16 @@ export default function AnimeListTable({ animes }: Props) {
                 <AnimeImage
                   src={anime.images ? anime.images : '/img/no-image01.png'}
                   alt={anime.title}
-                  width='100px'
+                  height='100px'
+                  width='200px'
                 />
               </Td>
               <Td>{anime.title}</Td>
               <Td>{getAnimeStatusName(anime.status)}</Td>
-              <Td>{convertSeasonName(anime.season_name)}</Td>
-              <Td>{anime.vod}</Td>
+              <Td whiteSpace='nowrap'>
+                {convertSeasonName(anime.season_name)}
+              </Td>
+              <Td>{anime.vod && <VodTagList vodData={anime.vod} />}</Td>
               <Td>{new Date(anime.created_at).toLocaleString('ja-JP')}</Td>
               <Td>
                 <LinkButton

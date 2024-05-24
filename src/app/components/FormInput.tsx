@@ -7,6 +7,7 @@ interface FormInputProps {
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
   register?: UseFormRegisterReturn;
+  disabled?: boolean;
   errMessage?: string;
 }
 
@@ -16,13 +17,19 @@ export const FormInput = (props: FormInputProps) => {
     type = 'text',
     placeholder,
     register,
+    disabled = false,
     errMessage,
   } = props;
   return (
     <Box mb='4'>
       <FormControl isInvalid={!!errMessage}>
         {label}
-        <Input type={type} {...register} placeholder={placeholder} />
+        <Input
+          type={type}
+          {...register}
+          placeholder={placeholder}
+          disabled={disabled}
+        />
         {!!errMessage && <FormErrorMessage>{errMessage}</FormErrorMessage>}
       </FormControl>
     </Box>
