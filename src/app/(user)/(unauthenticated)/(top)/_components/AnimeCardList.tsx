@@ -1,4 +1,4 @@
-import { fetchFilteredAnimeList } from '@/utils/supabase/admin/actions';
+import { fetchFilteredAnimeList } from '@/utils/supabase/actions';
 import AnimeCard from './AnimeCard';
 import { SimpleGrid } from '@chakra-ui/react';
 
@@ -12,7 +12,7 @@ export default async function AnimeCardList({ query, currentPage }: Props) {
   return (
     <SimpleGrid minChildWidth='320px' spacing='40px'>
       {animes?.map((anime) => (
-        <AnimeCard anime={anime} />
+        <AnimeCard anime={anime} key={anime.id} />
       ))}
     </SimpleGrid>
   );

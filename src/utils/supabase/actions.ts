@@ -13,6 +13,11 @@ import {
 } from '@/types/types';
 import { headers } from 'next/headers';
 import jwt from 'jsonwebtoken';
+import { getFilterSeason, STATUS_PUBLIC } from '@/utils/utils';
+import { unstable_noStore as noStore } from 'next/cache';
+
+// 1ページで取得する件数
+const ITEMS_PER_PAGE = 20;
 
 /**
  * ログイン
@@ -201,4 +206,80 @@ export async function updateProfile(
   }
   revalidatePath(redirectPath);
   redirect(redirectPath);
+}
+
+/**
+ * 公開済みアニメを取得
+ * @param query
+ * @returns
+ */
+export async function fetchPublicAnimeListPage(query: string) {
+  noStore();
+  const filterSeason = getFilterSeason();
+
+  try {
+    const supabase = createClient();
+    const { count, error } = await supabase
+      .from('animes')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
+      .eq('season_name', filterSeason)
+      .eq('status', STATUS_PUBLIC)
+      .like('title', `%${query}%`);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (e) {
+    console.error('Failed to fetch public anime list from supabase:', e);
+  }
+}
+
+/**
+ * 公開済みアニメ一覧取得
+ * @param query
+ * @param currentPage
+ * @returns
+ */
+export async function fetchFilteredAnimeList(
+  query: string,
+  currentPage: number,
+  sortBy?: string,
+  order?: string
+) {
+  noStore();
+  const filterSeason = getFilterSeason();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endOffset = offset + ITEMS_PER_PAGE - 1;
+
+  try {
+    const supabase = createClient();
+    let fetchQuery = supabase
+      .from('animes')
+      .select()
+      .eq('status', STATUS_PUBLIC)
+      .eq('season_name', filterSeason)
+      .like('title', `%${query}%`)
+      .range(offset, endOffset);
+
+    if (sortBy) {
+      fetchQuery = fetchQuery.order(sortBy, { ascending: order === 'asc' });
+    }
+
+    if (sortBy !== 'id') {
+      fetchQuery = fetchQuery.order('id', { ascending: true });
+    }
+
+    const { data, error } = await fetchQuery;
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  } catch (e) {
+    console.error('Failed to fetch public anime list from supabase:', e);
+  }
 }
