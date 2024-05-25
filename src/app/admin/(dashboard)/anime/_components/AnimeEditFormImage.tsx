@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { HTMLInputTypeAttribute, useRef } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import AnimeImage from './AnimeImage';
+import AnimeImage from '../../../../components/AnimeImage';
 import { NO_IMG_PATH } from '@/utils/utils';
 
 interface FormImageProps {

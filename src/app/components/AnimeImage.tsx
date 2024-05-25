@@ -1,21 +1,24 @@
+import { NO_IMG_PATH } from '@/utils/utils';
 import { Image } from '@chakra-ui/react';
 
-const NO_IMG_PATH = '/img/no-image01.png';
-
 type Props = {
-  src: string;
+  src: string | null;
   alt: string;
   height?: string;
   width?: string;
   align?: string;
+  objectFit?: 'contain' | 'cover';
+  borderRadius?: string;
 };
 
 export default function AnimeImage({
   src,
   alt,
   height,
-  width,
+  width = '100%',
   align = 'left',
+  objectFit = 'contain',
+  borderRadius,
 }: Props) {
   const handleError = (e: any) => {
     e.currentTarget.src = NO_IMG_PATH;
@@ -23,12 +26,13 @@ export default function AnimeImage({
 
   return (
     <Image
-      src={src}
+      src={src || NO_IMG_PATH}
       alt={alt}
       h={height}
       w={width}
       align={align}
-      objectFit='contain'
+      borderRadius={borderRadius}
+      objectFit={objectFit}
       onError={handleError}
     />
   );

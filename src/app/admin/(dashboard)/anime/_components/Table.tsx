@@ -13,7 +13,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import AnimeImage from './AnimeImage';
+import AnimeImage from '../../../../components/AnimeImage';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { AnimeType } from '@/types/types';

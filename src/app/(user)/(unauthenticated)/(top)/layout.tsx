@@ -1,6 +1,5 @@
 import { Box, Grid, GridItem, HStack } from '@chakra-ui/react';
-import { getUser } from '@/utils/supabase/auth';
-import { fetchProfile } from '@/utils/supabase/actions';
+
 import Header from '@/app/components/Header';
 import Sidebar from '@/app/components/Sidebar';
 
@@ -9,15 +8,6 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getUser();
-  let profileImgPath = '';
-  if (user) {
-    const profile = await fetchProfile();
-    if (profile.profile_image) {
-      profileImgPath = profile.profile_image;
-    }
-  }
-
   return (
     <Grid
       templateAreas={`"header header"
@@ -28,7 +18,7 @@ export default async function Layout({
       minH='100vh'
     >
       <GridItem borderBottom='2px' area={'header'} as='nav' px='16' py='5'>
-        <Header user={user} profileImgPath={profileImgPath} />
+        <Header />
       </GridItem>
       <GridItem borderRight='2px' area={'nav'} as='header'>
         <Sidebar />

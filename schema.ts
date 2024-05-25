@@ -48,7 +48,7 @@ export type Database = {
           twitter_hashtag: string | null
           twitter_username: string | null
           updated_at: string
-          vod: number | null
+          vod: number[] | null
         }
         Insert: {
           created_at?: string
@@ -62,7 +62,7 @@ export type Database = {
           twitter_hashtag?: string | null
           twitter_username?: string | null
           updated_at?: string
-          vod?: number | null
+          vod?: number[] | null
         }
         Update: {
           created_at?: string
@@ -76,17 +76,9 @@ export type Database = {
           twitter_hashtag?: string | null
           twitter_username?: string | null
           updated_at?: string
-          vod?: number | null
+          vod?: number[] | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_animes_vod_fkey"
-            columns: ["vod"]
-            isOneToOne: false
-            referencedRelation: "vod_services"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {

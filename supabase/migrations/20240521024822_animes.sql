@@ -59,5 +59,3 @@ grant trigger on table "public"."vod_services" to "service_role";
 grant truncate on table "public"."vod_services" to "service_role";
 
 grant update on table "public"."vod_services" to "service_role";
-
-

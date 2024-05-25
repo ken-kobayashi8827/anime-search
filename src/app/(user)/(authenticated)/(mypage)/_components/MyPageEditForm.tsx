@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { MyPageEditFormSchema, MyPageEditFormType } from '@/types/types';
 import { FormImage } from '@/app/components/FormImage';
@@ -78,34 +78,34 @@ export default function MyPageEditForm({
   };
 
   return (
-    <Box mx='auto' maxW='2xl'>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Heading size='md' mb='3'>
-            ユーザー名
-          </Heading>
-          <FormInput
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Heading size='md' mb='4'>
+          ユーザー名
+        </Heading>
+        <FormInput
+          label=''
+          type='text'
+          register={register('username')}
+          placeholder=''
+          errMessage={errors.username?.message}
+        />
+        <VStack alignItems='flex-start'>
+          <Heading size='md'>プロフィール画像</Heading>
+          <FormImage
             label=''
-            type='text'
-            register={register('username')}
-            placeholder=''
-            errMessage={errors.username?.message}
+            type='file'
+            register={register('profileImage')}
+            errMessage={errors.profileImage?.message}
+            previewImgPath={previewImgPath}
           />
-          <VStack alignItems='flex-start'>
-            <Heading size='md'>プロフィール画像</Heading>
-            <FormImage
-              label=''
-              type='file'
-              register={register('profileImage')}
-              errMessage={errors.profileImage?.message}
-              previewImgPath={previewImgPath}
-            />
-          </VStack>
-          <Button type='submit' w='100%' colorScheme='teal' mt='4'>
+        </VStack>
+        <Stack align='center'>
+          <Button type='submit' w='40%' colorScheme='teal' mt='4'>
             編集完了
           </Button>
-        </form>
-      </FormProvider>
-    </Box>
+        </Stack>
+      </form>
+    </FormProvider>
   );
 }

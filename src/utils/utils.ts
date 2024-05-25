@@ -14,6 +14,7 @@ export const STATUS_PUBLIC = 0;
 export const STATUS_PRIVATE = 1;
 export const STATUS_DELETED = 2;
 export const NO_IMG_PATH = '/img/no-image01.png';
+export const PROFILE_NO_IMG_PATH = '/img/default.png';
 
 /**
  * ステータスオブジェクト
@@ -96,13 +97,13 @@ export function convertSeasonName(season: string | null) {
 
   switch (seasonName) {
     case 'winter':
-      return `${seasonYear}年 冬`;
+      return `${seasonYear}年 冬アニメ`;
     case 'spring':
-      return `${seasonYear}年 春`;
+      return `${seasonYear}年 春アニメ`;
     case 'summer':
-      return `${seasonYear}年 夏`;
+      return `${seasonYear}年 夏アニメ`;
     case 'autumn':
-      return `${seasonYear}年 秋`;
+      return `${seasonYear}年 秋アニメ`;
     default:
       return seasonName;
   }

@@ -16,9 +16,9 @@ export default async function AnimeList({
 }: Props) {
   const animes = await fetchFilteredAnimeList(
     query,
+    currentPage,
     sortBy,
-    order,
-    currentPage
+    order
   );
 
   return <AnimeListTable animes={animes} />;

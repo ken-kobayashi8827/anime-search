@@ -65,7 +65,6 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
     watch,
     formState: { errors },
   } = methods;
-
   // アップロード画像プレビュー
   const previewImg = watch('thumbnail');
   let previewImgPath = anime!.images;

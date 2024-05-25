@@ -3,14 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import {
-  AdminLoginFormType,
-  AnimeEditFormType,
-  AnimeUpdateType,
-  AppMetaDataType,
-} from '@/types/types';
+import { AdminLoginFormType, AppMetaDataType } from '@/types/types';
 import jwt from 'jsonwebtoken';
-import { getFilterSeason } from '@/utils/utils';
+import { getFilterSeason, STATUS_PUBLIC } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
 
 /**
@@ -93,7 +88,6 @@ export async function fetchProfileByUserId(userId: string) {
  * Annict APIから取得したデータをinsert
  */
 export async function insertAnimeData(animeData: any) {
-  const STATUS_PUBLIC = 1;
   try {
     const supabase = createClient();
     // insertするデータを作成
@@ -171,9 +165,9 @@ export async function fetchAnimeListPage(query: string) {
  */
 export async function fetchFilteredAnimeList(
   query: string,
-  sortBy: string,
-  order: string,
-  currentPage: number
+  currentPage: number,
+  sortBy?: string,
+  order?: string
 ) {
   noStore();
   const filterSeason = getFilterSeason();
@@ -187,8 +181,11 @@ export async function fetchFilteredAnimeList(
       .select()
       .eq('season_name', filterSeason)
       .like('title', `%${query}%`)
-      .order(sortBy, { ascending: order === 'asc' })
       .range(offset, endOffset);
+
+    if (sortBy) {
+      fetchQuery = fetchQuery.order(sortBy, { ascending: order === 'asc' });
+    }
 
     if (sortBy !== 'id') {
       fetchQuery = fetchQuery.order('id', { ascending: true });
@@ -234,7 +231,6 @@ export async function updateAnimeData(animeId: number, formData: any) {
       .from('animes')
       .update(formData)
       .eq('id', animeId);
-
     if (error) {
       throw new Error(error.message);
     }

@@ -1,28 +1,22 @@
 import { Avatar, Box, HStack, Link } from '@chakra-ui/react';
 import LogoutButton from './LogoutButton';
-import LinkButton from './LinkButton';
 import { User } from '@supabase/supabase-js';
+import LoginButton from './LoginButton';
 
 type Props = {
-  user:
+  user?:
     | {
         user: User;
       }
     | undefined;
-  profileImgPath: string;
+  profileImgPath?: string;
 };
 
 export default async function Header({ user, profileImgPath }: Props) {
   return (
-    <HStack
-      spacing={4}
-      justifyContent='space-between'
-      backgroundColor={'orange.200'}
-      p={4}
-      as='header'
-    >
+    <HStack spacing={4} justifyContent='space-between'>
       <Box>
-        <Link p={2} color={'white'} href={'#'} fontSize={'sm'} fontWeight={500}>
+        <Link p={2} href={'#'} fontSize={'sm'} fontWeight={500}>
           ロゴ
         </Link>
       </Box>
@@ -40,12 +34,7 @@ export default async function Header({ user, profileImgPath }: Props) {
             <LogoutButton redirectUrl='/login' />
           </>
         ) : (
-          <LinkButton
-            link='/login'
-            text='ログイン'
-            colorScheme='teal'
-            width='100%'
-          />
+          <LoginButton redirectUrl='/login' />
         )}
       </HStack>
     </HStack>

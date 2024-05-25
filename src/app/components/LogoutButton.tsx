@@ -5,9 +5,21 @@ import { Button, useToast } from '@chakra-ui/react';
 
 type Props = {
   redirectUrl: string;
+  colorScheme?: string;
+  variant?: string;
+  hover?: {
+    bg?: string;
+    color?: string;
+    opacity?: string;
+  };
 };
 
-export default function LogoutButton({ redirectUrl }: Props) {
+export default function LogoutButton({
+  redirectUrl,
+  colorScheme = 'black',
+  variant = 'outline',
+  hover = { bg: 'black', color: 'white' },
+}: Props) {
   const toast = useToast();
   const handleLogout = async () => {
     await logout(redirectUrl);
@@ -19,7 +31,12 @@ export default function LogoutButton({ redirectUrl }: Props) {
   };
 
   return (
-    <Button colorScheme='red' onClick={handleLogout}>
+    <Button
+      colorScheme={colorScheme}
+      variant={variant}
+      _hover={hover}
+      onClick={handleLogout}
+    >
       ログアウト
     </Button>
   );

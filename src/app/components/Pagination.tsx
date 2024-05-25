@@ -25,7 +25,7 @@ export default function Pagination({ totalPages }: Props) {
   const allPages = generatePagination(currentPage, Number(totalPages));
 
   return (
-    <HStack align='center' justify='center' mt='6'>
+    <HStack align='center' justify='center' mt='10'>
       <ExternalLinkButton
         href={createPageUrl(currentPage - 1)}
         isDisabled={currentPage <= 1}

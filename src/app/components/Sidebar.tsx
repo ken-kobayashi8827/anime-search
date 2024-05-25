@@ -27,28 +27,21 @@ const navigations: Navigation[] = [
 
 export default function Sidebar() {
   return (
-    <VStack
-      spacing={4}
-      backgroundColor={'orange.200'}
-      py={4}
-      minH='100vh'
-      minW='15%'
-      as='nav'
-    >
+    <VStack spacing={4} py={4}>
       {navigations.map((navigation) => (
         <Box key={navigation.pageName} w='100%'>
           <Link
             as={NextLink}
             href={navigation.path}
             py='3'
-            color='white'
+            color='black'
             display='flex'
             justifyContent='center'
             alignItems='center'
             gap='2'
             _hover={{
-              textDecoration: 'none',
-              bgColor: 'orange.600',
+              bgColor: 'black',
+              color: 'white',
             }}
           >
             {navigation.icon}

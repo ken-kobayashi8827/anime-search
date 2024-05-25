@@ -15,7 +15,12 @@ export default function Header() {
           ロゴ
         </Link>
       </Box>
-      <LogoutButton redirectUrl='/admin/login' />
+      <LogoutButton
+        redirectUrl='/admin/login'
+        colorScheme='red'
+        variant='solid'
+        hover={{ opacity: '0.8' }}
+      />
     </HStack>
   );
 }
