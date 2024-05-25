@@ -75,6 +75,11 @@ export async function updateSession(request: NextRequest) {
     } else {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
+  } else {
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
   await supabase.auth.getUser();
