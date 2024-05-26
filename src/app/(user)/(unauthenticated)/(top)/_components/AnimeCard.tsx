@@ -24,7 +24,7 @@ export default function AnimeCard({ anime }: Props) {
         <Stack mt='6' spacing='3'>
           <Heading size='md'>{anime.title}</Heading>
           <Text fontSize='md'>{convertSeasonName(anime.season_name)}</Text>
-          {anime.vod && <VodTagList vodData={anime.vod} />}
+          {anime.vods && <VodTagList vodData={anime.vods} />}
         </Stack>
       </CardBody>
     </Card>

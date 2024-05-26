@@ -1,4 +1,4 @@
-import { VodListType } from '@/types/types';
+import { AnimeVodType, VodListType } from '@/types/types';
 import {
   Box,
   Checkbox,
@@ -10,7 +10,7 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 type PropsType = {
   options: VodListType[] | undefined;
-  defaultValue: number[] | null;
+  defaultValue: AnimeVodType[];
   register?: UseFormRegisterReturn;
   errMessage?: string;
 };
@@ -30,7 +30,9 @@ export default function FormCheckbox({
             value={option.id}
             {...register}
             defaultChecked={
-              defaultValue ? defaultValue.includes(option.id) : false
+              defaultValue
+                ? defaultValue.map((item) => item.id).includes(option.id)
+                : false
             }
           >
             {option.name}

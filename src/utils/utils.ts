@@ -143,18 +143,18 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 export const getVodDetails = (vod: number) => {
   switch (vod) {
     case VOD_NETFLIX:
-      return { name: 'Netflix', color: 'red' };
+      return 'red';
     case VOD_DANIME:
-      return { name: 'Dアニメ', color: 'pink' };
+      return 'pink';
     case VOD_BANDAI_CHANNEL:
-      return { name: 'バンダイチャンネル', color: 'yellow' };
+      return 'yellow';
     case VOD_UNEXT:
-      return { name: 'U-NEXT', color: 'teal' };
+      return 'teal';
     case VOD_AMAZON_PRIME_VIDEO:
-      return { name: 'アマゾンプライム', color: 'blue' };
+      return 'blue';
     case VOD_ABEMA:
-      return { name: 'Abema', color: 'green' };
+      return 'green';
     default:
-      return { name: 'Unknown', color: 'gray' };
+      return 'gray';
   }
 };

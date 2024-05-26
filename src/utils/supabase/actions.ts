@@ -260,7 +260,7 @@ export async function fetchFilteredAnimeList(
     const supabase = createClient();
     let fetchQuery = supabase
       .from('animes')
-      .select()
+      .select('*, vods(id, name)')
       .eq('status', STATUS_PUBLIC)
       .eq('season_name', filterSeason)
       .like('title', `%${query}%`)

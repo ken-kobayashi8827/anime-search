@@ -25,6 +25,11 @@ export type VodListType = {
   updated_at: string | null;
 };
 
+export type AnimeVodType = {
+  id: number;
+  name: string | null;
+};
+
 export type AnimeType = {
   created_at: string;
   episodes_count: number | null;
@@ -37,7 +42,7 @@ export type AnimeType = {
   twitter_hashtag: string | null;
   twitter_username: string | null;
   updated_at: string;
-  vod: number[] | null;
+  vods: AnimeVodType[];
 };
 
 /**

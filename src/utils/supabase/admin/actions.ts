@@ -178,7 +178,7 @@ export async function fetchFilteredAnimeList(
     const supabase = createClient();
     let fetchQuery = supabase
       .from('animes')
-      .select()
+      .select('*, vods(id, name)')
       .eq('season_name', filterSeason)
       .like('title', `%${query}%`)
       .range(offset, endOffset);
@@ -213,7 +213,7 @@ export async function fetchAnimeByAnimeId(animeId: string) {
     const supabase = createClient();
     const { data, error } = await supabase
       .from('animes')
-      .select()
+      .select('*, vods(id, name)')
       .eq('id', animeId);
     if (error) {
       throw new Error(error.message);
@@ -224,15 +224,71 @@ export async function fetchAnimeByAnimeId(animeId: string) {
   }
 }
 
-export async function updateAnimeData(animeId: number, formData: any) {
+/**
+ * アニメデータを更新
+ * @param animeId
+ * @param animeData
+ * @param vodIds
+ */
+export async function updateAnimeData(
+  animeId: number,
+  animeData: { images?: string; status?: number },
+  vodIds: number[]
+) {
+  //TODO: 関数を分割して可読性を上げる
   try {
+    // vod以外のアニメデータを更新
     const supabase = createClient();
-    const { error } = await supabase
+    const { error: updateAnimeDataError } = await supabase
       .from('animes')
-      .update(formData)
+      .update(animeData)
       .eq('id', animeId);
-    if (error) {
-      throw new Error(error.message);
+    if (updateAnimeDataError) {
+      throw new Error(updateAnimeDataError.message);
+    }
+
+    // チェックがついていないvodレコードを削除
+    const { error: deleteNotChecked } = await supabase
+      .from('animes_vods')
+      .delete()
+      .eq('anime_id', animeId)
+      .not('vod_id', 'in', `(${vodIds.join(',')})`);
+
+    if (deleteNotChecked) {
+      throw new Error(deleteNotChecked.message);
+    }
+
+    // チェック済みか取得
+    const { data: existingRecords, error: fetchExistingVodError } =
+      await supabase
+        .from('animes_vods')
+        .select('vod_id')
+        .eq('anime_id', animeId)
+        .in('vod_id', vodIds);
+
+    if (fetchExistingVodError) {
+      throw new Error(fetchExistingVodError.message);
+    }
+
+    // チェック済みのvodIdを取得
+    const existingVodIds = existingRecords.map((record) => record.vod_id);
+
+    // 新たにチェックされたvodIdを取得
+    const newVodIds = vodIds.filter((vodId) => !existingVodIds.includes(vodId));
+
+    if (newVodIds.length > 0) {
+      const insertData = newVodIds.map((vodId) => ({
+        anime_id: animeId,
+        vod_id: vodId,
+      }));
+
+      const { error: insertNewVodError } = await supabase
+        .from('animes_vods')
+        .insert(insertData);
+
+      if (insertNewVodError) {
+        throw new Error(insertNewVodError.message);
+      }
     }
   } catch (e) {
     console.error(`Failed to update anime ${animeId}: `, e);
@@ -248,7 +304,7 @@ export async function fetchVodLists() {
   try {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from('vod_services').select();
+    const { data, error } = await supabase.from('vods').select();
 
     if (error) {
       throw new Error(error.message);

@@ -77,9 +77,8 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
     const updateData = {
       images: uploadImgUrl,
       status: params.status,
-      vod: params.vod,
     };
-    await updateAnimeData(params.id, updateData);
+    await updateAnimeData(params.id, updateData, params.vod);
   };
 
   return (
@@ -144,7 +143,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
           </Heading>
           <FormCheckbox
             options={vodLists}
-            defaultValue={anime!.vod}
+            defaultValue={anime!.vods}
             register={register('vod')}
             errMessage={errors.vod?.message}
           />

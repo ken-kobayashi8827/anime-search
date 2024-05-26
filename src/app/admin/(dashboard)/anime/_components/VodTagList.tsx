@@ -1,18 +1,19 @@
 import { HStack, Tag } from '@chakra-ui/react';
 import { getVodDetails } from '@/utils/utils';
+import { AnimeVodType } from '@/types/types';
 
 type PropsType = {
-  vodData: number[];
+  vodData: AnimeVodType[];
 };
 
 export default function VodTagList({ vodData }: PropsType) {
   return (
     <HStack flexWrap='wrap'>
       {vodData.map((vod) => {
-        const { name, color } = getVodDetails(vod);
+        const color = getVodDetails(vod.id);
         return (
-          <Tag key={name} colorScheme={color}>
-            {name}
+          <Tag key={vod.id} colorScheme={color}>
+            {vod.name}
           </Tag>
         );
       })}
