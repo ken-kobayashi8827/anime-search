@@ -32,7 +32,7 @@ export default async function Page({ searchParams }: SearchParamsType) {
         order={order}
         currentPage={currentPage}
       />
-      <Pagination totalPages={totalPages} />
+      {totalPages !== 0 && <Pagination totalPages={totalPages} />}
     </Box>
   );
 }
