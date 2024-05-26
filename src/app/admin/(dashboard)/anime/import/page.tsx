@@ -9,7 +9,11 @@ export default function AnimeList() {
   const handleClick = async () => {
     const res = await fetch('/api/anime');
     const animeData = await res.json();
-    insertAnimeData(animeData);
+    toast.promise(insertAnimeData(animeData), {
+      success: { title: 'Promise resolved', description: 'Looks great' },
+      error: { title: 'Promise rejected', description: 'Something wrong' },
+      loading: { title: 'Promise pending', description: 'Please wait' },
+    });
   };
 
   return (
@@ -21,7 +25,7 @@ export default function AnimeList() {
         Annict APIを使用してアニメデータを取得します。
       </Text>
       <Button colorScheme='blue' onClick={handleClick}>
-        データ取得
+        インポート
       </Button>
     </VStack>
   );

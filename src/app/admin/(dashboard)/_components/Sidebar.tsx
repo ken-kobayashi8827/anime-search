@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Stack, VStack } from '@chakra-ui/react';
+import { Box, Button, Link, Stack, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
@@ -44,7 +44,7 @@ export default function Sidebar() {
     <VStack h='100%' justify='space-between'>
       <VStack spacing='4' w='100%'>
         {navigations.map((navigation) => (
-          <Button
+          <Link
             key={navigation.pageName}
             as={NextLink}
             href={navigation.path}
@@ -63,7 +63,7 @@ export default function Sidebar() {
           >
             {navigation.icon}
             {navigation.pageName}
-          </Button>
+          </Link>
         ))}
       </VStack>
       <LogoutButton

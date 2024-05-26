@@ -88,40 +88,34 @@ export async function fetchProfileByUserId(userId: string) {
  * Annict APIから取得したデータをinsert
  */
 export async function insertAnimeData(animeData: any) {
-  try {
-    const supabase = createClient();
-    // insertするデータを作成
-    const insertData: any[] = [];
-    animeData.forEach((data: any) => {
-      data.works.forEach((work: any) => {
-        if (!work.no_episodes) {
-          insertData.push({
-            title: work.title,
-            status: STATUS_PUBLIC,
-            season_name: work.season_name,
-            images: work.images.facebook.og_image_url,
-            no_episodes: work.no_episodes,
-            episodes_count: work.episodes_count,
-            twitter_username: work.twitter_username,
-            twitter_hashtag: work.twitter_hashtag,
-          });
-        }
-      });
+  const supabase = createClient();
+  // insertするデータを作成
+  const insertData: any[] = [];
+  animeData.forEach((data: any) => {
+    data.works.forEach((work: any) => {
+      if (!work.no_episodes) {
+        insertData.push({
+          title: work.title,
+          status: STATUS_PUBLIC,
+          season_name: work.season_name,
+          images: work.images.facebook.og_image_url,
+          no_episodes: work.no_episodes,
+          episodes_count: work.episodes_count,
+          twitter_username: work.twitter_username,
+          twitter_hashtag: work.twitter_hashtag,
+        });
+      }
     });
+  });
 
-    // animesテーブルへinsert
-    // titleカラムのデータが重複していたらupdate / それ以外はinsert
-    // TODO: idが飛んでいる時がある
-    const { error } = await supabase
-      .from('animes')
-      .upsert(insertData, { onConflict: 'title' });
+  // titleカラムのデータが重複していたらupdate / それ以外はinsert
+  const { error } = await supabase
+    .from('animes')
+    .upsert(insertData, { onConflict: 'title' });
 
-    if (error) {
-      throw new Error();
-    }
-  } catch (e) {
-    console.log('Error: insert animes failed');
-    redirect('/error');
+  if (error) {
+    console.error('Error: insert anime failed', error.message);
+    throw new Error();
   }
 }
 
