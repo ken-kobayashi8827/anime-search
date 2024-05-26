@@ -1,12 +1,12 @@
 'use client';
 
-import { Link } from '@chakra-ui/next-js';
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, Button, Stack, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ImportExportOutlinedIcon from '@mui/icons-material/ImportExportOutlined';
+import LogoutButton from '@/app/components/LogoutButton';
 
 type Navigation = {
   pageName: string;
@@ -39,36 +39,38 @@ const navigations: Navigation[] = [
 
 export default function Sidebar() {
   return (
-    <VStack
-      spacing={4}
-      backgroundColor={'gray.600'}
-      py={4}
-      minH='100vh'
-      minW='12%'
-      as='nav'
-    >
-      {navigations.map((navigation) => (
-        <Box key={navigation.pageName} w='100%'>
-          <Link
+    <VStack h='100%' justify='space-between'>
+      <VStack spacing='4' w='100%'>
+        {navigations.map((navigation) => (
+          <Button
+            key={navigation.pageName}
             as={NextLink}
             href={navigation.path}
-            py='3'
-            px='3'
+            bgColor={'gray.600'}
+            borderRadius='0'
             color='white'
             display='flex'
             justifyContent='center'
             alignItems='center'
             gap='2'
+            h='50px'
+            w='100%'
             _hover={{
-              textDecoration: 'none',
               bgColor: 'gray.700',
             }}
           >
             {navigation.icon}
             {navigation.pageName}
-          </Link>
-        </Box>
-      ))}
+          </Button>
+        ))}
+      </VStack>
+      <LogoutButton
+        redirectUrl='/admin/login'
+        colorScheme='red'
+        variant='solid'
+        width='80%'
+        hover={{ opacity: '0.8' }}
+      />
     </VStack>
   );
 }

@@ -1,5 +1,4 @@
-import { Box, HStack } from '@chakra-ui/react';
-import Header from './_components/Header';
+import { Grid, GridItem } from '@chakra-ui/react';
 import Sidebar from './_components/Sidebar';
 
 export default function Layout({
@@ -8,14 +7,20 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Header />
-      <HStack alignItems='stretch'>
+    <Grid
+      templateAreas={`
+                  "nav main"
+                  `}
+      gridTemplateRows={'1fr'}
+      gridTemplateColumns={'200px 1fr'}
+      minH='100vh'
+    >
+      <GridItem area={'nav'} as='nav' bgColor={'gray.600'} py='8'>
         <Sidebar />
-        <Box flex='1' as='main' p='8'>
-          {children}
-        </Box>
-      </HStack>
-    </>
+      </GridItem>
+      <GridItem area={'main'} as='main' px='16' py='10'>
+        {children}
+      </GridItem>
+    </Grid>
   );
 }

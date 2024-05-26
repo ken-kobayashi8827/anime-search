@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, Stack, VStack } from '@chakra-ui/react';
+import { Button, Heading, Stack, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { MyPageEditFormSchema, MyPageEditFormType } from '@/types/types';
 import { FormImage } from '@/app/components/FormImage';

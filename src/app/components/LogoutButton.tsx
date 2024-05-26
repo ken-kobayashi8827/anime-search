@@ -7,6 +7,7 @@ type Props = {
   redirectUrl: string;
   colorScheme?: string;
   variant?: string;
+  width?: string;
   hover?: {
     bg?: string;
     color?: string;
@@ -18,6 +19,7 @@ export default function LogoutButton({
   redirectUrl,
   colorScheme = 'black',
   variant = 'outline',
+  width = '100%',
   hover = { bg: 'black', color: 'white' },
 }: Props) {
   const toast = useToast();
@@ -35,6 +37,7 @@ export default function LogoutButton({
       colorScheme={colorScheme}
       variant={variant}
       _hover={hover}
+      w={width}
       onClick={handleLogout}
     >
       ログアウト

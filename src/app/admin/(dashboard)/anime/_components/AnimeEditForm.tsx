@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   AnimeEditFormSchema,
@@ -83,7 +83,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
   };
 
   return (
-    <Box mx='auto' maxW='2xl'>
+    <Box maxW='xl'>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Heading size='md' mb='3'>
@@ -159,7 +159,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
             disabled={true}
             errMessage={errors.createdAt?.message}
           />
-          <Button type='submit' w='100%' colorScheme='teal' mt='4'>
+          <Button type='submit' w='50%' colorScheme='teal' mt='4'>
             編集完了
           </Button>
         </form>
