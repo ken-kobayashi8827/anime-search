@@ -35,6 +35,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      anime_vod: {
+        Row: {
+          anime_id: number
+          created_at: string
+          id: number
+          updated_at: string | null
+          vod_id: number
+        }
+        Insert: {
+          anime_id: number
+          created_at?: string
+          id?: number
+          updated_at?: string | null
+          vod_id: number
+        }
+        Update: {
+          anime_id?: number
+          created_at?: string
+          id?: number
+          updated_at?: string | null
+          vod_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_anime_vod_anime_id_fkey"
+            columns: ["anime_id"]
+            isOneToOne: false
+            referencedRelation: "animes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_anime_vod_vod_id_fkey"
+            columns: ["vod_id"]
+            isOneToOne: false
+            referencedRelation: "vod_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       animes: {
         Row: {
           created_at: string
@@ -48,7 +87,6 @@ export type Database = {
           twitter_hashtag: string | null
           twitter_username: string | null
           updated_at: string
-          vod: number[] | null
         }
         Insert: {
           created_at?: string
@@ -62,7 +100,6 @@ export type Database = {
           twitter_hashtag?: string | null
           twitter_username?: string | null
           updated_at?: string
-          vod?: number[] | null
         }
         Update: {
           created_at?: string
@@ -76,7 +113,6 @@ export type Database = {
           twitter_hashtag?: string | null
           twitter_username?: string | null
           updated_at?: string
-          vod?: number[] | null
         }
         Relationships: []
       }
