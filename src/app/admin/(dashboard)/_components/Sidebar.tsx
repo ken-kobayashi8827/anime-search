@@ -7,6 +7,7 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ImportExportOutlinedIcon from '@mui/icons-material/ImportExportOutlined';
 import LogoutButton from '@/app/components/LogoutButton';
+import { usePathname } from 'next/navigation';
 
 type Navigation = {
   pageName: string;
@@ -38,6 +39,7 @@ const navigations: Navigation[] = [
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
   return (
     <VStack h='100%' justify='space-between'>
       <VStack spacing='4' w='100%'>
@@ -46,7 +48,7 @@ export default function Sidebar() {
             key={navigation.pageName}
             as={NextLink}
             href={navigation.path}
-            bgColor={'gray.600'}
+            bgColor={pathname === navigation.path ? 'gray.800' : 'gray.600'}
             borderRadius='0'
             color='white'
             display='flex'
@@ -56,7 +58,7 @@ export default function Sidebar() {
             h='50px'
             w='100%'
             _hover={{
-              bgColor: 'gray.700',
+              bgColor: 'gray.800',
             }}
           >
             {navigation.icon}
