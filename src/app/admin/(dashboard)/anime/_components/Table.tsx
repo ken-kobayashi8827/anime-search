@@ -18,6 +18,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { AnimeType } from '@/types/types';
 import VodTagList from './VodTagList';
+import DeleteButton from './DeleteButton';
 
 type Props = {
   animes: AnimeType[] | undefined;
@@ -94,6 +95,7 @@ export default function AnimeListTable({ animes }: Props) {
               </HStack>
             </Th>
             <Th></Th>
+            <Th></Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -122,6 +124,9 @@ export default function AnimeListTable({ animes }: Props) {
                   width='100%'
                   text='編集'
                 />
+              </Td>
+              <Td>
+                <DeleteButton animeId={anime.id} />
               </Td>
             </Tr>
           ))}

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { AdminLoginFormType, AppMetaDataType } from '@/types/types';
 import jwt from 'jsonwebtoken';
-import { getFilterSeason, STATUS_PUBLIC } from '@/utils/utils';
+import { getFilterSeason, STATUS_DELETED, STATUS_PUBLIC } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
 
 /**
@@ -313,5 +313,29 @@ export async function fetchVodLists() {
     return data;
   } catch (e) {
     console.error(`Failed to fetch vod services: `, e);
+  }
+}
+
+/**
+ * アニメ削除
+ * @param animeId
+ */
+export async function deleteAnime(animeId: number) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from('animes')
+      .update({
+        status: STATUS_DELETED,
+      })
+      .eq('id', animeId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return true;
+  } catch (e) {
+    console.error(`Failed to delete anime by ${animeId}`, e);
   }
 }
