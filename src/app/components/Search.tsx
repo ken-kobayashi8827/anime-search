@@ -23,9 +23,9 @@ export default function Search() {
         }
 
         params.set('page', '1');
-        params.set('query', e.target.value);
+        params.set('title', e.target.value);
       } else {
-        params.delete('query');
+        params.delete('title');
         if (params.has('page') && prevPage !== '1') {
           params.set('page', prevPage);
         }
@@ -36,7 +36,7 @@ export default function Search() {
   );
 
   return (
-    <HStack align='center' justify='center' mb='8'>
+    <HStack align='center' justify='center' mb='6'>
       <InputGroup w='50%'>
         <InputLeftElement pointerEvents='none'>
           <SearchIcon />
@@ -45,7 +45,7 @@ export default function Search() {
           variant='outline'
           placeholder='アニメタイトル入力'
           onChange={handleSearch}
-          defaultValue={searchParams.get('query')?.toString()}
+          defaultValue={searchParams.get('title')?.toString()}
         />
       </InputGroup>
     </HStack>
