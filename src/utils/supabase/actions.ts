@@ -210,15 +210,32 @@ export async function updateProfile(
 
 /**
  * 公開済みアニメを取得
- * @param query
+ * @param title
+ * @param vodId
  * @returns
  */
-export async function fetchPublicAnimeListPage(query: string) {
+export async function fetchPublicAnimeListPage(
+  title: string,
+  vodId: number | null
+) {
   noStore();
   const filterSeason = getFilterSeason();
 
   try {
     const supabase = createClient();
+
+    if (vodId) {
+      const { count: vodAnimeCount, error: vodAnimeCountError } = await supabase
+        .from('animes_vods')
+        .select('*', {
+          count: 'exact',
+          head: true,
+        })
+        .eq('vod_id', vodId);
+      const totalPages = Math.ceil(Number(vodAnimeCount) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
+
     const { count, error } = await supabase
       .from('animes')
       .select('*', {
@@ -227,7 +244,7 @@ export async function fetchPublicAnimeListPage(query: string) {
       })
       .eq('season_name', filterSeason)
       .eq('status', STATUS_PUBLIC)
-      .like('title', `%${query}%`);
+      .like('title', `%${title}%`);
 
     if (error) {
       throw new Error(error.message);
@@ -241,12 +258,16 @@ export async function fetchPublicAnimeListPage(query: string) {
 
 /**
  * 公開済みアニメ一覧取得
- * @param query
+ * @param title
+ * @param vodId
  * @param currentPage
+ * @param sortBy
+ * @param order
  * @returns
  */
 export async function fetchFilteredAnimeList(
-  query: string,
+  title: string,
+  vodId: number | null,
   currentPage: number,
   sortBy?: string,
   order?: string
@@ -263,8 +284,18 @@ export async function fetchFilteredAnimeList(
       .select('*, vods(id, name)')
       .eq('status', STATUS_PUBLIC)
       .eq('season_name', filterSeason)
-      .like('title', `%${query}%`)
+      .like('title', `%${title}%`)
       .range(offset, endOffset);
+
+    if (vodId) {
+      fetchQuery = supabase
+        .from('animes')
+        .select('*, animes_vods!inner(vod_id), vods(id, name)')
+        .eq('season_name', filterSeason)
+        .eq('animes_vods.vod_id', vodId)
+        .like('title', `%${title}%`)
+        .range(offset, endOffset);
+    }
 
     if (sortBy) {
       fetchQuery = fetchQuery.order(sortBy, { ascending: order === 'asc' });

@@ -12,7 +12,7 @@ type Props = {
 
 export default function AnimeCard({ anime }: Props) {
   return (
-    <Card maxW='sm'>
+    <Card>
       <CardBody>
         <AnimeImage
           src={anime.images}

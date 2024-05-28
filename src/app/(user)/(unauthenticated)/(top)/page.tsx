@@ -3,10 +3,13 @@ import AnimeCardList from './_components/AnimeCardList';
 import Pagination from '@/app/components/Pagination';
 import Search from '@/app/components/Search';
 import { fetchPublicAnimeListPage } from '@/utils/supabase/actions';
+import { fetchVodLists } from '@/utils/supabase/admin/actions';
+import VodFilter from '@/app/components/VodFilter';
 
 type SearchParamsType = {
   searchParams?: {
-    query?: string;
+    title?: string;
+    vod?: string;
     sortBy?: string;
     order?: string;
     page?: string;
@@ -14,14 +17,17 @@ type SearchParamsType = {
 };
 
 export default async function Home({ searchParams }: SearchParamsType) {
-  const query = searchParams?.query || '';
+  const title = searchParams?.title || '';
+  const vodId = Number(searchParams?.vod) || null;
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchPublicAnimeListPage(query);
+  const totalPages = await fetchPublicAnimeListPage(title, vodId);
+  const vodLists = await fetchVodLists();
 
   return (
     <Stack>
       <Search />
-      <AnimeCardList query={query} currentPage={currentPage} />
+      <VodFilter vodLists={vodLists} vodId={vodId} />
+      <AnimeCardList title={title} vodId={vodId} currentPage={currentPage} />
       <Pagination totalPages={totalPages} />
     </Stack>
   );
