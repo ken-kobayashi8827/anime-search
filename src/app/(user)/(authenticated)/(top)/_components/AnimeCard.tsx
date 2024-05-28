@@ -4,7 +4,7 @@ import VodTagList from '@/app/admin/(dashboard)/anime/_components/VodTagList';
 import AnimeImage from '@/app/components/AnimeImage';
 import { AnimeType } from '@/types/types';
 import { convertSeasonName } from '@/utils/utils';
-import { Card, CardBody, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import { Card, CardBody, Heading, Stack, Text } from '@chakra-ui/react';
 
 type Props = {
   anime: AnimeType;

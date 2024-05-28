@@ -2,6 +2,7 @@ import { Avatar, Box, HStack, Link } from '@chakra-ui/react';
 import LogoutButton from './LogoutButton';
 import { User } from '@supabase/supabase-js';
 import LoginButton from './LoginButton';
+import NextLink from 'next/link';
 
 type Props = {
   user?:
@@ -12,12 +13,21 @@ type Props = {
   profileImgPath?: string;
 };
 
-export default async function Header({ user, profileImgPath }: Props) {
+export default function Header({ user, profileImgPath }: Props) {
   return (
     <HStack spacing={4} justifyContent='space-between'>
       <Box>
-        <Link p={2} href={'#'} fontSize={'sm'} fontWeight={500}>
-          ロゴ
+        <Link
+          as={NextLink}
+          p={2}
+          href={'#'}
+          fontSize={'xl'}
+          fontWeight='bold'
+          _hover={{
+            opacity: '0.8',
+          }}
+        >
+          あにめさ～ち
         </Link>
       </Box>
       <HStack spacing='4'>
