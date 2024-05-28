@@ -100,11 +100,9 @@ export default function MyPageEditForm({
             previewImgPath={previewImgPath}
           />
         </VStack>
-        <Stack align='center'>
-          <Button type='submit' w='40%' colorScheme='teal' mt='4'>
-            編集完了
-          </Button>
-        </Stack>
+        <Button type='submit' w='200px' colorScheme='teal' mt='4'>
+          編集完了
+        </Button>
       </form>
     </FormProvider>
   );

@@ -36,18 +36,16 @@ export default function UserSearch() {
   );
 
   return (
-    <HStack align='center' justify='center' mb='6'>
-      <InputGroup w='50%'>
-        <InputLeftElement pointerEvents='none'>
-          <SearchIcon />
-        </InputLeftElement>
-        <Input
-          variant='outline'
-          placeholder='ユーザー名から絞り込み...'
-          onChange={handleSearch}
-          defaultValue={searchParams.get('title')?.toString()}
-        />
-      </InputGroup>
-    </HStack>
+    <InputGroup w='50%'>
+      <InputLeftElement pointerEvents='none'>
+        <SearchIcon />
+      </InputLeftElement>
+      <Input
+        variant='outline'
+        placeholder='ユーザー名から絞り込み...'
+        onChange={handleSearch}
+        defaultValue={searchParams.get('title')?.toString()}
+      />
+    </InputGroup>
   );
 }

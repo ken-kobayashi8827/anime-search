@@ -1,8 +1,9 @@
 import { fetchUsersListPage } from '@/utils/supabase/admin/actions';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import UserList from './_components/UserList';
 import Pagination from '@/app/components/Pagination';
 import UserSearch from './_components/UserSearch';
+import CreateUserButton from './_components/CreateUserButton';
 
 type SearchParamsType = {
   searchParams?: {
@@ -25,7 +26,10 @@ export default async function Users({ searchParams }: SearchParamsType) {
       <Text fontSize='3xl' fontWeight='bold' mb='5' textAlign='center'>
         ユーザーリスト
       </Text>
-      <UserSearch />
+      <HStack align='center' justify='center' w='100%' mb='6'>
+        <UserSearch />
+        <CreateUserButton />
+      </HStack>
       <UserList
         username={username}
         sortBy={sortBy}

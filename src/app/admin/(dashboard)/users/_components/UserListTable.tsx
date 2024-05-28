@@ -101,7 +101,7 @@ export default function UserListTable({ users }: Props) {
                   <LinkButton
                     link={`/admin/users/${user.id}`}
                     colorScheme='blue'
-                    width='40%'
+                    width='80px'
                     text='編集'
                   />
                 </Td>

@@ -8,7 +8,7 @@ export type AppMetaDataType = {
   };
 };
 
-export type StatusOptionsType = {
+export type SelectOptionsType = {
   label: string;
   value: number;
 };
@@ -107,6 +107,41 @@ export const SignUpFormSchema = z
   });
 
 export type SignUpFormType = z.infer<typeof SignUpFormSchema>;
+
+/**
+ * 管理画面ユーザー作成フォーム
+ */
+export const CreateUserFormSchema = z
+  .object({
+    email: z
+      .string()
+      .email({ message: '正しいメールアドレスの形式で入力してください' }),
+    password: z
+      .string()
+      .min(8, { message: '8文字以上で入力してください' })
+      .regex(
+        /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/,
+        '大文字・数字を1文字以上使用してください'
+      ),
+    confirmPassword: z
+      .string()
+      .min(8, { message: '8文字以上で入力してください' })
+      .regex(
+        /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]+$/,
+        '大文字・数字を1文字以上使用してください'
+      ),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        message: 'パスワードが一致しません',
+        path: ['confirmPassword'],
+        code: z.ZodIssueCode.custom,
+      });
+    }
+  });
+
+export type CreateUserFormType = z.infer<typeof CreateUserFormSchema>;
 
 /**
  * パスワードリセットフォーム

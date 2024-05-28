@@ -3,7 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import { AdminLoginFormType, AppMetaDataType } from '@/types/types';
+import {
+  AdminLoginFormType,
+  AppMetaDataType,
+  CreateUserFormType,
+} from '@/types/types';
 import jwt from 'jsonwebtoken';
 import { getFilterSeason, STATUS_DELETED, STATUS_PUBLIC } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -419,4 +423,40 @@ export async function fetchFilteredUserList(
   } catch (e) {
     console.error('Failed to fetch user list from supabase:', e);
   }
+}
+
+/**
+ * ユーザー新規登録
+ * @param formData
+ * @returns
+ */
+export async function createUser(formData: CreateUserFormType) {
+  try {
+    const supabase = createClient();
+
+    const data = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    const { error: signUpError } = await supabase.auth.signUp(data);
+
+    if (signUpError?.code === 'user_already_exists') {
+      return {
+        error: '既に登録されているメールアドレスです',
+      };
+    }
+
+    if (signUpError) {
+      throw new Error();
+    }
+  } catch (e) {
+    console.error('Failed to create user', e);
+    return {
+      error: 'ユーザーの作成に失敗しました',
+    };
+  }
+
+  revalidatePath('/admin/users', 'layout');
+  redirect('/admin/users');
 }

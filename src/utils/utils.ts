@@ -1,4 +1,4 @@
-import { StatusOptionsType } from '@/types/types';
+import { SelectOptionsType } from '@/types/types';
 
 const SEASON_WINTER_START_MONTH = 1;
 const SEASON_SPRING_START_MONTH = 4;
@@ -19,7 +19,7 @@ export const PROFILE_NO_IMG_PATH = '/img/default.png';
 /**
  * ステータスオブジェクト
  */
-export const animeStatusOptions: StatusOptionsType[] = [
+export const animeStatusOptions: SelectOptionsType[] = [
   {
     label: '公開',
     value: STATUS_PUBLIC,
