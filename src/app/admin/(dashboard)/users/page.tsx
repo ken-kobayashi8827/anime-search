@@ -1,59 +1,38 @@
-import LinkButton from '@/app/components/LinkButton';
-import { fetchUsersList } from '@/utils/supabase/admin/actions';
-import {
-  Avatar,
-  Box,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { fetchUsersListPage } from '@/utils/supabase/admin/actions';
+import { Box, Text } from '@chakra-ui/react';
+import UserList from './_components/UserList';
+import Pagination from '@/app/components/Pagination';
+import UserSearch from './_components/UserSearch';
 
-export default async function Users() {
-  const users = await fetchUsersList();
+type SearchParamsType = {
+  searchParams?: {
+    username?: string;
+    sortBy?: string;
+    order?: string;
+    page?: string;
+  };
+};
+
+export default async function Users({ searchParams }: SearchParamsType) {
+  const username = searchParams?.username || '';
+  const sortBy = searchParams?.sortBy || 'id';
+  const order = searchParams?.order || 'asc';
+  const currentPage = Number(searchParams?.page) || 1;
+  const totalPages = await fetchUsersListPage(username);
 
   return (
     <Box w='100%'>
       <Text fontSize='3xl' fontWeight='bold' mb='5' textAlign='center'>
-        ユーザー一覧
+        ユーザーリスト
       </Text>
-      <TableContainer>
-        <Table variant='simple'>
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>プロフィール画像</Th>
-              <Th>ユーザー名</Th>
-              <Th>作成日</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.id}</Td>
-                <Td>
-                  <Avatar size='lg' src={user.profile_image} />
-                </Td>
-                <Td>{user.username}</Td>
-                <Td>{new Date(user.created_at).toLocaleString()}</Td>
-                <Td>
-                  <LinkButton
-                    link={`/admin/users/${user.id}`}
-                    colorScheme='blue'
-                    width='40%'
-                    text='編集'
-                  />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <UserSearch />
+      <UserList
+        username={username}
+        sortBy={sortBy}
+        order={order}
+        currentPage={currentPage}
+      />
+      {totalPages !== 0 && <Pagination totalPages={totalPages} />}
     </Box>
   );
 }

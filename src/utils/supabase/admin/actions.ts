@@ -51,23 +51,6 @@ export async function login(formData: AdminLoginFormType) {
   redirect('/admin');
 }
 
-export async function fetchUsersList() {
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('profiles')
-      .select()
-      .order('id', { ascending: true });
-    if (error) {
-      console.log('users list fetch error');
-      throw new Error();
-    }
-    return data;
-  } catch (e) {
-    redirect('/error');
-  }
-}
-
 export async function fetchProfileByUserId(userId: string) {
   try {
     const supabase = createClient();
@@ -363,5 +346,77 @@ export async function deleteAnime(animeId: number) {
     return true;
   } catch (e) {
     console.error(`Failed to delete anime by ${animeId}`, e);
+  }
+}
+
+/**
+ * ユーザー一覧のページ数を取得
+ * @param username
+ * @returns
+ */
+export async function fetchUsersListPage(username: string) {
+  noStore();
+
+  try {
+    const supabase = createClient();
+
+    const { count, error } = await supabase
+      .from('profiles')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
+      .like('username', `%${username}%`);
+    if (error) {
+      throw new Error(error.message);
+    }
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (e) {
+    console.error('Failed to fetch user list from supabase:', e);
+  }
+}
+
+/**
+ * ユーザー一覧取得
+ * @param username
+ * @param currentPage
+ * @param sortBy
+ * @param order
+ * @returns
+ */
+export async function fetchFilteredUserList(
+  username: string,
+  currentPage: number,
+  sortBy?: string,
+  order?: string
+) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endOffset = offset + ITEMS_PER_PAGE - 1;
+
+  try {
+    const supabase = createClient();
+    let fetchQuery = supabase
+      .from('profiles')
+      .select('*')
+      .like('username', `%${username}%`)
+      .range(offset, endOffset);
+
+    if (sortBy) {
+      fetchQuery = fetchQuery.order(sortBy, { ascending: order === 'asc' });
+    }
+
+    if (sortBy !== 'id') {
+      fetchQuery = fetchQuery.order('id', { ascending: true });
+    }
+
+    const { data, error } = await fetchQuery;
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  } catch (e) {
+    console.error('Failed to fetch user list from supabase:', e);
   }
 }

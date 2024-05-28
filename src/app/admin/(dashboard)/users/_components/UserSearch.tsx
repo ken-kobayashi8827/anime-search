@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-export default function Search() {
+export default function UserSearch() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -23,9 +23,9 @@ export default function Search() {
         }
 
         params.set('page', '1');
-        params.set('title', e.target.value);
+        params.set('username', e.target.value);
       } else {
-        params.delete('title');
+        params.delete('username');
         if (params.has('page') && prevPage !== '1') {
           params.set('page', prevPage);
         }
@@ -43,7 +43,7 @@ export default function Search() {
         </InputLeftElement>
         <Input
           variant='outline'
-          placeholder='アニメタイトル入力...'
+          placeholder='ユーザー名から絞り込み...'
           onChange={handleSearch}
           defaultValue={searchParams.get('title')?.toString()}
         />

@@ -45,6 +45,16 @@ export type AnimeType = {
   vods: AnimeVodType[];
 };
 
+export type UserType = {
+  created_at: string;
+  id: number;
+  is_admin: boolean;
+  profile_image: string | null;
+  updated_at: string | null;
+  user_id: string | null;
+  username: string;
+};
+
 /**
  * ログインフォーム
  */

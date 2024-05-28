@@ -22,12 +22,12 @@ const navigations: Navigation[] = [
     icon: <HomeOutlinedIcon />,
   },
   {
-    pageName: 'ユーザー一覧',
+    pageName: 'ユーザーリスト',
     path: '/admin/users',
     icon: <PermIdentityOutlinedIcon />,
   },
   {
-    pageName: 'アニメ一覧',
+    pageName: 'アニメリスト',
     path: '/admin/anime',
     icon: <SearchOutlinedIcon />,
   },

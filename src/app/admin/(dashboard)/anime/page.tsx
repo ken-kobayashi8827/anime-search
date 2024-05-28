@@ -30,7 +30,7 @@ export default async function Page({ searchParams }: SearchParamsType) {
   return (
     <Box w='100%'>
       <Text fontSize='3xl' fontWeight='bold' mb='8' textAlign='center'>
-        アニメ一覧
+        アニメリスト
       </Text>
       <Search />
       <VodFilter vodLists={vodLists} vodId={vodId} />
