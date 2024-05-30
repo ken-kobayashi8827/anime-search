@@ -15,6 +15,7 @@ import { headers } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { getFilterSeason, STATUS_PUBLIC } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
+import { getUser } from './auth';
 
 // 1ページで取得する件数
 const ITEMS_PER_PAGE = 20;
@@ -310,6 +311,129 @@ export async function fetchFilteredAnimeList(
       throw new Error(error.message);
     }
     return data;
+  } catch (e) {
+    console.error('Failed to fetch public anime list from supabase:', e);
+  }
+}
+
+/**
+ * お気に入りボタン
+ * @param animeId
+ */
+export async function addFavorite(animeId: number) {
+  try {
+    const supabase = createClient();
+    const user = await getUser();
+
+    if (user) {
+      // 既にイイネ済みかどうか判定
+
+      const { error: insertFavoritesError } = await supabase
+        .from('favorites')
+        .insert({ user_id: user.id, anime_id: animeId });
+
+      if (insertFavoritesError) {
+        throw new Error(insertFavoritesError.message);
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  revalidatePath('/', 'layout');
+}
+
+/**
+ * ユーザーのいいねしたアニメIDを取得
+ * @returns
+ */
+export async function getFavoriteList() {
+  try {
+    const supabase = createClient();
+    const user = await getUser();
+
+    if (user) {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('anime_id')
+        .eq('user_id', user.id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const favoriteIds = data.map((item) => item.anime_id);
+
+      return favoriteIds;
+    }
+
+    return [];
+  } catch (e) {
+    console.error(e);
+    throw new Error();
+  }
+}
+
+/**
+ * ユーザーのいいねしたアニメを取得
+ * @param currentPage
+ * @returns
+ */
+export async function getFavoriteAnimeList(currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endOffset = offset + ITEMS_PER_PAGE - 1;
+  try {
+    const supabase = createClient();
+    const user = await getUser();
+
+    if (user) {
+      const { data, error } = await supabase
+        .from('animes')
+        .select('*, vods(id, name), favorites!inner()')
+        .eq('favorites.user_id', user.id)
+        .range(offset, endOffset);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+    }
+
+    return [];
+  } catch (e) {
+    console.error(e);
+    throw new Error();
+  }
+}
+
+/**
+ * 公開済みアニメを取得
+ * @returns
+ */
+export async function fetchFavoriteAnimeListPage() {
+  noStore();
+
+  try {
+    const supabase = createClient();
+    const user = await getUser();
+
+    if (user) {
+      const { count, error } = await supabase
+        .from('animes')
+        .select('*, favorites!inner()', {
+          count: 'exact',
+          head: true,
+        })
+        .eq('favorites.user_id', user.id)
+        .eq('status', STATUS_PUBLIC);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+      return totalPages;
+    }
   } catch (e) {
     console.error('Failed to fetch public anime list from supabase:', e);
   }

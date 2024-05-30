@@ -20,7 +20,7 @@ export default function Header({ user, profileImgPath }: Props) {
         <Link
           as={NextLink}
           p={2}
-          href={'#'}
+          href={'/'}
           fontSize={'xl'}
           fontWeight='bold'
           _hover={{

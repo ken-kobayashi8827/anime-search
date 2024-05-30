@@ -78,32 +78,34 @@ export default function MyPageEditForm({
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Heading size='md' mb='4'>
-          ユーザー名
-        </Heading>
-        <FormInput
-          label=''
-          type='text'
-          register={register('username')}
-          placeholder=''
-          errMessage={errors.username?.message}
-        />
-        <VStack alignItems='flex-start'>
-          <Heading size='md'>プロフィール画像</Heading>
-          <FormImage
+    <Stack maxW='lg'>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Heading size='md' mb='4'>
+            ユーザー名
+          </Heading>
+          <FormInput
             label=''
-            type='file'
-            register={register('profileImage')}
-            errMessage={errors.profileImage?.message}
-            previewImgPath={previewImgPath}
+            type='text'
+            register={register('username')}
+            placeholder=''
+            errMessage={errors.username?.message}
           />
-        </VStack>
-        <Button type='submit' w='200px' colorScheme='teal' mt='4'>
-          編集完了
-        </Button>
-      </form>
-    </FormProvider>
+          <VStack alignItems='flex-start'>
+            <Heading size='md'>プロフィール画像</Heading>
+            <FormImage
+              label=''
+              type='file'
+              register={register('profileImage')}
+              errMessage={errors.profileImage?.message}
+              previewImgPath={previewImgPath}
+            />
+          </VStack>
+          <Button type='submit' w='200px' colorScheme='teal' mt='4'>
+            編集完了
+          </Button>
+        </form>
+      </FormProvider>
+    </Stack>
   );
 }

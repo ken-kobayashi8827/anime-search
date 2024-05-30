@@ -110,6 +110,39 @@ export type Database = {
           },
         ]
       }
+      favorites: {
+        Row: {
+          anime_id: number
+          created_at: string | null
+          user_id: string
+        }
+        Insert: {
+          anime_id: number
+          created_at?: string | null
+          user_id: string
+        }
+        Update: {
+          anime_id?: number
+          created_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_favorites_anime_id_fkey"
+            columns: ["anime_id"]
+            isOneToOne: false
+            referencedRelation: "animes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
