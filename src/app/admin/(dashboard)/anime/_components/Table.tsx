@@ -115,7 +115,11 @@ export default function AnimeListTable({ animes }: Props) {
               <Td whiteSpace='nowrap'>
                 {convertSeasonName(anime.season_name)}
               </Td>
-              <Td>{anime.vods && <VodTagList vodData={anime.vods} />}</Td>
+              <Td>
+                {anime.vods && (
+                  <VodTagList vodData={anime.vods} title={anime.title} />
+                )}
+              </Td>
               <Td>{new Date(anime.created_at).toLocaleString('ja-JP')}</Td>
               <Td>
                 <LinkButton

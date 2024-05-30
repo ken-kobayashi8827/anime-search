@@ -36,7 +36,7 @@ export default function VodFilter({ vodLists, vodId }: PropsType) {
     <HStack justify='center' align='center' mb='8'>
       {vodLists &&
         vodLists.map((vod) => {
-          const color = getVodDetails(vod.id);
+          const { color } = getVodDetails(vod.id);
           return (
             <Button
               key={vod.id}

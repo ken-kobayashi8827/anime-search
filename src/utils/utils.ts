@@ -144,19 +144,40 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 export const getVodDetails = (vod: number) => {
   switch (vod) {
     case VOD_NETFLIX:
-      return 'red';
+      return {
+        color: 'red',
+        link: 'https://www.netflix.com/search?q=',
+      };
     case VOD_DANIME:
-      return 'pink';
+      return {
+        color: 'pink',
+        link: 'https://animestore.docomo.ne.jp/animestore/sch_pc?vodTypeList=svod_tvod&searchKey=',
+      };
     case VOD_BANDAI_CHANNEL:
-      return 'yellow';
+      return {
+        color: 'yellow',
+        link: 'https://www.b-ch.com/search/text/?search_txt=',
+      };
     case VOD_UNEXT:
-      return 'teal';
+      return {
+        color: 'teal',
+        link: 'https://video.unext.jp/freeword?query=',
+      };
     case VOD_AMAZON_PRIME_VIDEO:
-      return 'blue';
+      return {
+        color: 'blue',
+        link: 'https://www.amazon.co.jp/s?i=instant-video&k=',
+      };
     case VOD_ABEMA:
-      return 'green';
+      return {
+        color: 'green',
+        link: 'https://abema.tv/search?q=',
+      };
     default:
-      return 'gray';
+      return {
+        color: 'gray',
+        link: '#',
+      };
   }
 };
 

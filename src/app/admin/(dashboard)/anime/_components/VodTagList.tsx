@@ -1,20 +1,25 @@
-import { HStack, Tag } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { HStack, Link, Tag } from '@chakra-ui/react';
 import { getVodDetails } from '@/utils/utils';
 import { AnimeVodType } from '@/types/types';
 
 type PropsType = {
   vodData: AnimeVodType[];
+  title?: string;
 };
 
-export default function VodTagList({ vodData }: PropsType) {
+export default function VodTagList({ vodData, title }: PropsType) {
+  console.log(vodData);
   return (
     <HStack flexWrap='wrap'>
       {vodData.map((vod) => {
-        const color = getVodDetails(vod.id);
+        const { color, link } = getVodDetails(vod.id);
         return (
-          <Tag key={vod.id} colorScheme={color}>
-            {vod.name}
-          </Tag>
+          <Link as={NextLink} href={`${link}${title}`} isExternal>
+            <Tag key={vod.id} colorScheme={color}>
+              {vod.name}
+            </Tag>
+          </Link>
         );
       })}
     </HStack>
