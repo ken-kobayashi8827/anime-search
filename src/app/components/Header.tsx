@@ -5,11 +5,7 @@ import LoginButton from './LoginButton';
 import NextLink from 'next/link';
 
 type Props = {
-  user?:
-    | {
-        user: User;
-      }
-    | undefined;
+  user?: User;
   profileImgPath?: string;
 };
 

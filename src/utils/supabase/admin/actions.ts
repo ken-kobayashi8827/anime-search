@@ -127,7 +127,7 @@ export async function createAnime(formData: {
       throw new Error(error.message);
     }
   } catch (e) {
-    console.log('Error: failed to create anime', e);
+    console.error('Error: failed to create anime', e);
     throw new Error();
   }
 

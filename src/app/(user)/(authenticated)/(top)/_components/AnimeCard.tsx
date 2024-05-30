@@ -14,13 +14,15 @@ import {
   Text,
 } from '@chakra-ui/react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { User } from '@supabase/supabase-js';
 
 type Props = {
   anime: AnimeType;
   favoriteIds: number[];
+  user: User | null;
 };
 
-export default function AnimeCard({ anime, favoriteIds }: Props) {
+export default function AnimeCard({ anime, favoriteIds, user }: Props) {
   const toggleFavorite = (animeId: number) => {
     addFavorite(animeId);
   };
@@ -43,15 +45,17 @@ export default function AnimeCard({ anime, favoriteIds }: Props) {
           )}
         </Stack>
       </CardBody>
-      <CardFooter>
-        <FavoriteIcon
-          style={{
-            fill: favoriteIds.includes(anime.id) ? 'red' : 'gray',
-            cursor: 'pointer',
-          }}
-          onClick={() => toggleFavorite(anime.id)}
-        />
-      </CardFooter>
+      {user && (
+        <CardFooter>
+          <FavoriteIcon
+            style={{
+              fill: favoriteIds.includes(anime.id) ? 'red' : 'gray',
+              cursor: 'pointer',
+            }}
+            onClick={() => toggleFavorite(anime.id)}
+          />
+        </CardFooter>
+      )}
     </Card>
   );
 }

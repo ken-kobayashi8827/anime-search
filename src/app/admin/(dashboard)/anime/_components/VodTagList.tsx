@@ -9,7 +9,6 @@ type PropsType = {
 };
 
 export default function VodTagList({ vodData, title }: PropsType) {
-  console.log(vodData);
   return (
     <HStack flexWrap='wrap'>
       {vodData.map((vod) => {

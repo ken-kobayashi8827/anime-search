@@ -1,20 +1,22 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { cache } from 'react';
 
-export async function getUser() {
-  try {
-    const supabase = createClient();
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-    if (error) {
-      throw new Error();
-    }
+export const getUser = cache(async () => {
+  const supabase = createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     return user;
-  } catch (e) {
-    console.log('getUser Error');
+  }
+
+  if (error) {
     throw new Error();
   }
-}
+
+  return user;
+});

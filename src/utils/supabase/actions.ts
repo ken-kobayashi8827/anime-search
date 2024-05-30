@@ -181,9 +181,9 @@ export async function updateProfile(
 ) {
   try {
     const supabase = createClient();
-    const { data: userData, error: getUserError } =
-      await supabase.auth.getUser();
-    if (getUserError) {
+    const user = await getUser();
+
+    if (!user) {
       throw new Error();
     }
 
@@ -198,7 +198,7 @@ export async function updateProfile(
     const { error } = await supabase
       .from('profiles')
       .update(updateData)
-      .eq('user_id', userData.user.id);
+      .eq('user_id', user.id);
     if (error) {
       throw new Error();
     }
@@ -221,7 +221,6 @@ export async function fetchPublicAnimeListPage(
 ) {
   noStore();
   const filterSeason = getFilterSeason();
-
   try {
     const supabase = createClient();
 
@@ -321,23 +320,19 @@ export async function fetchFilteredAnimeList(
  * @param animeId
  */
 export async function addFavorite(animeId: number) {
-  try {
-    const supabase = createClient();
-    const user = await getUser();
+  const supabase = createClient();
+  const user = await getUser();
 
-    if (user) {
-      // 既にイイネ済みかどうか判定
+  if (user) {
+    // 既にイイネ済みかどうか判定
 
-      const { error: insertFavoritesError } = await supabase
-        .from('favorites')
-        .insert({ user_id: user.id, anime_id: animeId });
+    const { error: insertFavoritesError } = await supabase
+      .from('favorites')
+      .insert({ user_id: user.id, anime_id: animeId });
 
-      if (insertFavoritesError) {
-        throw new Error(insertFavoritesError.message);
-      }
+    if (insertFavoritesError) {
+      throw new Error(insertFavoritesError.message);
     }
-  } catch (e) {
-    console.error(e);
   }
 
   revalidatePath('/', 'layout');
@@ -348,30 +343,25 @@ export async function addFavorite(animeId: number) {
  * @returns
  */
 export async function getFavoriteList() {
-  try {
-    const supabase = createClient();
-    const user = await getUser();
+  const supabase = createClient();
+  const user = await getUser();
 
-    if (user) {
-      const { data, error } = await supabase
-        .from('favorites')
-        .select('anime_id')
-        .eq('user_id', user.id);
+  if (user) {
+    const { data, error } = await supabase
+      .from('favorites')
+      .select('anime_id')
+      .eq('user_id', user.id);
 
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      const favoriteIds = data.map((item) => item.anime_id);
-
-      return favoriteIds;
+    if (error) {
+      throw new Error(error.message);
     }
 
-    return [];
-  } catch (e) {
-    console.error(e);
-    throw new Error();
+    const favoriteIds = data.map((item) => item.anime_id);
+
+    return favoriteIds;
   }
+
+  return [];
 }
 
 /**
@@ -382,59 +372,50 @@ export async function getFavoriteList() {
 export async function getFavoriteAnimeList(currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const endOffset = offset + ITEMS_PER_PAGE - 1;
-  try {
-    const supabase = createClient();
-    const user = await getUser();
+  const supabase = createClient();
+  const user = await getUser();
 
-    if (user) {
-      const { data, error } = await supabase
-        .from('animes')
-        .select('*, vods(id, name), favorites!inner()')
-        .eq('favorites.user_id', user.id)
-        .range(offset, endOffset);
+  if (user) {
+    const { data, error } = await supabase
+      .from('animes')
+      .select('*, vods(id, name), favorites!inner()')
+      .eq('favorites.user_id', user.id)
+      .range(offset, endOffset);
 
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
+    if (error) {
+      throw new Error(error.message);
     }
 
-    return [];
-  } catch (e) {
-    console.error(e);
-    throw new Error();
+    return data;
   }
+
+  return [];
 }
 
 /**
- * 公開済みアニメを取得
+ * お気に入り一覧のページ数を取得
  * @returns
  */
 export async function fetchFavoriteAnimeListPage() {
   noStore();
 
-  try {
-    const supabase = createClient();
-    const user = await getUser();
+  const supabase = createClient();
+  const user = await getUser();
 
-    if (user) {
-      const { count, error } = await supabase
-        .from('animes')
-        .select('*, favorites!inner()', {
-          count: 'exact',
-          head: true,
-        })
-        .eq('favorites.user_id', user.id)
-        .eq('status', STATUS_PUBLIC);
+  if (user) {
+    const { count, error } = await supabase
+      .from('animes')
+      .select('*, favorites!inner()', {
+        count: 'exact',
+        head: true,
+      })
+      .eq('favorites.user_id', user.id)
+      .eq('status', STATUS_PUBLIC);
 
-      if (error) {
-        throw new Error(error.message);
-      }
-      const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
-      return totalPages;
+    if (error) {
+      throw new Error(error.message);
     }
-  } catch (e) {
-    console.error('Failed to fetch public anime list from supabase:', e);
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
   }
 }

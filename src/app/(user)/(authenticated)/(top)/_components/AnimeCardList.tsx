@@ -4,6 +4,7 @@ import {
 } from '@/utils/supabase/actions';
 import AnimeCard from './AnimeCard';
 import { SimpleGrid } from '@chakra-ui/react';
+import { getUser } from '@/utils/supabase/auth';
 
 type Props = {
   title: string;
@@ -17,14 +18,21 @@ export default async function AnimeCardList({
   currentPage,
 }: Props) {
   const animes = await fetchFilteredAnimeList(title, vodId, currentPage);
+  const user = await getUser();
   const favoriteList = await getFavoriteList();
+
   return (
     <SimpleGrid
       spacing='40px'
       templateColumns='repeat(auto-fill, minmax(320px, 1fr))'
     >
       {animes?.map((anime) => (
-        <AnimeCard anime={anime} favoriteIds={favoriteList} key={anime.id} />
+        <AnimeCard
+          anime={anime}
+          favoriteIds={favoriteList}
+          user={user}
+          key={anime.id}
+        />
       ))}
     </SimpleGrid>
   );
