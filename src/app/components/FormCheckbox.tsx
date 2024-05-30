@@ -1,16 +1,10 @@
 import { AnimeVodType, VodListType } from '@/types/types';
-import {
-  Box,
-  Checkbox,
-  CheckboxGroup,
-  FormErrorMessage,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Checkbox, FormErrorMessage, VStack } from '@chakra-ui/react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 type PropsType = {
   options: VodListType[] | undefined;
-  defaultValue: AnimeVodType[];
+  defaultValue?: AnimeVodType[];
   register?: UseFormRegisterReturn;
   errMessage?: string;
 };

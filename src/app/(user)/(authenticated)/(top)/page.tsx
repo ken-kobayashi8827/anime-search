@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { HStack, Stack } from '@chakra-ui/react';
 import Pagination from '@/app/components/Pagination';
 import Search from '@/app/components/Search';
 import { fetchPublicAnimeListPage } from '@/utils/supabase/actions';
@@ -25,7 +25,9 @@ export default async function Home({ searchParams }: SearchParamsType) {
 
   return (
     <Stack>
-      <Search />
+      <HStack align='center' justify='center' w='100%' mb='6'>
+        <Search />
+      </HStack>
       <VodFilter vodLists={vodLists} vodId={vodId} />
       <AnimeCardList title={title} vodId={vodId} currentPage={currentPage} />
       <Pagination totalPages={totalPages} />

@@ -4,16 +4,21 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-export default function CreateUserButton() {
+type Props = {
+  link?: string;
+  text?: string;
+};
+
+export default function CreateButton({ text = '作成', link }: Props) {
   return (
     <Button
       leftIcon={<AddIcon />}
       as={NextLink}
-      href='/admin/users/create'
-      w='150px'
+      href={link}
+      w='100px'
       colorScheme='blue'
     >
-      ユーザー作成
+      {text}
     </Button>
   );
 }

@@ -1,4 +1,5 @@
 import { SelectOptionsType } from '@/types/types';
+import { createClient } from './supabase/client';
 
 const SEASON_WINTER_START_MONTH = 1;
 const SEASON_SPRING_START_MONTH = 4;
@@ -158,3 +159,43 @@ export const getVodDetails = (vod: number) => {
       return 'gray';
   }
 };
+
+/**
+ * 画像アップロード プレビューのパスを返す
+ * @param previewImg
+ * @returns
+ */
+export function createPreviewImgPath(previewImg: FileList) {
+  let previewImgPath = '';
+  if (previewImg && previewImg.length > 0) {
+    previewImgPath = window.URL.createObjectURL(previewImg[0]);
+  }
+  return previewImgPath;
+}
+
+/**
+ * 画像アップロード
+ * @param formImg
+ * @param imgPath
+ * @returns
+ */
+export async function uploadImg(formImg: File, imgPath: string) {
+  if (!formImg) return;
+  try {
+    const supabase = createClient();
+    // 画像をストレージに保存
+    const { error } = await supabase.storage
+      .from('images')
+      .upload(imgPath, formImg);
+    if (error) {
+      throw new Error();
+    }
+
+    // ストレージから画像URlを取得
+    const { data } = supabase.storage.from('images').getPublicUrl(imgPath);
+    return data.publicUrl;
+  } catch (e) {
+    console.error(`Failed to upload image`);
+    throw new Error();
+  }
+}

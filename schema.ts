@@ -174,6 +174,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_anime: {
+        Args: {
+          title: string
+          status: number
+          season_name: string
+          vods: number[]
+          images?: string
+        }
+        Returns: undefined
+      }
       custom_access_token_hook: {
         Args: {
           event: Json

@@ -274,3 +274,37 @@ export const AnimeEditFormSchema = z.object({
 });
 
 export type AnimeEditFormType = z.infer<typeof AnimeEditFormSchema>;
+
+/**
+ * アニメ作成フォーム
+ */
+export const AnimeCreateFormSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: '1文字以上で入力してください' })
+    .max(100, { message: '100文字以下で入力してください' }),
+  thumbnail: z
+    .custom<FileList>()
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => IMAGE_TYPES.includes(file.type)),
+      {
+        message: '.jpg/.jpeg/.pngのいずれかの画像を選択してください',
+      }
+    )
+    .refine(
+      (files) =>
+        Array.from(files).every((file) => file.size < IMAGE_SIZE_LIMIT),
+      {
+        message: '添付できる画像ファイルは20MBまでです',
+      }
+    ),
+  status: z.string().transform((val) => Number(val)),
+  seasonName: z
+    .string()
+    .min(1, { message: '1文字以上で入力してください' })
+    .max(100, { message: '100文字以下で入力してください' }),
+  vod: z.array(z.string().transform((val) => Number(val))),
+});
+
+export type AnimeCreateFormType = z.infer<typeof AnimeCreateFormSchema>;

@@ -2,11 +2,12 @@ import {
   fetchAnimeListPage,
   fetchVodLists,
 } from '@/utils/supabase/admin/actions';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import Pagination from '@/app/components/Pagination';
 import AnimeList from './_components/AnimeList';
 import Search from '@/app/components/Search';
 import VodFilter from '@/app/components/VodFilter';
+import CreateButton from '@/app/components/CreateButton';
 
 type SearchParamsType = {
   searchParams?: {
@@ -32,7 +33,10 @@ export default async function Page({ searchParams }: SearchParamsType) {
       <Text fontSize='3xl' fontWeight='bold' mb='8' textAlign='center'>
         アニメリスト
       </Text>
-      <Search />
+      <HStack align='center' justify='center' w='100%' mb='6'>
+        <Search />
+        <CreateButton link='/admin/anime/create' />
+      </HStack>
       <VodFilter vodLists={vodLists} vodId={vodId} />
       <AnimeList
         title={title}

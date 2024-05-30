@@ -1,7 +1,7 @@
 'use client';
 
 import { SearchIcon } from '@chakra-ui/icons';
-import { HStack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -36,18 +36,16 @@ export default function Search() {
   );
 
   return (
-    <HStack align='center' justify='center' mb='6'>
-      <InputGroup w='50%'>
-        <InputLeftElement pointerEvents='none'>
-          <SearchIcon />
-        </InputLeftElement>
-        <Input
-          variant='outline'
-          placeholder='アニメタイトル入力...'
-          onChange={handleSearch}
-          defaultValue={searchParams.get('title')?.toString()}
-        />
-      </InputGroup>
-    </HStack>
+    <InputGroup w='50%'>
+      <InputLeftElement pointerEvents='none'>
+        <SearchIcon />
+      </InputLeftElement>
+      <Input
+        variant='outline'
+        placeholder='アニメタイトル入力...'
+        onChange={handleSearch}
+        defaultValue={searchParams.get('title')?.toString()}
+      />
+    </InputGroup>
   );
 }

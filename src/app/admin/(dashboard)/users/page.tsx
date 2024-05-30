@@ -3,7 +3,7 @@ import { Box, HStack, Text } from '@chakra-ui/react';
 import UserList from './_components/UserList';
 import Pagination from '@/app/components/Pagination';
 import UserSearch from './_components/UserSearch';
-import CreateUserButton from './_components/CreateUserButton';
+import CreateButton from '@/app/components/CreateButton';
 
 type SearchParamsType = {
   searchParams?: {
@@ -28,7 +28,7 @@ export default async function Users({ searchParams }: SearchParamsType) {
       </Text>
       <HStack align='center' justify='center' w='100%' mb='6'>
         <UserSearch />
-        <CreateUserButton />
+        <CreateButton link='/admin/users/create' />
       </HStack>
       <UserList
         username={username}

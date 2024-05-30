@@ -10,9 +10,9 @@ export default function AnimeList() {
     const res = await fetch('/api/anime');
     const animeData = await res.json();
     toast.promise(insertAnimeData(animeData), {
-      success: { title: 'Promise resolved', description: 'Looks great' },
-      error: { title: 'Promise rejected', description: 'Something wrong' },
-      loading: { title: 'Promise pending', description: 'Please wait' },
+      success: { title: 'アニメ取得に成功しました' },
+      error: { title: 'アニメ取得に失敗しました' },
+      loading: { title: 'アニメ取得中' },
     });
   };
 

@@ -110,6 +110,31 @@ export async function insertAnimeData(animeData: any) {
   }
 }
 
+/**
+ * アニメ作成
+ */
+export async function createAnime(formData: {
+  title: string;
+  status: number;
+  season_name: string;
+  vods: number[];
+  images: string;
+}) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase.rpc('create_anime', formData);
+    if (error) {
+      throw new Error(error.message);
+    }
+  } catch (e) {
+    console.log('Error: failed to create anime', e);
+    throw new Error();
+  }
+
+  revalidatePath('/admin/anime', 'layout');
+  redirect('/admin/anime');
+}
+
 // 1ページで取得する件数
 const ITEMS_PER_PAGE = 20;
 

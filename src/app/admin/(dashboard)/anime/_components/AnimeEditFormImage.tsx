@@ -22,7 +22,7 @@ interface FormImageProps {
 export default function AnimeEditFormImage(props: FormImageProps) {
   const {
     label = '',
-    alt,
+    alt = '',
     type = 'file',
     register,
     errMessage,
@@ -42,6 +42,7 @@ export default function AnimeEditFormImage(props: FormImageProps) {
         alt={alt}
         height='200px'
         width='300px'
+        align='center'
       />
       <FormControl isInvalid={!!errMessage} w='100%'>
         {label}
