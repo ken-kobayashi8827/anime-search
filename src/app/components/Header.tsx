@@ -1,15 +1,15 @@
 import { Avatar, Box, HStack, Link } from '@chakra-ui/react';
 import LogoutButton from './LogoutButton';
-import { User } from '@supabase/supabase-js';
 import LoginButton from './LoginButton';
 import NextLink from 'next/link';
+import { getIsAdmin } from '@/utils/supabase/auth';
+import { fetchProfile } from '@/utils/supabase/actions';
+import { PROFILE_NO_IMG_PATH } from '@/utils/utils';
 
-type Props = {
-  user?: User;
-  profileImgPath?: string;
-};
+export default async function Header() {
+  const isAdmin = await getIsAdmin();
+  const profile = await fetchProfile();
 
-export default function Header({ user, profileImgPath }: Props) {
   return (
     <HStack spacing={4} justifyContent='space-between'>
       <Box>
@@ -27,13 +27,17 @@ export default function Header({ user, profileImgPath }: Props) {
         </Link>
       </Box>
       <HStack spacing='4'>
-        {user ? (
+        {profile && !isAdmin ? (
           <>
             <Link href='/mypage'>
               <Avatar
                 size='md'
                 name='プロフィール画像'
-                src={profileImgPath}
+                src={
+                  profile?.profile_image
+                    ? profile.profile_image
+                    : PROFILE_NO_IMG_PATH
+                }
                 showBorder
               />
             </Link>

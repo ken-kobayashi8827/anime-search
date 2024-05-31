@@ -14,6 +14,7 @@ export type SelectOptionsType = {
 };
 
 export type ProfileType = {
+  user_id: string;
   username: string;
   profile_image: string | null;
 };

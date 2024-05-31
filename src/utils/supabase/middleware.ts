@@ -76,10 +76,16 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   } else {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      const accessToken = jwt.decode(
+        data.session.access_token
+      ) as AppMetaDataType;
+      const appMetaData = accessToken.app_metadata;
+      if (appMetaData.admin) {
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
+    } else {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }

@@ -15,6 +15,9 @@ type SearchParamsType = {
 
 export default async function MyPage({ searchParams }: SearchParamsType) {
   const profile = await fetchProfile();
+  if (!profile) {
+    return <div>プロフィールが見つかりませんでした</div>;
+  }
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = await fetchFavoriteAnimeListPage();
 

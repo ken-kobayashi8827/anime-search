@@ -157,15 +157,21 @@ export async function fetchProfile() {
   const supabase = createClient();
   const user = await getUser();
   if (!user) {
-    throw new Error();
+    return null;
   }
 
   const { data, error } = await supabase
     .from('profiles')
     .select('user_id, username, profile_image')
     .eq('user_id', user.id)
+    .eq('is_admin', false)
     .limit(1)
     .single();
+
+  if (!data) {
+    return data;
+  }
+
   if (error) {
     throw new Error();
   }

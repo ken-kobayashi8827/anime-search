@@ -5,12 +5,5 @@ export default async function Edit({ params }: { params: { id: string } }) {
   const userId = params.id;
   const profile = await fetchProfileByUserId(userId);
 
-  return (
-    <MyPageEditForm
-      userId={profile.user_id}
-      username={profile.username}
-      profileImage={profile.profile_image}
-      redirectPath='/admin/users'
-    />
-  );
+  return <MyPageEditForm profile={profile} redirectPath='/admin/users' />;
 }

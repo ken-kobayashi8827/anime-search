@@ -3,13 +3,8 @@ import MyPageEditForm from '../../_components/MyPageEditForm';
 
 export default async function MyPageEdit() {
   const profile = await fetchProfile();
-
-  return (
-    <MyPageEditForm
-      userId={profile.user_id}
-      username={profile.username}
-      profileImage={profile.profile_image}
-      redirectPath='/mypage'
-    />
-  );
+  if (!profile) {
+    return <div>プロフィールが見つかりませんでした</div>;
+  }
+  return <MyPageEditForm profile={profile} redirectPath='/mypage' />;
 }
