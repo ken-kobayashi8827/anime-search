@@ -197,26 +197,42 @@ export function createPreviewImgPath(previewImg: FileList) {
 /**
  * 画像アップロード
  * @param formImg
- * @param imgPath
+ * @param uploadPath
+ * @param currentImgPath
  * @returns
  */
-export async function uploadImg(formImg: File, imgPath: string) {
+export async function uploadImg(
+  formImg: File,
+  uploadPath: string,
+  currentImgPath: string | null
+) {
   if (!formImg) return;
-  try {
-    const supabase = createClient();
-    // 画像をストレージに保存
-    const { error } = await supabase.storage
-      .from('images')
-      .upload(imgPath, formImg);
+  const supabase = createClient();
+  const uploadImgExtension = formImg.name.split('.').pop();
+  const uploadNewPath = `${uploadPath}.${uploadImgExtension}`;
+
+  // 既存の画像をストレージから削除
+  if (currentImgPath) {
+    console.log(currentImgPath);
+    // 画像URLからフォルダ+画像名を取得
+    const path = new URL(currentImgPath).pathname;
+    const imgPath = path.split('/').slice(6).join('/');
+    const { error } = await supabase.storage.from('images').remove([imgPath]);
     if (error) {
       throw new Error();
     }
+  }
 
-    // ストレージから画像URlを取得
-    const { data } = supabase.storage.from('images').getPublicUrl(imgPath);
-    return data.publicUrl;
-  } catch (e) {
-    console.error(`Failed to upload image`);
+  // 画像をストレージに保存
+  const { error } = await supabase.storage
+    .from('images')
+    .upload(uploadNewPath, formImg);
+  if (error) {
     throw new Error();
   }
+
+  // ストレージから画像URlを取得
+  const { data } = supabase.storage.from('images').getPublicUrl(uploadNewPath);
+
+  return data.publicUrl;
 }

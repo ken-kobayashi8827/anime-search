@@ -1,10 +1,9 @@
 'use client';
 
-import { FormImage } from '@/app/components/FormImage';
 import LinkButton from '@/app/components/LinkButton';
 import { ProfileType } from '@/types/types';
 import { PROFILE_NO_IMG_PATH } from '@/utils/utils';
-import { VStack, Heading, Input, Stack, Avatar } from '@chakra-ui/react';
+import { VStack, Heading, Input, Avatar } from '@chakra-ui/react';
 
 type Props = {
   profile: ProfileType;

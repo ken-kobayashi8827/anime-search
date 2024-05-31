@@ -215,10 +215,6 @@ export const MyPageEditFormSchema = z.object({
 });
 
 export type MyPageEditFormType = z.infer<typeof MyPageEditFormSchema>;
-export type MyPageUpdateType = {
-  username: string;
-  profile_image?: string | undefined;
-};
 
 /**
  * 管理者ログインフォーム

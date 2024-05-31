@@ -5,29 +5,20 @@ import {
   Stack,
   Input,
 } from '@chakra-ui/react';
-import { HTMLInputTypeAttribute, useRef } from 'react';
+import { useRef } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import AnimeImage from '../../../../components/AnimeImage';
 import { NO_IMG_PATH } from '@/utils/utils';
 
 interface FormImageProps {
-  label?: string;
   alt?: string;
-  type?: HTMLInputTypeAttribute;
   register?: UseFormRegisterReturn;
   errMessage?: string;
   previewImgPath?: string | null;
 }
 
 export default function AnimeEditFormImage(props: FormImageProps) {
-  const {
-    label = '',
-    alt = '',
-    type = 'file',
-    register,
-    errMessage,
-    previewImgPath,
-  } = props;
+  const { alt = '', register, errMessage, previewImgPath } = props;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { ref, ...rest } = register ?? {};
@@ -45,9 +36,8 @@ export default function AnimeEditFormImage(props: FormImageProps) {
         align='center'
       />
       <FormControl isInvalid={!!errMessage} w='100%'>
-        {label}
         <Input
-          type={type}
+          type='file'
           accept='.jpg, .jpeg, .png'
           hidden
           ref={(e) => {

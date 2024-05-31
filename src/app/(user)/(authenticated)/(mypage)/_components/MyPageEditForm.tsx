@@ -5,43 +5,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Heading, Stack, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { MyPageEditFormSchema, MyPageEditFormType } from '@/types/types';
-import { FormImage } from '@/app/components/FormImage';
+import { FormProfileImage } from '@/app/components/FormProfileImage';
 import { updateProfile } from '@/utils/supabase/actions';
-import { createClient } from '@/utils/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
-import { redirect } from 'next/navigation';
+import { createPreviewImgPath, uploadImg } from '@/utils/utils';
 
 type PropsType = {
+  userId: string;
   username?: string;
-  profileImage?: string;
-  redirectPath?: string;
+  profileImage: string | null;
+  redirectPath: string;
 };
 
-/**
- * 画像アップロード
- * @param formImg
- * @returns
- */
-async function uploadImg(formImg: File) {
-  if (!formImg) return;
-  try {
-    const supabase = createClient();
-    const { data: userData } = await supabase.auth.getUser();
-    const imgPath = `profile/${userData.user?.id}/${uuidv4()}`;
-    const { error } = await supabase.storage
-      .from('images')
-      .upload(imgPath, formImg);
-    if (error) {
-      throw new Error();
-    }
-    const { data } = supabase.storage.from('images').getPublicUrl(imgPath);
-    return data.publicUrl;
-  } catch (e) {
-    redirect('/error');
-  }
-}
-
 export default function MyPageEditForm({
+  userId,
   username,
   profileImage,
   redirectPath,
@@ -61,21 +38,21 @@ export default function MyPageEditForm({
     formState: { errors },
   } = methods;
 
-  // アップロード画像プレビュー
-  const previewImg = watch('profileImage');
-  let previewImgPath = profileImage;
-  if (previewImg && previewImg.length > 0) {
-    previewImgPath = window.URL.createObjectURL(previewImg[0]);
-  }
-
   const onSubmit = async (params: MyPageEditFormType) => {
-    const uploadImgUrl = await uploadImg(params.profileImage[0]);
+    const uploadPath = `profile/${uuidv4()}`;
+    const uploadImgUrl = await uploadImg(
+      params.profileImage[0],
+      uploadPath,
+      profileImage ? profileImage : null
+    );
     const updateData = {
       username: params.username,
-      profile_image: uploadImgUrl,
+      profile_image: uploadImgUrl ? uploadImgUrl : null,
     };
-    await updateProfile(updateData, redirectPath);
+    await updateProfile(updateData, userId, redirectPath);
   };
+
+  const previewProfileImgPath = createPreviewImgPath(watch('profileImage'));
 
   return (
     <Stack maxW='lg'>
@@ -93,12 +70,12 @@ export default function MyPageEditForm({
           />
           <VStack alignItems='flex-start'>
             <Heading size='md'>プロフィール画像</Heading>
-            <FormImage
-              label=''
-              type='file'
+            <FormProfileImage
               register={register('profileImage')}
               errMessage={errors.profileImage?.message}
-              previewImgPath={previewImgPath}
+              previewImgPath={
+                previewProfileImgPath ? previewProfileImgPath : profileImage
+              }
             />
           </VStack>
           <Button type='submit' w='200px' colorScheme='teal' mt='4'>

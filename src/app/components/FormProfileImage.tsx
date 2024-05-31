@@ -1,3 +1,4 @@
+import { PROFILE_NO_IMG_PATH } from '@/utils/utils';
 import {
   Avatar,
   Button,
@@ -6,25 +7,17 @@ import {
   HStack,
   Input,
 } from '@chakra-ui/react';
-import { HTMLInputTypeAttribute, useRef } from 'react';
+import { useRef } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface FormImageProps {
-  label?: string;
-  type?: HTMLInputTypeAttribute;
   register?: UseFormRegisterReturn;
   errMessage?: string;
-  previewImgPath?: string;
+  previewImgPath: string | null;
 }
 
-export const FormImage = (props: FormImageProps) => {
-  const {
-    label = '',
-    type = 'file',
-    register,
-    errMessage,
-    previewImgPath,
-  } = props;
+export const FormProfileImage = (props: FormImageProps) => {
+  const { register, errMessage, previewImgPath } = props;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { ref, ...rest } = register ?? {};
   const handleChangeImg = () => {
@@ -33,11 +26,14 @@ export const FormImage = (props: FormImageProps) => {
 
   return (
     <HStack alignItems='center'>
-      <Avatar size='lg' name='プロフィール画像' src={previewImgPath} />
+      <Avatar
+        size='lg'
+        name='プロフィール画像'
+        src={previewImgPath ? previewImgPath : PROFILE_NO_IMG_PATH}
+      />
       <FormControl isInvalid={!!errMessage} w='0'>
-        {label}
         <Input
-          type={type}
+          type='file'
           accept='.jpg, .jpeg, .png'
           hidden
           ref={(e) => {

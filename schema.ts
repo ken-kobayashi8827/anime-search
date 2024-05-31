@@ -150,7 +150,7 @@ export type Database = {
           is_admin: boolean
           profile_image: string | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
           username: string
         }
         Insert: {
@@ -159,7 +159,7 @@ export type Database = {
           is_admin?: boolean
           profile_image?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
           username?: string
         }
         Update: {
@@ -168,7 +168,7 @@ export type Database = {
           is_admin?: boolean
           profile_image?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
           username?: string
         }
         Relationships: [

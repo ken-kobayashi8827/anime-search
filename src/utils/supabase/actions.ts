@@ -6,7 +6,6 @@ import { createClient } from '@/utils/supabase/server';
 import {
   AppMetaDataType,
   LoginFormType,
-  MyPageUpdateType,
   ResetPasswordFormType,
   SignUpFormType,
   UpdatePasswordFormType,
@@ -155,56 +154,46 @@ export async function logout(redirectUrl: string) {
  * @returns
  */
 export async function fetchProfile() {
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('username, profile_image')
-      .limit(1)
-      .single();
-    if (error) {
-      throw new Error();
-    }
-    return data;
-  } catch (e) {
-    redirect('/error');
+  const supabase = createClient();
+  const user = await getUser();
+  if (!user) {
+    throw new Error();
   }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('user_id, username, profile_image')
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
+  if (error) {
+    throw new Error();
+  }
+  return data;
 }
 
 /**
  * プロフィール更新
  * @param formData
+ * @param redirectPath
  */
 export async function updateProfile(
-  formData: MyPageUpdateType,
+  formData: {
+    username: string;
+    profile_image: string | null;
+  },
+  userId: string,
   redirectPath: string
 ) {
-  try {
-    const supabase = createClient();
-    const user = await getUser();
-
-    if (!user) {
-      throw new Error();
-    }
-
-    const updateData: MyPageUpdateType = {
-      username: formData.username,
-    };
-
-    if (formData.profile_image) {
-      updateData.profile_image = formData.profile_image;
-    }
-
-    const { error } = await supabase
-      .from('profiles')
-      .update(updateData)
-      .eq('user_id', user.id);
-    if (error) {
-      throw new Error();
-    }
-  } catch (e) {
-    redirect('/error');
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('profiles')
+    .update(formData)
+    .eq('user_id', userId);
+  if (error) {
+    throw new Error();
   }
+
   revalidatePath(redirectPath);
   redirect(redirectPath);
 }

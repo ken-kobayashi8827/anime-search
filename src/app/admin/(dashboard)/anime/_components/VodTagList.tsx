@@ -14,10 +14,8 @@ export default function VodTagList({ vodData, title }: PropsType) {
       {vodData.map((vod) => {
         const { color, link } = getVodDetails(vod.id);
         return (
-          <Link as={NextLink} href={`${link}${title}`} isExternal>
-            <Tag key={vod.id} colorScheme={color}>
-              {vod.name}
-            </Tag>
+          <Link as={NextLink} href={`${link}${title}`} isExternal key={vod.id}>
+            <Tag colorScheme={color}>{vod.name}</Tag>
           </Link>
         );
       })}

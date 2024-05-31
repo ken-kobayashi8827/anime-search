@@ -56,19 +56,17 @@ export async function login(formData: AdminLoginFormType) {
 }
 
 export async function fetchProfileByUserId(userId: string) {
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('profiles')
-      .select()
-      .eq('id', userId);
-    if (error) {
-      throw new Error();
-    }
-    return data[0];
-  } catch (e) {
-    redirect('/error');
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('profiles')
+    .select()
+    .eq('id', userId)
+    .limit(1)
+    .single();
+  if (error) {
+    throw new Error();
   }
+  return data;
 }
 
 /**
@@ -247,19 +245,17 @@ export async function fetchFilteredAnimeList(
 export async function fetchAnimeByAnimeId(animeId: string) {
   noStore();
 
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('animes')
-      .select('*, vods(id, name)')
-      .eq('id', animeId);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data[0];
-  } catch (e) {
-    console.error(`Failed to fetch anime ${animeId} from supabase:`, e);
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('animes')
+    .select('*, vods(id, name)')
+    .eq('id', animeId)
+    .limit(1)
+    .single();
+  if (error) {
+    throw new Error(error.message);
   }
+  return data;
 }
 
 /**

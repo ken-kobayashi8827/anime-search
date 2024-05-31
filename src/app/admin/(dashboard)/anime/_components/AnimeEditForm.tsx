@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, Stack, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   AnimeEditFormSchema,
@@ -11,51 +11,32 @@ import {
   VodListType,
 } from '@/types/types';
 import FormSelect from '@/app/components/FormSelect';
-import { convertSeasonName, animeStatusOptions } from '@/utils/utils';
+import {
+  convertSeasonName,
+  animeStatusOptions,
+  uploadImg,
+  createPreviewImgPath,
+} from '@/utils/utils';
 import { updateAnimeData } from '@/utils/supabase/admin/actions';
-import { createClient } from '@/utils/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import AnimeEditFormImage from './AnimeEditFormImage';
 import FormCheckbox from '@/app/components/FormCheckbox';
 
 type PropsType = {
-  anime: AnimeType | undefined;
+  anime: AnimeType;
   vodLists: VodListType[] | undefined;
 };
-
-/**
- * 画像アップロード
- * @param formImg
- * @returns
- */
-async function uploadImg(formImg: File) {
-  if (!formImg) return;
-  try {
-    const supabase = createClient();
-    const imgPath = `anime/${uuidv4()}`;
-    const { error } = await supabase.storage
-      .from('images')
-      .upload(imgPath, formImg);
-    if (error) {
-      throw new Error();
-    }
-    const { data } = supabase.storage.from('images').getPublicUrl(imgPath);
-    return data.publicUrl;
-  } catch (e) {
-    console.error(`Failed to upload image`);
-  }
-}
 
 export default function AnimeEditForm({ anime, vodLists }: PropsType) {
   const methods = useForm<AnimeEditFormType>({
     mode: 'onChange',
     resolver: zodResolver(AnimeEditFormSchema),
     defaultValues: {
-      id: anime!.id,
-      title: anime!.title,
-      status: anime!.status,
-      seasonName: convertSeasonName(anime!.season_name),
-      createdAt: new Date(anime!.created_at).toLocaleString('ja-JP'),
+      id: anime.id,
+      title: anime.title,
+      status: anime.status,
+      seasonName: convertSeasonName(anime.season_name),
+      createdAt: new Date(anime.created_at).toLocaleString('ja-JP'),
     },
   });
 
@@ -65,21 +46,22 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
     watch,
     formState: { errors },
   } = methods;
-  // アップロード画像プレビュー
-  const previewImg = watch('thumbnail');
-  let previewImgPath = anime!.images;
-  if (previewImg && previewImg.length > 0) {
-    previewImgPath = window.URL.createObjectURL(previewImg[0]);
-  }
 
   const onSubmit = async (params: AnimeEditFormType) => {
-    const uploadImgUrl = await uploadImg(params.thumbnail[0]);
+    const imgPath = `anime/${uuidv4()}`;
+    const uploadImgUrl = await uploadImg(
+      params.thumbnail[0],
+      imgPath,
+      anime.images
+    );
     const updateData = {
       images: uploadImgUrl,
       status: params.status,
     };
     await updateAnimeData(params.id, updateData, params.vod);
   };
+
+  const previewThumbnailPath = createPreviewImgPath(watch('thumbnail'));
 
   return (
     <Box maxW='xl'>
@@ -110,12 +92,12 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
           <VStack alignItems='flex-start' mb='6'>
             <Heading size='md'>サムネイル画像</Heading>
             <AnimeEditFormImage
-              label=''
-              alt={anime!.title}
-              type='file'
+              alt={anime.title}
               register={register('thumbnail')}
               errMessage={errors.thumbnail?.message}
-              previewImgPath={previewImgPath}
+              previewImgPath={
+                previewThumbnailPath ? previewThumbnailPath : anime.images
+              }
             />
           </VStack>
           <Heading size='md' mb='3'>
@@ -143,7 +125,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
           </Heading>
           <FormCheckbox
             options={vodLists}
-            defaultValue={anime!.vods}
+            defaultValue={anime.vods}
             register={register('vod')}
             errMessage={errors.vod?.message}
           />
