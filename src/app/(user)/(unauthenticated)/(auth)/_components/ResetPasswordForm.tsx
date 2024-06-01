@@ -2,13 +2,15 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { FormInput } from '@/app/components/FormInput';
 import { ResetPasswordFormSchema, ResetPasswordFormType } from '@/types/types';
 import { resetPasswordForEmail } from '@/utils/supabase/actions';
 
 export default function ResetPasswordForm() {
+  const toast = useToast();
+
   const methods = useForm<ResetPasswordFormType>({
     mode: 'onChange',
     resolver: zodResolver(ResetPasswordFormSchema),
@@ -24,7 +26,24 @@ export default function ResetPasswordForm() {
   } = methods;
 
   const onSubmit = async (params: ResetPasswordFormType) => {
-    await resetPasswordForEmail(params);
+    await resetPasswordForEmail(params)
+      .then(() => {
+        toast({
+          title: 'リセットメール送信完了',
+          description:
+            'パスワードリセットに関するメールを送信致しました。メールをご確認ください。',
+          status: 'success',
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        toast({
+          title: 'リセットメール送信失敗',
+          description: 'パスワードリセットに関するメールを送信に失敗しました',
+          status: 'error',
+          isClosable: true,
+        });
+      });
   };
 
   return (

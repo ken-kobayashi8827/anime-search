@@ -10,7 +10,6 @@ import {
   SignUpFormType,
   UpdatePasswordFormType,
 } from '@/types/types';
-import { headers } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { getFilterSeason, STATUS_PUBLIC } from '@/utils/utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -99,38 +98,31 @@ export async function signup(formData: SignUpFormType) {
  * @param formData
  */
 export async function resetPasswordForEmail(formData: ResetPasswordFormType) {
-  const headersList = headers();
-  const origin = headersList.get('x-origin');
-  try {
-    const supabase = createClient();
-    const { error: resetPasswordError } =
-      await supabase.auth.resetPasswordForEmail(formData.email, {
-        redirectTo: `${origin}/update-password`,
-      });
+  const supabase = createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/update-password`,
+  });
 
-    if (resetPasswordError) {
-      throw new Error();
-    }
-  } catch (e) {
-    redirect('/error');
+  if (error) {
+    throw new Error();
   }
-  redirect('/reset-password/success');
 }
 
+/**
+ * パスワード更新
+ * @param formData
+ */
 export async function updateUser(formData: UpdatePasswordFormType) {
-  try {
-    const supabase = createClient();
-    const { error: updateUserError } = await supabase.auth.updateUser({
-      password: formData.password,
-    });
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({
+    password: formData.password,
+  });
 
-    if (updateUserError) {
-      throw new Error();
-    }
-  } catch (e) {
-    redirect('/error');
+  if (error) {
+    throw new Error();
   }
-  redirect('/update-password/success');
+
+  redirect('/login');
 }
 
 /**

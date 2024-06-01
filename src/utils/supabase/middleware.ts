@@ -5,10 +5,6 @@ import { AppMetaDataType } from '@/types/types';
 import jwt from 'jsonwebtoken';
 
 export async function updateSession(request: NextRequest) {
-  const url = new URL(request.url);
-  const origin = url.origin;
-  request.headers.set('x-origin', origin);
-
   let response = NextResponse.next({
     request: {
       headers: request.headers,

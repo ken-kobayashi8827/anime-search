@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   UpdatePasswordFormSchema,
@@ -11,6 +11,8 @@ import {
 import { updateUser } from '@/utils/supabase/actions';
 
 export default function UpdatePasswordForm() {
+  const toast = useToast();
+
   const methods = useForm<UpdatePasswordFormType>({
     mode: 'onChange',
     resolver: zodResolver(UpdatePasswordFormSchema),
@@ -27,7 +29,23 @@ export default function UpdatePasswordForm() {
   } = methods;
 
   const onSubmit = async (params: UpdatePasswordFormType) => {
-    await updateUser(params);
+    await updateUser(params)
+      .then(() => {
+        toast({
+          title: 'パスワード変更完了',
+          description: 'パスワードの変更が完了しました',
+          status: 'success',
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        toast({
+          title: 'パスワード変更失敗',
+          description: 'パスワードの変更に失敗しました',
+          status: 'error',
+          isClosable: true,
+        });
+      });
   };
 
   return (
