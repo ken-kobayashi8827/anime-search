@@ -7,9 +7,10 @@ const PER_PAGE = 50;
  * Annict APIデータ取得
  */
 export async function GET() {
+  // 現在のクールを取得
   const filterSeason = getFilterSeason();
 
-  // TODO: エラー対応
+  // ANNICT APIでページ数を取得
   const res = await fetch(
     `${BASE_URL}/works?fields=id&per_page=${PER_PAGE}&filter_season=${filterSeason}`,
     {
@@ -19,9 +20,12 @@ export async function GET() {
     }
   );
   const data = await res.json();
-
+  // アニメデータ数
   const totalCount = data.total_count;
+  // アニメデータ数からページ数算出
   const pageCount = Math.ceil(totalCount / PER_PAGE);
+
+  // アニメデータを取得
   const resArr = [];
   for (let i = 1; i <= pageCount; i++) {
     const res = await fetch(

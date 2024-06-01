@@ -213,7 +213,6 @@ export async function uploadImg(
 
   // 既存の画像をストレージから削除
   if (currentImgPath) {
-    console.log(currentImgPath);
     // 画像URLからフォルダ+画像名を取得
     const path = new URL(currentImgPath).pathname;
     const imgPath = path.split('/').slice(6).join('/');

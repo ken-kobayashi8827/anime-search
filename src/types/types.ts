@@ -26,6 +26,48 @@ export type VodListType = {
   updated_at: string | null;
 };
 
+export type AnnictResponse = AnnictDataArr[];
+
+export type AnnictDataArr = {
+  works: AnnictAnimeWorksType[];
+  total_count: number;
+  next_page: number | null;
+  prev_page: number | null;
+};
+
+export type AnnictAnimeWorksType = {
+  id: number;
+  title: string;
+  season_name: string;
+  images: {
+    facebook: {
+      og_image_url: string;
+    };
+    twitter: {
+      bigger_avatar_url: string;
+      image_url: string;
+      mini_avatar_url: string;
+      normal_avatar_url: string;
+      original_avatar_url: string;
+    };
+  };
+  no_episodes: boolean;
+  episodes_count: number;
+  twitter_hashtag: string;
+  twitter_username: string;
+};
+
+export type AnimeInsertDataType = {
+  title: string;
+  status: number;
+  season_name: string;
+  images: string;
+  no_episodes: boolean;
+  episodes_count: number;
+  twitter_username: string;
+  twitter_hashtag: string;
+};
+
 export type AnimeVodType = {
   id: number;
   name: string | null;

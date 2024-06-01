@@ -58,7 +58,10 @@ export async function updateSession(request: NextRequest) {
   );
 
   // 管理画面 管理ユーザーでない場合
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  if (
+    request.nextUrl.pathname.startsWith('/admin') ||
+    request.nextUrl.pathname.startsWith('/api/anime')
+  ) {
     const { data } = await supabase.auth.getSession();
     if (data.session) {
       const accessToken = jwt.decode(
