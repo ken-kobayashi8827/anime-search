@@ -3,7 +3,7 @@
 import VodTagList from '@/app/admin/(dashboard)/anime/_components/VodTagList';
 import AnimeImage from '@/app/components/AnimeImage';
 import { AnimeType } from '@/types/types';
-import { addFavorite } from '@/utils/supabase/actions';
+import { updateFavorite } from '@/utils/supabase/actions';
 import { convertSeasonName } from '@/utils/utils';
 import {
   Card,
@@ -23,8 +23,8 @@ type Props = {
 };
 
 export default function AnimeCard({ anime, favoriteIds, user }: Props) {
-  const toggleFavorite = (animeId: number) => {
-    addFavorite(animeId);
+  const toggleFavorite = async (animeId: number) => {
+    await updateFavorite(animeId);
   };
 
   return (

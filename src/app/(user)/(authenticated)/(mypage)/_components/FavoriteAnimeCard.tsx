@@ -3,11 +3,24 @@
 import VodTagList from '@/app/admin/(dashboard)/anime/_components/VodTagList';
 import AnimeImage from '@/app/components/AnimeImage';
 import { AnimeType } from '@/types/types';
+import { updateFavorite } from '@/utils/supabase/actions';
 import { convertSeasonName } from '@/utils/utils';
-import { Card, CardBody, Heading, Stack, Text } from '@chakra-ui/react';
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Heading,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type Props = {
   anime: AnimeType;
+};
+
+const toggleFavorite = async (animeId: number) => {
+  await updateFavorite(animeId);
 };
 
 export default function FavoriteAnimeCard({ anime }: Props) {
@@ -29,6 +42,15 @@ export default function FavoriteAnimeCard({ anime }: Props) {
           )}
         </Stack>
       </CardBody>
+      <CardFooter>
+        <FavoriteIcon
+          style={{
+            fill: 'red',
+            cursor: 'pointer',
+          }}
+          onClick={() => toggleFavorite(anime.id)}
+        />
+      </CardFooter>
     </Card>
   );
 }
