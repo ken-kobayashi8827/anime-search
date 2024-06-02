@@ -33,7 +33,7 @@ export default function VodFilter({ vodLists, vodId }: PropsType) {
   };
 
   return (
-    <HStack justify='center' align='center' mb='8'>
+    <HStack justify='center' align='center' wrap='wrap' mb='8'>
       {vodLists &&
         vodLists.map((vod) => {
           const { color } = getVodDetails(vod.id);

@@ -52,7 +52,7 @@ export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
   const previewProfileImgPath = createPreviewImgPath(watch('profileImage'));
 
   return (
-    <Stack maxW='lg'>
+    <Stack maxW={{ lg: 'lg' }}>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Heading size='md' mb='4'>
@@ -77,7 +77,12 @@ export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
               }
             />
           </VStack>
-          <Button type='submit' w='200px' colorScheme='teal' mt='4'>
+          <Button
+            type='submit'
+            w={{ base: '100%', lg: '200px' }}
+            colorScheme='teal'
+            mt='4'
+          >
             編集完了
           </Button>
         </form>

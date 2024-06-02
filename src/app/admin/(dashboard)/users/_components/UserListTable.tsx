@@ -1,6 +1,5 @@
 'use client';
 
-import LinkButton from '@/app/components/LinkButton';
 import {
   HStack,
   Table,
@@ -11,12 +10,14 @@ import {
   Th,
   Thead,
   Tr,
-  Avatar,
+  Image,
+  Button,
 } from '@chakra-ui/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { UserType } from '@/types/types';
 import { PROFILE_NO_IMG_PATH } from '@/utils/utils';
+import NextLink from 'next/link';
 
 type Props = {
   users: UserType[] | undefined;
@@ -85,8 +86,9 @@ export default function UserListTable({ users }: Props) {
               <Tr key={user.id}>
                 <Td>{user.id}</Td>
                 <Td>
-                  <Avatar
-                    size='lg'
+                  <Image
+                    borderRadius='full'
+                    boxSize='80px'
                     src={
                       user.profile_image
                         ? user.profile_image
@@ -98,12 +100,13 @@ export default function UserListTable({ users }: Props) {
                 <Td>{user.is_admin ? '管理者' : '一般ユーザー'}</Td>
                 <Td>{new Date(user.created_at).toLocaleString()}</Td>
                 <Td>
-                  <LinkButton
-                    link={`/admin/users/${user.id}`}
+                  <Button
+                    as={NextLink}
+                    href={`/admin/users/${user.id}`}
                     colorScheme='blue'
-                    width='80px'
-                    text='編集'
-                  />
+                  >
+                    編集
+                  </Button>
                 </Td>
               </Tr>
             ))}

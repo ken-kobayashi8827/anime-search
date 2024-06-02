@@ -6,7 +6,7 @@ import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { AdminLoginFormSchema, AdminLoginFormType } from '@/types/types';
 import { login } from '@/utils/supabase/admin/actions';
-import LinkButton from '@/app/components/LinkButton';
+import NextLink from 'next/link';
 
 export default function AdminLoginForm() {
   const toast = useToast();
@@ -71,13 +71,9 @@ export default function AdminLoginForm() {
             </Button>
           </form>
         </FormProvider>
-        <LinkButton
-          link='/'
-          colorScheme='blue'
-          mt='3'
-          width='100%'
-          text='ユーザーページへ'
-        />
+        <Button as={NextLink} href='/' w='100%' colorScheme='blue' mt='3'>
+          ユーザーページへ
+        </Button>
       </Box>
     </Flex>
   );

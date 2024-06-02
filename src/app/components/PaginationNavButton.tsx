@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function ExternalLinkButton({
+export default function PaginationNavButton({
   isDisabled,
   href,
   children,

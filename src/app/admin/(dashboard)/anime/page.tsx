@@ -29,11 +29,11 @@ export default async function Page({ searchParams }: SearchParamsType) {
   const vodLists = await fetchVodLists();
 
   return (
-    <Box w='100%'>
+    <Box>
       <Text fontSize='3xl' fontWeight='bold' mb='8' textAlign='center'>
         アニメリスト
       </Text>
-      <HStack align='center' justify='center' w='100%' mb='6'>
+      <HStack align='center' justify='center' mb='6'>
         <Search />
         <CreateButton link='/admin/anime/create' />
       </HStack>

@@ -22,11 +22,11 @@ export default async function Users({ searchParams }: SearchParamsType) {
   const totalPages = await fetchUsersListPage(username);
 
   return (
-    <Box w='100%'>
+    <Box>
       <Text fontSize='3xl' fontWeight='bold' mb='5' textAlign='center'>
         ユーザーリスト
       </Text>
-      <HStack align='center' justify='center' w='100%' mb='6'>
+      <HStack align='center' justify='center' mb='6'>
         <UserSearch />
         <CreateButton link='/admin/users/create' />
       </HStack>

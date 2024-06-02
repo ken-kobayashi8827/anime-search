@@ -2,10 +2,10 @@
 
 import { generatePagination } from '@/utils/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { Button, HStack } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import ExternalLinkButton from './ExternalLinkButton';
 import PageButton from './PageButton';
+import PaginationNavButton from './PaginationNavButton';
 
 type Props = {
   totalPages: number | undefined;
@@ -25,13 +25,13 @@ export default function Pagination({ totalPages }: Props) {
   const allPages = generatePagination(currentPage, Number(totalPages));
 
   return (
-    <HStack align='center' justify='center' mt='10'>
-      <ExternalLinkButton
+    <HStack align='center' justify='center' wrap='wrap' mt='10'>
+      <PaginationNavButton
         href={createPageUrl(currentPage - 1)}
         isDisabled={currentPage <= 1}
       >
         <ChevronLeftIcon />
-      </ExternalLinkButton>
+      </PaginationNavButton>
       {allPages.map((page, index) => {
         return (
           <PageButton
@@ -43,12 +43,12 @@ export default function Pagination({ totalPages }: Props) {
           </PageButton>
         );
       })}
-      <ExternalLinkButton
+      <PaginationNavButton
         href={createPageUrl(currentPage + 1)}
         isDisabled={currentPage >= totalPages!}
       >
         <ChevronRightIcon />
-      </ExternalLinkButton>
+      </PaginationNavButton>
     </HStack>
   );
 }

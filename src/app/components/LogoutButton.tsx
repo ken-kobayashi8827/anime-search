@@ -36,7 +36,7 @@ export default function LogoutButton({
     <Button
       colorScheme={colorScheme}
       variant={variant}
-      _hover={hover}
+      _hover={{ md: hover }}
       w={width}
       onClick={handleLogout}
     >

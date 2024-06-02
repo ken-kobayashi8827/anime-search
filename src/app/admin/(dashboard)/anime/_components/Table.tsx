@@ -1,7 +1,6 @@
 'use client';
 
 import { getAnimeStatusName, convertSeasonName } from '@/utils/utils';
-import LinkButton from '@/app/components/LinkButton';
 import {
   HStack,
   Table,
@@ -12,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  Button,
 } from '@chakra-ui/react';
 import AnimeImage from '../../../../components/AnimeImage';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -19,6 +19,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { AnimeType } from '@/types/types';
 import VodTagList from './VodTagList';
 import DeleteButton from './DeleteButton';
+import NextLink from 'next/link';
 
 type Props = {
   animes: AnimeType[] | undefined;
@@ -49,8 +50,8 @@ export default function AnimeListTable({ animes }: Props) {
   };
 
   return (
-    <TableContainer maxWidth='100%' whiteSpace='normal'>
-      <Table variant='striped' colorScheme='gray' size='md'>
+    <TableContainer whiteSpace='normal'>
+      <Table variant='striped' colorScheme='gray'>
         <Thead>
           <Tr>
             <Th cursor='pointer' onClick={() => handleSort('id')}>
@@ -122,12 +123,13 @@ export default function AnimeListTable({ animes }: Props) {
               </Td>
               <Td>{new Date(anime.created_at).toLocaleString('ja-JP')}</Td>
               <Td>
-                <LinkButton
-                  link={`/admin/anime/${anime.id}`}
+                <Button
+                  as={NextLink}
+                  href={`/admin/anime/${anime.id}`}
                   colorScheme='blue'
-                  width='100%'
-                  text='編集'
-                />
+                >
+                  編集
+                </Button>
               </Td>
               <Td>
                 <DeleteButton animeId={anime.id} />

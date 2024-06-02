@@ -1,10 +1,10 @@
 import { PROFILE_NO_IMG_PATH } from '@/utils/utils';
 import {
-  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
   HStack,
+  Image,
   Input,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
@@ -26,9 +26,10 @@ export const FormProfileImage = (props: FormImageProps) => {
 
   return (
     <HStack alignItems='center'>
-      <Avatar
-        size='lg'
-        name='プロフィール画像'
+      <Image
+        borderRadius='full'
+        alt='プロフィール画像'
+        boxSize='80px'
         src={previewImgPath ? previewImgPath : PROFILE_NO_IMG_PATH}
       />
       <FormControl isInvalid={!!errMessage} w='0'>

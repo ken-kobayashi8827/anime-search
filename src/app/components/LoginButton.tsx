@@ -27,7 +27,7 @@ export default function LoginButton({
       colorScheme={colorScheme}
       variant={variant}
       w={width}
-      _hover={hover}
+      _hover={{ md: hover }}
     >
       ログイン
     </Button>

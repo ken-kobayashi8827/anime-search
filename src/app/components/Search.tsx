@@ -36,7 +36,7 @@ export default function Search() {
   );
 
   return (
-    <InputGroup w='50%'>
+    <InputGroup w={{ base: '80%', md: '50%' }}>
       <InputLeftElement pointerEvents='none'>
         <SearchIcon />
       </InputLeftElement>
