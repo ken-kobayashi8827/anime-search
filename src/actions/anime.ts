@@ -153,5 +153,6 @@ export async function deleteAnime(animeId: number) {
     throw new Error(error.message);
   }
 
+  revalidatePath('/admin/anime');
   return true;
 }
