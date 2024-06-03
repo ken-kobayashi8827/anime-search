@@ -204,7 +204,7 @@ export function createPreviewImgPath(previewImg: FileList) {
 export async function uploadImg(
   formImg: File,
   uploadPath: string,
-  currentImgPath: string | null
+  currentImgPath: string | null = null
 ) {
   if (!formImg) return;
   const supabase = createClient();

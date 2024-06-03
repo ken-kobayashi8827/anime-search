@@ -7,9 +7,11 @@ import { Link } from '@chakra-ui/next-js';
 import { login } from '@/utils/supabase/actions';
 import { FormInput } from '@/app/components/FormInput';
 import { LoginFormSchema, LoginFormType } from '@/types/types';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<LoginFormType>({
     mode: 'onChange',
@@ -28,13 +30,15 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (params: LoginFormType) => {
+    setIsLoading(true);
+
     const result = await login(params);
     if (result && result.error) {
+      setIsLoading(false);
       setError('password', { type: 'loginError', message: result.error });
-    }
-    if (!result) {
+    } else {
       toast({
-        title: 'ログインしました。',
+        title: 'ログインしました',
         status: 'success',
         isClosable: true,
       });
@@ -66,7 +70,14 @@ export default function LoginForm() {
               placeholder='パスワード'
               errMessage={errors.password?.message}
             />
-            <Button type='submit' w='100%' colorScheme='teal' mt='4'>
+            <Button
+              type='submit'
+              w='100%'
+              colorScheme='teal'
+              mt='4'
+              isLoading={isLoading}
+              loadingText='ログイン中'
+            >
               ログイン
             </Button>
           </form>

@@ -7,9 +7,11 @@ import { FormInput } from '@/app/components/FormInput';
 import { AdminLoginFormSchema, AdminLoginFormType } from '@/types/types';
 import { login } from '@/utils/supabase/admin/actions';
 import NextLink from 'next/link';
+import { useState } from 'react';
 
 export default function AdminLoginForm() {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<AdminLoginFormType>({
     mode: 'onChange',
@@ -28,11 +30,12 @@ export default function AdminLoginForm() {
   } = methods;
 
   const onSubmit = async (params: AdminLoginFormType) => {
+    setIsLoading(true);
     const result = await login(params);
     if (result && result.error) {
+      setIsLoading(false);
       setError('password', { type: 'loginError', message: result.error });
-    }
-    if (!result) {
+    } else {
       toast({
         title: 'ログインしました。',
         status: 'success',
@@ -66,7 +69,14 @@ export default function AdminLoginForm() {
               placeholder='パスワード'
               errMessage={errors.password?.message}
             />
-            <Button type='submit' w='100%' colorScheme='teal' mt='4'>
+            <Button
+              type='submit'
+              w='100%'
+              colorScheme='teal'
+              mt='4'
+              isLoading={isLoading}
+              loadingText='ログイン中'
+            >
               ログイン
             </Button>
           </form>

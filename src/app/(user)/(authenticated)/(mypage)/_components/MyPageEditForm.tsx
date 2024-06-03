@@ -13,6 +13,7 @@ import { FormProfileImage } from '@/app/components/FormProfileImage';
 import { updateProfile } from '@/utils/supabase/actions';
 import { v4 as uuidv4 } from 'uuid';
 import { createPreviewImgPath, uploadImg } from '@/utils/utils';
+import { useState } from 'react';
 
 type PropsType = {
   profile: ProfileType;
@@ -20,6 +21,8 @@ type PropsType = {
 };
 
 export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const methods = useForm<MyPageEditFormType>({
     mode: 'onChange',
     resolver: zodResolver(MyPageEditFormSchema),
@@ -36,6 +39,8 @@ export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
   } = methods;
 
   const onSubmit = async (params: MyPageEditFormType) => {
+    setIsLoading(true);
+
     const uploadPath = `profile/${uuidv4()}`;
     const uploadImgUrl = await uploadImg(
       params.profileImage[0],
@@ -82,6 +87,8 @@ export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
             w={{ base: '100%', lg: '200px' }}
             colorScheme='teal'
             mt='4'
+            isLoading={isLoading}
+            loadingText='更新中'
           >
             編集完了
           </Button>

@@ -21,6 +21,7 @@ import { updateAnimeData } from '@/utils/supabase/admin/actions';
 import { v4 as uuidv4 } from 'uuid';
 import AnimeEditFormImage from './AnimeEditFormImage';
 import FormCheckbox from '@/app/components/FormCheckbox';
+import { useState } from 'react';
 
 type PropsType = {
   anime: AnimeType;
@@ -28,6 +29,8 @@ type PropsType = {
 };
 
 export default function AnimeEditForm({ anime, vodLists }: PropsType) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const methods = useForm<AnimeEditFormType>({
     mode: 'onChange',
     resolver: zodResolver(AnimeEditFormSchema),
@@ -48,6 +51,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
   } = methods;
 
   const onSubmit = async (params: AnimeEditFormType) => {
+    setIsLoading(true);
     const imgPath = `anime/${uuidv4()}`;
     const uploadImgUrl = await uploadImg(
       params.thumbnail[0],
@@ -140,7 +144,14 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
             disabled={true}
             errMessage={errors.createdAt?.message}
           />
-          <Button type='submit' w='50%' colorScheme='teal' mt='4'>
+          <Button
+            type='submit'
+            w='50%'
+            colorScheme='teal'
+            mt='4'
+            isLoading={isLoading}
+            loadingText='更新中'
+          >
             編集完了
           </Button>
         </form>

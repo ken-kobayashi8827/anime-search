@@ -7,9 +7,11 @@ import { CreateUserFormSchema, CreateUserFormType } from '@/types/types';
 import { FormInput } from '@/app/components/FormInput';
 import { createUser } from '@/utils/supabase/admin/actions';
 import NextLink from 'next/link';
+import { useState } from 'react';
 
 export default function CreateUserForm() {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<CreateUserFormType>({
     mode: 'onChange',
@@ -27,6 +29,7 @@ export default function CreateUserForm() {
   } = methods;
 
   const onSubmit = async (params: CreateUserFormType) => {
+    setIsLoading(true);
     const result = await createUser(params);
     if (result && result.error) {
       toast({
@@ -43,6 +46,7 @@ export default function CreateUserForm() {
         isClosable: true,
       });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -80,7 +84,13 @@ export default function CreateUserForm() {
             errMessage={errors.confirmPassword?.message}
           />
           <HStack>
-            <Button type='submit' w='150px' colorScheme='teal'>
+            <Button
+              type='submit'
+              w='150px'
+              colorScheme='teal'
+              isLoading={isLoading}
+              loadingText='登録中'
+            >
               登録
             </Button>
             <Button

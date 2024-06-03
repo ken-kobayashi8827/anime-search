@@ -20,6 +20,7 @@ import { createAnime } from '@/utils/supabase/admin/actions';
 import AnimeEditFormImage from './AnimeEditFormImage';
 import FormCheckbox from '@/app/components/FormCheckbox';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 
 type PropsType = {
   vodLists: VodListType[] | undefined;
@@ -27,6 +28,7 @@ type PropsType = {
 
 export default function AnimeCreateForm({ vodLists }: PropsType) {
   const currentSeason = getFilterSeason();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<AnimeCreateFormType>({
     mode: 'onChange',
@@ -44,6 +46,7 @@ export default function AnimeCreateForm({ vodLists }: PropsType) {
   } = methods;
 
   const onSubmit = async (params: AnimeCreateFormType) => {
+    setIsLoading(true);
     const imgPath = `anime/${uuidv4()}`;
     const uploadImgUrl = await uploadImg(params.thumbnail[0], imgPath);
     const data = {
@@ -54,6 +57,7 @@ export default function AnimeCreateForm({ vodLists }: PropsType) {
       images: uploadImgUrl ? uploadImgUrl : '',
     };
     await createAnime(data);
+    setIsLoading(false);
   };
 
   return (
@@ -108,7 +112,14 @@ export default function AnimeCreateForm({ vodLists }: PropsType) {
             register={register('vod')}
             errMessage={errors.vod?.message}
           />
-          <Button type='submit' w='50%' colorScheme='teal' mt='4'>
+          <Button
+            type='submit'
+            w='50%'
+            colorScheme='teal'
+            mt='4'
+            isLoading={isLoading}
+            loadingText='作成中'
+          >
             作成
           </Button>
         </form>

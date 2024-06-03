@@ -2,11 +2,14 @@
 
 import { insertAnimeData } from '@/utils/supabase/admin/actions';
 import { Button, Heading, Text, useToast, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
 
 export default function AnimeList() {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleClick = async () => {
+    setIsLoading(true);
     const res = await fetch('/api/anime');
     const animeData = await res.json();
     toast.promise(insertAnimeData(animeData), {
@@ -14,6 +17,7 @@ export default function AnimeList() {
       error: { title: 'アニメ取得に失敗しました' },
       loading: { title: 'アニメ取得中' },
     });
+    setIsLoading(false);
   };
 
   return (
@@ -24,7 +28,12 @@ export default function AnimeList() {
       <Text mb='5' textAlign='center'>
         Annict APIを使用してアニメデータを取得します。
       </Text>
-      <Button colorScheme='blue' onClick={handleClick}>
+      <Button
+        colorScheme='blue'
+        onClick={handleClick}
+        isLoading={isLoading}
+        loadingText='インポート中'
+      >
         インポート
       </Button>
     </VStack>
