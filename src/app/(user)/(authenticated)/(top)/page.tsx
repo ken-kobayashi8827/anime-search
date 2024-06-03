@@ -1,8 +1,6 @@
 import { HStack, Stack } from '@chakra-ui/react';
 import Pagination from '@/app/components/Pagination';
 import Search from '@/app/components/Search';
-import { fetchPublicAnimeListPage } from '@/utils/supabase/actions';
-import { fetchVodLists } from '@/utils/supabase/admin/actions';
 import VodFilter from '@/app/components/VodFilter';
 import AnimeCardList from './_components/AnimeCardList';
 import { Suspense } from 'react';
@@ -10,6 +8,8 @@ import {
   AnimeCardListSkeleton,
   VodFilterSkeleton,
 } from '@/app/components/Skeletons';
+import { fetchPublicAnimeListPage } from '@/data/anime';
+import { fetchVodLists } from '@/data/vod';
 
 type SearchParamsType = {
   searchParams?: {

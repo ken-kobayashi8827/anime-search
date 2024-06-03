@@ -1,13 +1,11 @@
-import {
-  fetchFavoriteAnimeListPage,
-  fetchProfile,
-} from '@/utils/supabase/actions';
 import MyPageList from '../_components/MyPageList';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import FavoriteAnimeCardList from '../_components/FavoriteAnimeCardList';
 import Pagination from '@/app/components/Pagination';
 import { Suspense } from 'react';
 import { FavoriteAnimeCardListSkeleton } from '@/app/components/Skeletons';
+import { fetchProfile } from '@/data/profile';
+import { fetchFavoriteAnimeListPage } from '@/data/favorite';
 
 type SearchParamsType = {
   searchParams?: {

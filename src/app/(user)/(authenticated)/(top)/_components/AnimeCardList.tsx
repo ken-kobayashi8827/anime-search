@@ -1,10 +1,8 @@
-import {
-  fetchFilteredAnimeList,
-  getFavoriteList,
-} from '@/utils/supabase/actions';
 import AnimeCard from './AnimeCard';
 import { SimpleGrid } from '@chakra-ui/react';
-import { getUser } from '@/utils/supabase/auth';
+import { getUser } from '@/data/auth';
+import { fetchFilteredAnimeList } from '@/data/anime';
+import { getFavoriteList } from '@/data/favorite';
 
 type Props = {
   title: string;

@@ -1,4 +1,4 @@
-import { fetchVodLists } from '@/utils/supabase/admin/actions';
+import { fetchVodLists } from '@/data/vod';
 import AnimeCreateForm from '../_components/AnimeCreateForm';
 
 export default async function page() {

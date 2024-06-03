@@ -1,9 +1,9 @@
-import { fetchUsersListPage } from '@/utils/supabase/admin/actions';
 import { Box, HStack, Text } from '@chakra-ui/react';
 import UserList from './_components/UserList';
 import Pagination from '@/app/components/Pagination';
 import UserSearch from './_components/UserSearch';
 import CreateButton from '@/app/components/CreateButton';
+import { fetchUsersListPage } from '@/data/profile';
 
 type SearchParamsType = {
   searchParams?: {

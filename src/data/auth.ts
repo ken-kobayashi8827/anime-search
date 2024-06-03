@@ -2,8 +2,8 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { cache } from 'react';
-import { AppMetaDataType } from '@/types/types';
 import jwt from 'jsonwebtoken';
+import { AppMetaDataType } from '@/types/types';
 
 /**
  * 認証しているユーザーを取得

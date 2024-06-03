@@ -4,10 +4,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
-import { signup } from '@/utils/supabase/actions';
 import { SignUpFormSchema, SignUpFormType } from '@/types/types';
 import { FormInput } from '@/app/components/FormInput';
 import { useState } from 'react';
+import { signup } from '@/actions/auth';
 
 export default function SignUpForm() {
   const toast = useToast();

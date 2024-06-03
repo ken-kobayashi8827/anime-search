@@ -1,8 +1,6 @@
-import {
-  fetchAnimeByAnimeId,
-  fetchVodLists,
-} from '@/utils/supabase/admin/actions';
+import { fetchVodLists } from '@/data/vod';
 import AnimeEditForm from '../_components/AnimeEditForm';
+import { fetchAnimeByAnimeId } from '@/data/anime';
 
 export default async function AnimeEdit({
   params,

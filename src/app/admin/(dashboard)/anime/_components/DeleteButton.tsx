@@ -1,4 +1,4 @@
-import { deleteAnime } from '@/utils/supabase/admin/actions';
+import { deleteAnime } from '@/actions/anime';
 import { Button, useToast } from '@chakra-ui/react';
 
 type PropsType = {

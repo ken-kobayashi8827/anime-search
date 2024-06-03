@@ -1,9 +1,9 @@
 'use client';
 
+import { updateFavorite } from '@/actions/favorite';
 import VodTagList from '@/app/admin/(dashboard)/anime/_components/VodTagList';
 import AnimeImage from '@/app/components/AnimeImage';
 import { AnimeType } from '@/types/types';
-import { updateFavorite } from '@/utils/supabase/actions';
 import { convertSeasonName } from '@/utils/utils';
 import {
   Card,

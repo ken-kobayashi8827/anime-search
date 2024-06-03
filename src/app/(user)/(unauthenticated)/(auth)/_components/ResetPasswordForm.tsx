@@ -6,7 +6,7 @@ import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { FormInput } from '@/app/components/FormInput';
 import { ResetPasswordFormSchema, ResetPasswordFormType } from '@/types/types';
-import { resetPasswordForEmail } from '@/utils/supabase/actions';
+import { resetPasswordForEmail } from '@/actions/auth';
 
 export default function ResetPasswordForm() {
   const toast = useToast();

@@ -1,6 +1,6 @@
-import { getFavoriteAnimeList } from '@/utils/supabase/actions';
 import { SimpleGrid } from '@chakra-ui/react';
 import FavoriteAnimeCard from './FavoriteAnimeCard';
+import { getFavoriteAnimeList } from '@/data/favorite';
 
 type Props = {
   currentPage: number;

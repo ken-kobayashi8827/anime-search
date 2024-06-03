@@ -1,4 +1,4 @@
-import { fetchFilteredAnimeList } from '@/utils/supabase/admin/actions';
+import { fetchFilteredAdminAnimeList } from '@/data/anime';
 import AnimeListTable from './Table';
 
 type Props = {
@@ -16,7 +16,7 @@ export default async function AnimeList({
   order,
   currentPage,
 }: Props) {
-  const animes = await fetchFilteredAnimeList(
+  const animes = await fetchFilteredAdminAnimeList(
     title,
     vodId,
     currentPage,

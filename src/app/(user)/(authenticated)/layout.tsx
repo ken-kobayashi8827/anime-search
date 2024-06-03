@@ -1,8 +1,8 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import Header from '@/app/(user)/_components/Header';
 import HamburgerMenu from '../_components/Drawer';
-import { getIsAdmin } from '@/utils/supabase/auth';
-import { fetchProfile } from '@/utils/supabase/actions';
+import { getIsAdmin } from '@/data/auth';
+import { fetchProfile } from '@/data/profile';
 
 export default async function Layout({
   children,

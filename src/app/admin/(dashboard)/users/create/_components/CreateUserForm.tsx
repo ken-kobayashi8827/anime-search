@@ -5,9 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Heading, HStack, useToast } from '@chakra-ui/react';
 import { CreateUserFormSchema, CreateUserFormType } from '@/types/types';
 import { FormInput } from '@/app/components/FormInput';
-import { createUser } from '@/utils/supabase/admin/actions';
 import NextLink from 'next/link';
 import { useState } from 'react';
+import { createUser } from '@/actions/admin-auth';
 
 export default function CreateUserForm() {
   const toast = useToast();

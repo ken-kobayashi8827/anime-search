@@ -1,6 +1,6 @@
 'use client';
 
-import { insertAnimeData } from '@/utils/supabase/admin/actions';
+import { insertAnimeData } from '@/actions/anime';
 import { Button, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 

@@ -16,11 +16,11 @@ import {
   getFilterSeason,
   uploadImg,
 } from '@/utils/utils';
-import { createAnime } from '@/utils/supabase/admin/actions';
 import AnimeEditFormImage from './AnimeEditFormImage';
 import FormCheckbox from '@/app/components/FormCheckbox';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
+import { createAnime } from '@/actions/anime';
 
 type PropsType = {
   vodLists: VodListType[] | undefined;
@@ -77,8 +77,6 @@ export default function AnimeCreateForm({ vodLists }: PropsType) {
           <VStack alignItems='flex-start' mb='6'>
             <Heading size='md'>サムネイル画像</Heading>
             <AnimeEditFormImage
-              label=''
-              type='file'
               register={register('thumbnail')}
               errMessage={errors.thumbnail?.message}
               previewImgPath={createPreviewImgPath(watch('thumbnail'))}

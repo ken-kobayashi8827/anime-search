@@ -5,9 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import { AdminLoginFormSchema, AdminLoginFormType } from '@/types/types';
-import { login } from '@/utils/supabase/admin/actions';
 import NextLink from 'next/link';
 import { useState } from 'react';
+import { login } from '@/actions/admin-auth';
 
 export default function AdminLoginForm() {
   const toast = useToast();

@@ -1,6 +1,6 @@
 'use client';
 
-import { logout } from '@/utils/supabase/actions';
+import { logout } from '@/actions/auth';
 import { Button, useToast } from '@chakra-ui/react';
 
 type Props = {

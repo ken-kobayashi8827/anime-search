@@ -17,11 +17,11 @@ import {
   uploadImg,
   createPreviewImgPath,
 } from '@/utils/utils';
-import { updateAnimeData } from '@/utils/supabase/admin/actions';
 import { v4 as uuidv4 } from 'uuid';
 import AnimeEditFormImage from './AnimeEditFormImage';
 import FormCheckbox from '@/app/components/FormCheckbox';
 import { useState } from 'react';
+import { updateAnimeData } from '@/actions/anime';
 
 type PropsType = {
   anime: AnimeType;

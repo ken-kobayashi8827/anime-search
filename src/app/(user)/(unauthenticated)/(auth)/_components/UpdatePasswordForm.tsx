@@ -8,7 +8,7 @@ import {
   UpdatePasswordFormSchema,
   UpdatePasswordFormType,
 } from '@/types/types';
-import { updateUser } from '@/utils/supabase/actions';
+import { updateUser } from '@/actions/auth';
 
 export default function UpdatePasswordForm() {
   const toast = useToast();

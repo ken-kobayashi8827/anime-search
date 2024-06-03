@@ -1,13 +1,11 @@
-import {
-  fetchAnimeListPage,
-  fetchVodLists,
-} from '@/utils/supabase/admin/actions';
 import { Box, HStack, Text } from '@chakra-ui/react';
 import Pagination from '@/app/components/Pagination';
 import AnimeList from './_components/AnimeList';
 import Search from '@/app/components/Search';
 import VodFilter from '@/app/components/VodFilter';
 import CreateButton from '@/app/components/CreateButton';
+import { fetchAnimeListPage } from '@/data/anime';
+import { fetchVodLists } from '@/data/vod';
 
 type SearchParamsType = {
   searchParams?: {

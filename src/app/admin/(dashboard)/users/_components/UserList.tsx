@@ -1,4 +1,4 @@
-import { fetchFilteredUserList } from '@/utils/supabase/admin/actions';
+import { fetchFilteredUserList } from '@/data/profile';
 import UserListTable from './UserListTable';
 
 type Props = {

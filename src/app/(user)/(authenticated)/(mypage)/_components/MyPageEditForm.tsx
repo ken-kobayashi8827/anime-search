@@ -10,10 +10,10 @@ import {
   ProfileType,
 } from '@/types/types';
 import { FormProfileImage } from '@/app/components/FormProfileImage';
-import { updateProfile } from '@/utils/supabase/actions';
 import { v4 as uuidv4 } from 'uuid';
 import { createPreviewImgPath, uploadImg } from '@/utils/utils';
 import { useState } from 'react';
+import { updateProfile } from '@/actions/profile';
 
 type PropsType = {
   profile: ProfileType;
