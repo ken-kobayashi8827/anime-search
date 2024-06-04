@@ -11,6 +11,17 @@ export default function AnimeList() {
   const handleClick = async () => {
     setIsLoading(true);
     const res = await fetch('/api/anime');
+    if (!res.ok) {
+      toast({
+        title: 'エラー',
+        description: 'アニメの取得に失敗しました',
+        status: 'error',
+        isClosable: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     const animeData = await res.json();
     toast.promise(insertAnimeData(animeData), {
       success: { title: 'アニメ取得に成功しました' },

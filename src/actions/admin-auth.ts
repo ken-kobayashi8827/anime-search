@@ -3,12 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
-import {
-  AdminLoginFormType,
-  AppMetaDataType,
-  CreateUserFormType,
-} from '@/types/types';
-import jwt from 'jsonwebtoken';
+import { AdminLoginFormType, CreateUserFormType } from '@/types/types';
+import { getIsAdmin } from '@/data/auth';
 
 /**
  * ユーザー新規登録
@@ -55,15 +51,11 @@ export async function login(formData: AdminLoginFormType) {
 
   const { data: signInData, error: signInError } =
     await supabase.auth.signInWithPassword(data);
-  if (signInData.session) {
-    const accessToken = jwt.decode(
-      signInData.session.access_token
-    ) as AppMetaDataType;
-    if (!accessToken.app_metadata.admin) {
-      return {
-        error: 'メールアドレスまたはパスワードが間違っています',
-      };
-    }
+  const isAdmin = await getIsAdmin();
+  if (!isAdmin) {
+    return {
+      error: 'メールアドレスまたはパスワードが間違っています',
+    };
   }
 
   if (signInError?.message === 'Invalid login credentials') {
@@ -73,7 +65,7 @@ export async function login(formData: AdminLoginFormType) {
   }
 
   if (signInError) {
-    throw new Error(signInError.message);
+    return { error: 'ログインに失敗しました' };
   }
 
   revalidatePath('/admin', 'layout');

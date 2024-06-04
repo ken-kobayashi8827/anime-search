@@ -12,6 +12,7 @@ import {
   Heading,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -19,11 +20,19 @@ type Props = {
   anime: AnimeType;
 };
 
-const toggleFavorite = async (animeId: number) => {
-  await updateFavorite(animeId);
-};
-
 export default function FavoriteAnimeCard({ anime }: Props) {
+  const toast = useToast();
+
+  const toggleFavorite = async (animeId: number) => {
+    await updateFavorite(animeId).catch(() => {
+      toast({
+        title: 'お気に入りを解除できませんでした',
+        status: 'error',
+        isClosable: true,
+      });
+    });
+  };
+
   return (
     <Card>
       <CardBody>

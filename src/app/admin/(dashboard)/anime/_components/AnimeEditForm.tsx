@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, useToast, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   AnimeEditFormSchema,
@@ -29,6 +29,7 @@ type PropsType = {
 };
 
 export default function AnimeEditForm({ anime, vodLists }: PropsType) {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<AnimeEditFormType>({
@@ -62,7 +63,17 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
       images: uploadImgUrl,
       status: params.status,
     };
-    await updateAnimeData(params.id, updateData, params.vod);
+    await updateAnimeData(params.id, updateData, params.vod).catch(() => {
+      toast({
+        title: 'エラー',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom',
+        description: 'アニメの更新に失敗しました',
+      });
+      setIsLoading(false);
+    });
   };
 
   const previewThumbnailPath = createPreviewImgPath(watch('thumbnail'));

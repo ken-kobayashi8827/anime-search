@@ -1,17 +1,15 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { cache } from 'react';
-import jwt from 'jsonwebtoken';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import {
-  AppMetaDataType,
   LoginFormType,
   ResetPasswordFormType,
   SignUpFormType,
   UpdatePasswordFormType,
 } from '@/types/types';
+import { getIsAdmin } from '@/data/auth';
 
 /**
  * ログイン
@@ -28,16 +26,11 @@ export async function login(formData: LoginFormType) {
 
   const { data: signInData, error: signInError } =
     await supabase.auth.signInWithPassword(data);
-
-  if (signInData.session) {
-    const accessToken = jwt.decode(
-      signInData.session.access_token
-    ) as AppMetaDataType;
-    if (accessToken.app_metadata.admin) {
-      return {
-        error: 'メールアドレスまたはパスワードが間違っています',
-      };
-    }
+  const isAdmin = await getIsAdmin();
+  if (isAdmin) {
+    return {
+      error: 'メールアドレスまたはパスワードが間違っています',
+    };
   }
 
   if (signInError?.message === 'Invalid login credentials') {
@@ -45,8 +38,11 @@ export async function login(formData: LoginFormType) {
       error: 'メールアドレスまたはパスワードが間違っています',
     };
   }
+
   if (signInError) {
-    throw new Error(signInError.message);
+    return {
+      error: 'ログインに失敗しました',
+    };
   }
 
   revalidatePath('/', 'layout');
@@ -74,8 +70,10 @@ export async function signup(formData: SignUpFormType) {
     };
   }
 
-  if (signUpError) {
-    throw new Error();
+  if (!signUpError) {
+    return {
+      error: '新規登録に失敗しました',
+    };
   }
 
   revalidatePath('/', 'layout');
@@ -93,7 +91,7 @@ export async function resetPasswordForEmail(formData: ResetPasswordFormType) {
   });
 
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 }
 
@@ -108,7 +106,7 @@ export async function updateUser(formData: UpdatePasswordFormType) {
   });
 
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   redirect('/login');

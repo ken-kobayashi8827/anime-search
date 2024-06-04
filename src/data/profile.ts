@@ -48,9 +48,11 @@ export async function fetchProfileByUserId(userId: string) {
     .eq('id', userId)
     .limit(1)
     .single();
+
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
+
   return data;
 }
 
@@ -69,9 +71,11 @@ export async function fetchUsersListPage(username: string) {
       head: true,
     })
     .like('username', `%${username}%`);
+
   if (error) {
     throw new Error(error.message);
   }
+
   const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
   return totalPages;
 }
@@ -112,5 +116,6 @@ export async function fetchFilteredUserList(
   if (error) {
     throw new Error(error.message);
   }
+
   return data;
 }

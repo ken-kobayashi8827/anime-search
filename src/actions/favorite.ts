@@ -24,7 +24,7 @@ export async function updateFavorite(animeId: number) {
     .eq('anime_id', animeId);
 
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   if (data.length > 0) {
@@ -57,8 +57,9 @@ async function createFavorites(userId: string, animeId: number) {
   const { error } = await supabase
     .from('favorites')
     .insert({ user_id: userId, anime_id: animeId });
+
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   return error;
@@ -72,14 +73,15 @@ async function createFavorites(userId: string, animeId: number) {
  */
 async function deleteFavorites(userId: string, animeId: number) {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('favorites')
     .delete()
     .eq('user_id', userId)
     .eq('anime_id', animeId)
     .select();
+
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   return error;

@@ -24,12 +24,21 @@ export default function LogoutButton({
 }: Props) {
   const toast = useToast();
   const handleLogout = async () => {
-    await logout(redirectUrl);
-    toast({
-      title: 'ログアウトしました',
-      status: 'success',
-      isClosable: true,
-    });
+    await logout(redirectUrl)
+      .then(() => {
+        toast({
+          title: 'ログアウトしました',
+          status: 'success',
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        toast({
+          title: 'ログアウトに失敗しました',
+          status: 'error',
+          isClosable: true,
+        });
+      });
   };
 
   return (

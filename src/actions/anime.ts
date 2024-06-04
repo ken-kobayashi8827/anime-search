@@ -59,6 +59,7 @@ export async function createAnime(formData: {
 }) {
   const supabase = createClient();
   const { error } = await supabase.rpc('create_anime', formData);
+
   if (error) {
     throw new Error(error.message);
   }
@@ -150,7 +151,7 @@ export async function deleteAnime(animeId: number) {
     .eq('id', animeId);
 
   if (error) {
-    throw new Error(error.message);
+    return false;
   }
 
   revalidatePath('/admin/anime');

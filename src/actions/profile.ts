@@ -23,8 +23,9 @@ export async function updateProfile(
     .from('profiles')
     .update(formData)
     .eq('user_id', userId);
+
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   revalidatePath(redirectPath);

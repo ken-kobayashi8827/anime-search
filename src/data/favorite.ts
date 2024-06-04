@@ -8,7 +8,7 @@ import { STATUS_PUBLIC } from '@/utils/utils';
 const ITEMS_PER_PAGE = 20;
 
 /**
- * ユーザーのいいねしたアニメIDを取得
+ * ユーザーのお気に入りしたアニメIDを取得
  * @returns
  */
 export async function getFavoriteList() {
@@ -34,7 +34,7 @@ export async function getFavoriteList() {
 }
 
 /**
- * ユーザーのいいねしたアニメを取得
+ * ユーザーのお気に入りしたアニメを取得
  * @param currentPage
  * @returns
  */

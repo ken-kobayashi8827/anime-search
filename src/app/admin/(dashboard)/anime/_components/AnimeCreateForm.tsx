@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, useToast, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   AnimeCreateFormSchema,
@@ -28,6 +28,7 @@ type PropsType = {
 
 export default function AnimeCreateForm({ vodLists }: PropsType) {
   const currentSeason = getFilterSeason();
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<AnimeCreateFormType>({
@@ -56,7 +57,16 @@ export default function AnimeCreateForm({ vodLists }: PropsType) {
       vods: params.vod,
       images: uploadImgUrl ? uploadImgUrl : '',
     };
-    await createAnime(data);
+    await createAnime(data).catch(() => {
+      toast({
+        title: 'エラー',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom',
+        description: 'アニメの登録に失敗しました',
+      });
+    });
     setIsLoading(false);
   };
 

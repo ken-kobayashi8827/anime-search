@@ -20,7 +20,7 @@ export const getUser = cache(async () => {
   }
 
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   return user;
@@ -37,7 +37,7 @@ export const getIsAdmin = cache(async () => {
   }
 
   if (error) {
-    throw new Error();
+    throw new Error(error.message);
   }
 
   if (data.session) {

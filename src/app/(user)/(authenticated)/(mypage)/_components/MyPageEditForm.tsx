@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Heading, Stack, VStack } from '@chakra-ui/react';
+import { Button, Heading, Stack, useToast, VStack } from '@chakra-ui/react';
 import { FormInput } from '@/app/components/FormInput';
 import {
   MyPageEditFormSchema,
@@ -21,6 +21,7 @@ type PropsType = {
 };
 
 export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const methods = useForm<MyPageEditFormType>({
@@ -51,7 +52,15 @@ export default function MyPageEditForm({ profile, redirectPath }: PropsType) {
       username: params.username,
       profile_image: uploadImgUrl ? uploadImgUrl : null,
     };
-    await updateProfile(updateData, profile.user_id, redirectPath);
+    await updateProfile(updateData, profile.user_id, redirectPath).catch(() => {
+      toast({
+        title: 'プロフィール更新に失敗しました',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+    setIsLoading(false);
   };
 
   const previewProfileImgPath = createPreviewImgPath(watch('profileImage'));

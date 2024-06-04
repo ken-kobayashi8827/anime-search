@@ -12,6 +12,7 @@ import {
   Heading,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { User } from '@supabase/supabase-js';
@@ -23,8 +24,16 @@ type Props = {
 };
 
 export default function AnimeCard({ anime, favoriteIds, user }: Props) {
+  const toast = useToast();
+
   const toggleFavorite = async (animeId: number) => {
-    await updateFavorite(animeId);
+    await updateFavorite(animeId).catch(() => {
+      toast({
+        title: 'お気に入りを変更できませんでした',
+        status: 'error',
+        isClosable: true,
+      });
+    });
   };
 
   return (

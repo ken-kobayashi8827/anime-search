@@ -123,6 +123,11 @@ export async function fetchAnimeListPage(title: string, vodId: number | null) {
         head: true,
       })
       .eq('vod_id', vodId);
+
+    if (vodAnimeCountError) {
+      throw new Error(vodAnimeCountError.message);
+    }
+
     const totalPages = Math.ceil(Number(vodAnimeCount) / ITEMS_PER_PAGE);
     return totalPages;
   }
@@ -135,6 +140,7 @@ export async function fetchAnimeListPage(title: string, vodId: number | null) {
     })
     .eq('season_name', filterSeason)
     .like('title', `%${title}%`);
+
   if (error) {
     throw new Error(error.message);
   }
@@ -208,8 +214,10 @@ export async function fetchAnimeByAnimeId(animeId: string) {
     .eq('id', animeId)
     .limit(1)
     .single();
+
   if (error) {
     throw new Error(error.message);
   }
+
   return data;
 }

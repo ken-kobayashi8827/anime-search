@@ -17,6 +17,13 @@ export default function DeleteButton({ animeId }: PropsType) {
         status: 'success',
         isClosable: true,
       });
+    } else {
+      toast({
+        title: '削除失敗',
+        description: `ID: ${animeId}の削除に失敗しました`,
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
