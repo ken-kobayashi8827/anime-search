@@ -1,13 +1,8 @@
-import { HStack, Stack } from '@chakra-ui/react';
+import { HStack, Spinner, Stack } from '@chakra-ui/react';
 import Pagination from '@/app/components/Pagination';
 import Search from '@/app/components/Search';
 import VodFilter from '@/app/components/VodFilter';
 import AnimeCardList from './_components/AnimeCardList';
-import { Suspense } from 'react';
-import {
-  AnimeCardListSkeleton,
-  VodFilterSkeleton,
-} from '@/app/components/Skeletons';
 import { fetchPublicAnimeListPage } from '@/data/anime';
 import { fetchVodLists } from '@/data/vod';
 
@@ -33,12 +28,8 @@ export default async function Home({ searchParams }: SearchParamsType) {
       <HStack align='center' justify='center' w='100%' mb='6'>
         <Search />
       </HStack>
-      <Suspense fallback={<VodFilterSkeleton />}>
-        <VodFilter vodLists={vodLists} vodId={vodId} />
-      </Suspense>
-      <Suspense fallback={<AnimeCardListSkeleton />}>
-        <AnimeCardList title={title} vodId={vodId} currentPage={currentPage} />
-      </Suspense>
+      <VodFilter vodLists={vodLists} vodId={vodId} />
+      <AnimeCardList title={title} vodId={vodId} currentPage={currentPage} />
       <Pagination totalPages={totalPages} />
     </Stack>
   );

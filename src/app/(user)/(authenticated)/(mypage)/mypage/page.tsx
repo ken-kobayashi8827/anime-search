@@ -2,8 +2,6 @@ import MyPageList from '../_components/MyPageList';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import FavoriteAnimeCardList from '../_components/FavoriteAnimeCardList';
 import Pagination from '@/app/components/Pagination';
-import { Suspense } from 'react';
-import { FavoriteAnimeCardListSkeleton } from '@/app/components/Skeletons';
 import { fetchProfile } from '@/data/profile';
 import { fetchFavoriteAnimeListPage } from '@/data/favorite';
 
@@ -32,9 +30,7 @@ export default async function MyPage({ searchParams }: SearchParamsType) {
           <MyPageList profile={profile} />
         </TabPanel>
         <TabPanel>
-          <Suspense fallback={<FavoriteAnimeCardListSkeleton />}>
-            <FavoriteAnimeCardList currentPage={currentPage} />
-          </Suspense>
+          <FavoriteAnimeCardList currentPage={currentPage} />
           <Pagination totalPages={totalPages} />
         </TabPanel>
       </TabPanels>
