@@ -19,7 +19,7 @@ https://anime-search-tau.vercel.app/admin
 
 ### フロントエンド
 
-- next.js (v14.2.3)
+- next.js (v14.2.3) ※App Routerを使用しました
 - react (v18.2.0)
 - typescript (v5.4.5)
 - chakra-ui (v2.8.2)
