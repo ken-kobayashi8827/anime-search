@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## あにさ～ち
 
-## Getting Started
+「あにさ～ち」は、現在放送されているクールのアニメがどの VOD サービスで配信されているかを調べることができるサービスです。
 
-First, run the development server:
+## 制作した目的
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+様々な VOD サービスによりアニメが配信されているため見たいアニメがどのサービスで配信されているか調べるのが手間と感じました。
+どの配信サイトで公開されているのか簡単に調べられるようにしたいと思い制作致しました。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## アプリ URL
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+ユーザー
+https://anime-search-tau.vercel.app/
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+管理画面
+https://anime-search-tau.vercel.app/admin
 
-## Learn More
+## 使用技術
 
-To learn more about Next.js, take a look at the following resources:
+### フロントエンド
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- next.js (v14.2.3)
+- react (v18.2.0)
+- typescript (v5.4.5)
+- chakra-ui (v2.8.2)
+- material icons (v5.15.17)
+- supabase/ssr (v0.3.0)
+- supabase-js (2.43.0)
+- eslist (v8.57.0)
+- jsonwebtoken (v9.0.2)
+- use-debounce (v10.0.0)
+- uuid (v9.0.1)
+- zod (v3.23.5)
+- react-hook-form (7.51.3)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### バックエンド
 
-## Deploy on Vercel
+- supabase
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 機能一覧
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+本アプリで実装した機能は以下となります。
+
+### ユーザーサイト
+
+#### 認証
+
+- サインアップ
+- パスワードを忘れた方 メール送信
+- パスワード変更
+- ログイン/ログアウト
+
+#### アニメ一覧(トップページ)
+
+- アニメタイトルでのフィルター
+- VOD サービスでのフィルター
+- タグのリンクから VOD の検索結果へ遷移
+- ページネーション
+- お気に入り登録/解除
+
+#### マイページ
+
+- プロフィール変更
+  - ユーザー名
+  - プロフィール画像
+    - 変更プレビュー
+- ユーザーのお気に入り
+  - お気に入り解除
+  - ページネーション
+
+### 管理画面
+
+#### 認証
+
+- ログイン/ログアウト
+
+#### ユーザーリスト
+
+- ユーザー作成/編集
+- ユーザー名でのフィルター
+- ID/作成日でのソート
+- ページネーション
+
+#### アニメリスト
+
+- アニメ作成/編集/削除
+- アニメタイトルでのフィルター
+- VOD サービスでのフィルター
+- タグのリンクから VOD の検索結果へ遷移
+- ページネーション
+- ID/ステータス/作成日でのソート
+
+#### アニメデータインポート
+
+- Annict API からデータ取得
+
+## アニメデータインポート詳細
+
+### Annict API
+
+Annict API
+https://developers.annict.com/docs
+
+Annict API の REST API を使用して今季アニメのデータを取得しています。
+取得したデータを Supabase のデータベースにて管理しています。
+不足しているアニメなどは手動でアニメ作成や編集を行います。
+
+## 今後の実装予定機能
+
+実装していきたい機能は以下です。
+
+- 過去アニメのデータ管理
+- ソーシャルログイン
+- アニメタイトルフィルターでのオートコンプリート
+- アニメ最速配信カレンダーの作成
+- 今日配信されるアニメの LINE での通知
