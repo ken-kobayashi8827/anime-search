@@ -21,9 +21,15 @@ type Props = {
   anime: AnimeType;
   favoriteIds: number[];
   user: User | null;
+  isAdmin?: boolean;
 };
 
-export default function AnimeCard({ anime, favoriteIds, user }: Props) {
+export default function AnimeCard({
+  anime,
+  favoriteIds,
+  user,
+  isAdmin,
+}: Props) {
   const toast = useToast();
 
   const toggleFavorite = async (animeId: number) => {
@@ -54,7 +60,7 @@ export default function AnimeCard({ anime, favoriteIds, user }: Props) {
           )}
         </Stack>
       </CardBody>
-      {user && (
+      {user && !isAdmin && (
         <CardFooter>
           <FavoriteIcon
             style={{

@@ -1,6 +1,6 @@
 import AnimeCard from './AnimeCard';
 import { SimpleGrid } from '@chakra-ui/react';
-import { getUser } from '@/data/auth';
+import { getIsAdmin, getUser } from '@/data/auth';
 import { fetchFilteredAnimeList } from '@/data/anime';
 import { getFavoriteList } from '@/data/favorite';
 
@@ -17,6 +17,7 @@ export default async function AnimeCardList({
 }: Props) {
   const animes = await fetchFilteredAnimeList(title, vodId, currentPage);
   const user = await getUser();
+  const isAdmin = await getIsAdmin();
   const favoriteList = await getFavoriteList();
 
   return (
@@ -29,6 +30,7 @@ export default async function AnimeCardList({
           anime={anime}
           favoriteIds={favoriteList}
           user={user}
+          isAdmin={isAdmin}
           key={anime.id}
         />
       ))}
