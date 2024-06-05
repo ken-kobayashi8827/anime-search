@@ -70,7 +70,7 @@ export async function signup(formData: SignUpFormType) {
     };
   }
 
-  if (!signUpError) {
+  if (signUpError) {
     return {
       error: '新規登録に失敗しました',
     };
