@@ -213,13 +213,7 @@ export async function uploadImg(
 
   // 既存の画像をストレージから削除
   if (currentImgPath) {
-    // 画像URLからフォルダ+画像名を取得
-    const path = new URL(currentImgPath).pathname;
-    const imgPath = path.split('/').slice(6).join('/');
-    const { error } = await supabase.storage.from('images').remove([imgPath]);
-    if (error) {
-      throw new Error();
-    }
+    await deleteImg(currentImgPath);
   }
 
   // 画像をストレージに保存
@@ -234,4 +228,25 @@ export async function uploadImg(
   const { data } = supabase.storage.from('images').getPublicUrl(uploadNewPath);
 
   return data.publicUrl;
+}
+
+/**
+ * 既存画像をストレージから削除する
+ * @param currentImgPath
+ * @returns
+ */
+async function deleteImg(currentImgPath: string) {
+  try {
+    const path = new URL(currentImgPath).pathname;
+    const imgPath = path.split('/').slice(6).join('/');
+    // 画像URLからフォルダ+画像名を取得
+    const supabase = createClient();
+    const { error } = await supabase.storage.from('images').remove([imgPath]);
+    if (error) {
+      throw new Error();
+    }
+  } catch (e) {
+    return { error: 'Failed to delete Image from supabase' };
+  }
+  return;
 }
