@@ -302,7 +302,7 @@ export const AnimeEditFormSchema = z.object({
         message: '添付できる画像ファイルは20MBまでです',
       }
     ),
-  status: z.string().transform((val) => Number(val)),
+  status: z.number(),
   seasonName: z
     .string()
     .min(1, { message: '1文字以上で入力してください' })
@@ -338,7 +338,7 @@ export const AnimeCreateFormSchema = z.object({
         message: '添付できる画像ファイルは20MBまでです',
       }
     ),
-  status: z.string().transform((val) => Number(val)),
+  status: z.number(),
   seasonName: z
     .string()
     .min(1, { message: '1文字以上で入力してください' })

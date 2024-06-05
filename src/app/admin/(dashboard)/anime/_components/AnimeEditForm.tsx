@@ -120,7 +120,7 @@ export default function AnimeEditForm({ anime, vodLists }: PropsType) {
           </Heading>
           <FormSelect
             label=''
-            register={register('status')}
+            register={register('status', { valueAsNumber: true })}
             options={animeStatusOptions}
             errMessage={errors.status?.message}
           />
