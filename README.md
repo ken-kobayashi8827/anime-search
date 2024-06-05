@@ -4,15 +4,15 @@
 
 ## 制作した目的
 
-様々な VOD サービスによりアニメが配信されているため見たいアニメがどのサービスで配信されているか調べるのが手間と感じました。
+様々な VOD サービスによりアニメが配信されているため見たいアニメがどのサービスで配信されているか調べるのが手間と感じました。  
 どの配信サイトで公開されているのか簡単に調べられるようにしたいと思い制作致しました。
 
 ## アプリ URL
 
-ユーザー
+ユーザー  
 https://anime-search-tau.vercel.app/
 
-管理画面
+管理画面  
 https://anime-search-tau.vercel.app/admin
 
 ## 使用技術
@@ -101,9 +101,17 @@ https://anime-search-tau.vercel.app/admin
 Annict API
 https://developers.annict.com/docs
 
-Annict API の REST API を使用して今季アニメのデータを取得しています。
-取得したデータを Supabase のデータベースにて管理しています。
-不足しているアニメなどは手動でアニメ作成や編集を行います。
+Annict API の REST API を使用して今季アニメのデータを取得しています。  
+取得したデータを Supabase のデータベースにて管理しています。  
+不足しているアニメなどは手動でアニメ作成や編集を行います。  
+
+## 現状対応しているVODサービス
+- Netflix
+- dアニメストア
+- バンダイチャンネル
+- U-Next
+- Amazon Prime Video
+- Abeme
 
 ## 今後の実装予定機能
 
