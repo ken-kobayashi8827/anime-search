@@ -53,6 +53,8 @@ export async function login(formData: AdminLoginFormType) {
     await supabase.auth.signInWithPassword(data);
   const isAdmin = await getIsAdmin();
   if (!isAdmin) {
+    // sessionを破棄するためにサインアウト
+    const { error: signOutError } = await supabase.auth.signOut();
     return {
       error: 'メールアドレスまたはパスワードが間違っています',
     };
