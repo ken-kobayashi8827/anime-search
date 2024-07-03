@@ -22,14 +22,12 @@ export async function fetchPublicAnimeListPage(
 
   if (vodId) {
     const { count: vodAnimeCount, error: vodAnimeCountError } = await supabase
-      .from('animes_vods')
-      .select('*', {
-        count: 'exact',
-        head: true,
-      })
+      .from('animes')
+      .select('*, animes_vods!inner(vod_id)', {count: 'exact', head: true})
       .eq('season_name', filterSeason)
       .eq('status', STATUS_PUBLIC)
-      .eq('vod_id', vodId);
+      .eq('animes_vods.vod_id', vodId)
+
     const totalPages = Math.ceil(Number(vodAnimeCount) / ITEMS_PER_PAGE);
     return totalPages;
   }
@@ -116,16 +114,13 @@ export async function fetchAnimeListPage(title: string, vodId: number | null) {
   const filterSeason = getFilterSeason();
 
   const supabase = createClient();
-
   if (vodId) {
     const { count: vodAnimeCount, error: vodAnimeCountError } = await supabase
-      .from('animes_vods')
-      .select('*', {
-        count: 'exact',
-        head: true,
-      })
+      .from('animes')
+      .select('*, animes_vods!inner(vod_id)', {count: 'exact', head: true})
       .eq('season_name', filterSeason)
-      .eq('vod_id', vodId);
+      .eq('status', STATUS_PUBLIC)
+      .eq('animes_vods.vod_id', vodId)
 
     if (vodAnimeCountError) {
       throw new Error(vodAnimeCountError.message);
