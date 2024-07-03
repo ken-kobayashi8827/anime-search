@@ -27,6 +27,8 @@ export async function fetchPublicAnimeListPage(
         count: 'exact',
         head: true,
       })
+      .eq('season_name', filterSeason)
+      .eq('status', STATUS_PUBLIC)
       .eq('vod_id', vodId);
     const totalPages = Math.ceil(Number(vodAnimeCount) / ITEMS_PER_PAGE);
     return totalPages;
@@ -122,6 +124,7 @@ export async function fetchAnimeListPage(title: string, vodId: number | null) {
         count: 'exact',
         head: true,
       })
+      .eq('season_name', filterSeason)
       .eq('vod_id', vodId);
 
     if (vodAnimeCountError) {
