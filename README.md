@@ -11,9 +11,15 @@
 
 ユーザー  
 https://anime-search-tau.vercel.app/
+・確認用アカウント
+メールアドレス: user@test.com
+パスワード: Password1
 
 管理画面  
 https://anime-search-tau.vercel.app/admin
+・確認用アカウント
+メールアドレス: admin@test.com
+パスワード: Password1
 
 ## 使用技術
 
